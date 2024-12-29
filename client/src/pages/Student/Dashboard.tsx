@@ -1,4 +1,4 @@
-import Navbar from "./Navbar"; // Make sure to adjust the path as needed
+import Navbar from "./Navbar"; 
 
 const StudentDashboard = () => {
   return (
