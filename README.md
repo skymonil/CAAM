@@ -1,8 +1,8 @@
-# College e-Governance: E-Governance Solution for College Admission and Management
+# College Asministration And Management: E-Governance Solution for College Admission and Management
 
 ## Overview
 
-The **College e-Governance** system provides a comprehensive solution to address the inefficiencies and challenges commonly faced in the management of college admissions and related administrative activities. This case study highlights key problems in manual processes and how an automated e-governance software solution can effectively resolve them.
+The **College Asministration And Management** system provides a comprehensive solution to address the inefficiencies and challenges commonly faced in the management of college admissions and related administrative activities. This case study highlights key problems in manual processes and how an automated e-governance software solution can effectively resolve them.
 
 ---
 
