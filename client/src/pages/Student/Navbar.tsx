@@ -8,6 +8,7 @@ import {
   CalendarCheck,
   Menu,
   X,
+  Wallet,
 } from "lucide-react";
 import { IconContext } from "react-icons";
 import { NavLink } from "react-router-dom";
@@ -19,7 +20,7 @@ const Navbar = () => {
 
   return (
     <IconContext.Provider value={{ className: "mr-2" }}>
-      <nav className="bg-gray-700 text-white">
+      <nav className="bg-gray-700 text-white w-screen">
         {/* Navbar Header */}
         <div className="flex justify-between items-center p-4 md:p-0">
           <h1 className="text-lg font-bold inline md:hidden">Dashboard</h1>
@@ -132,6 +133,19 @@ const Navbar = () => {
             >
               <CalendarCheck size={20} />
               <span className="ml-2">Attendance</span>
+            </NavLink>
+          </li>
+          <li className="flex items-center">
+            <NavLink to="/wallet"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-2 rounded-lg transition-all duration-300 ${
+                isActive
+                  ? "bg-gray-700 text-red-400"
+                  : "hover:bg-gray-700 hover:text-gray-300"
+              }`
+            }>
+              <Wallet size={20}/>
+              <span>Wallet</span>
             </NavLink>
           </li>
         </ul>
