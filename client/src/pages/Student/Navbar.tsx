@@ -21,7 +21,7 @@ const Navbar = () => {
     <IconContext.Provider value={{ className: "mr-2" }}>
       <nav className="bg-gray-700 text-white">
         {/* Navbar Header */}
-        <div className="flex justify-between items-center p-4">
+        <div className="flex justify-between items-center p-4 md:p-0">
           <h1 className="text-lg font-bold inline md:hidden">Dashboard</h1>
 
           <button
