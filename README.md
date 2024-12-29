@@ -102,5 +102,7 @@ The **College e-Governance** system provides a comprehensive solution to address
 
 ---
 
-##License
-This project is licensed under the MIT License[LICENSE] - see the LICENSE file for details.
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
