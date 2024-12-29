@@ -10,6 +10,8 @@ import LogIn from "./pages/LogIn";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
 import FeeStatus from "./pages/Student/FeeStatus";
+import Leave from "./pages/Student/Leave";
+import Grievance from "./pages/Student/Grievance";
 
 const AppContent = () => {
   const location = useLocation();
@@ -42,6 +44,8 @@ const AppContent = () => {
         <Route path="/admin-register" element={<AdminRegister onAdminRegister={handleAdminRegister}/>} />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
+        <Route path="/leave" element={<Leave />} />
+        <Route path="/grievance" element={<Grievance />} />
       </Routes>
     </>
   );

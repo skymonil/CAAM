@@ -5,12 +5,13 @@ import {
   ClipboardList,
   List,
   BarChart,
-  CalendarCheck,
   Menu,
   X,
+  CalendarX,
 } from "lucide-react";
 import { IconContext } from "react-icons";
 import { NavLink } from "react-router-dom";
+import { BsExclamationCircle } from "react-icons/bs";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,7 +44,7 @@ const Navbar = () => {
         to="/student-detail"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 w-full justify-center ${
-            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
@@ -56,7 +57,7 @@ const Navbar = () => {
         to="/fee-status"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
-            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
@@ -69,7 +70,7 @@ const Navbar = () => {
         to="/exam-registration"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
-            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
@@ -82,7 +83,7 @@ const Navbar = () => {
         to="/admission-form"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
-            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
@@ -95,7 +96,7 @@ const Navbar = () => {
         to="/result"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
-            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
@@ -105,15 +106,28 @@ const Navbar = () => {
     </li>
     <li>
       <NavLink
-        to="/attendance"
+        to="/grievance"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
             isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
           }`
         }
       >
-        <CalendarCheck size={20} />
-        <span className="ml-2">Attendance</span>
+        <BsExclamationCircle size={20} />
+        <span className="ml-2">Grievance Redressal</span>
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
+        to="/leave"
+        className={({ isActive }) =>
+          `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
+            isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
+          }`
+        }
+      >
+        <CalendarX size={20} />
+        <span className="ml-2">Apply for Leave</span>
       </NavLink>
     </li>
   </ul>
