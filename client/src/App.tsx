@@ -5,6 +5,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Register from "./pages/Register";
+import AdminRegister from "./pages/AdminRegister";
 import LogIn from "./pages/LogIn";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
@@ -12,15 +13,20 @@ import FeeStatus from "./pages/Student/FeeStatus";
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbarPaths = ["/log-in", "/register"]; // List of paths where the navbar should not appear
+  const hideNavbarPaths = ["/log-in", "/register", "/admin-register"]; // List of paths where the navbar should not appear
 
   const handleLogin = (username: string, password: string) => {
     console.log("Logging in with:", { username, password });
     // Add login logic (e.g., API calls) here
   };
 
-  const handleRegister = () => {
-    console.log("registration page");
+  const handleRegister = (username: string, email: string, password: string) => {
+    console.log("Registration with:", { username, email, password });
+    // Add navigation logic (e.g., using `useNavigate` from `react-router-dom`) here
+  };
+
+  const handleAdminRegister = (CollegeName: string, email: string, password: string) => {
+    console.log("Registration with:", { CollegeName, email, password });
     // Add navigation logic (e.g., using `useNavigate` from `react-router-dom`) here
   };
 
@@ -33,6 +39,7 @@ const AppContent = () => {
           element={<LogIn onLogin={handleLogin}/>}
         />
         <Route path="/register" element={<Register onRegister={handleRegister}/>} />
+        <Route path="/admin-register" element={<AdminRegister onAdminRegister={handleAdminRegister}/>} />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
       </Routes>

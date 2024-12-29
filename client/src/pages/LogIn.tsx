@@ -12,6 +12,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(username, password);
+    window.location.href = "/student-detail";
   };
 
   const handleNavigation = () => {
@@ -28,7 +29,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         {/* Right side with form */}
         <div className="w-full lg:w-1/2 p-6">
-          <h2 className="text-2xl font-semibold text-center text-gray-700 sm:text-3xl">
+          <h2 className="text-2xl font-semibold text-center underline text-gray-700 sm:text-3xl">
             Login
           </h2>
           <form onSubmit={handleSubmit} className="mt-6">

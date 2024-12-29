@@ -2,21 +2,20 @@ import React from "react";
 import logo from "../assets/logo.jpeg";
 
 type RegisterProps = {
-  onRegister: (username: string, email: string, password: string) => void;
+  onAdminRegister: (CollegeName: string, email: string, password: string) => void;
 };
 
-const Register: React.FC<RegisterProps> = ({ onRegister }) => {
-  const [username, setUsername] = React.useState("");
+const AdminRegister: React.FC<RegisterProps> = ({ onAdminRegister }) => {
+  const [CollegeName, setCollegeName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [college, setCollege] = React.useState("");
   const [error, setError] = React.useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      onRegister(username, email, password);
+      onAdminRegister(CollegeName, email, password);
     } else {
       setError("Passwords do not match!");
       setTimeout(() => setError(null), 3000);
@@ -46,17 +45,17 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label
-                htmlFor="username"
+                htmlFor="CollegeName"
                 className="block text-sm font-medium text-gray-700"
               >
-                Username
+                College
               </label>
               <input
                 type="text"
-                id="username"
+                id="CollegeName"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={CollegeName}
+                onChange={(e) => setCollegeName(e.target.value)}
                 required
               />
             </div>
@@ -108,27 +107,6 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 required
               />
             </div>
-            <div>
-              <label
-                htmlFor="college"
-                className="block text-sm font-medium text-gray-700"
-              >
-                College
-              </label>
-              <select
-                id="college"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={college}
-                onChange={(e) => setCollege(e.target.value)}
-                required
-              >
-                <option value="">Select your college</option>
-                <option value="College A">College A</option>
-                <option value="College B">College B</option>
-                <option value="College C">College C</option>
-                <option value="College D">College D</option>
-              </select>
-            </div>
             <div className="flex justify-end">
               <button
                 type="submit"
@@ -158,4 +136,4 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
   );
 };
 
-export default Register;
+export default AdminRegister;
