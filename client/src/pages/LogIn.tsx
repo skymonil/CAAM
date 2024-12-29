@@ -14,6 +14,10 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     onLogin(username, password);
   };
 
+  const handleNavigation = () => {
+    window.location.href = "/register";
+  }
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
       <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md">
@@ -71,7 +75,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <span className="text-sm text-gray-600 sm:text-base">
               Don't have an account?{" "}
             </span>
-            <button className="mt-2 text-blue-500 hover:underline focus:outline-none sm:text-base">
+            <button className="mt-2 text-blue-500 hover:underline focus:outline-none sm:text-base" onClick={handleNavigation}>
               Register here
             </button>
           </div>
