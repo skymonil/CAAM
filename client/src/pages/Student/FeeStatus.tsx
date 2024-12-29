@@ -32,13 +32,13 @@ const FeeStatus: React.FC = () => {
           {/* Wallet Balance Section */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">Wallet Balance</h2>
-            <div className="bg-gray-100 p-4 rounded-lg flex justify-between items-center">
-              <p className="text-lg font-bold">₹5,000</p>
-              <div className="space-x-2">
-                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg">
+            <div className="bg-gray-100 p-4 rounded-lg flex flex-col sm:flex-row justify-between items-center">
+              <p className="text-lg font-bold mb-2 sm:mb-0">₹5,000</p>
+              <div className="space-y-2 sm:space-y-0 sm:space-x-2">
+                <button className="bg-blue-500 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
                   Add Funds
                 </button>
-                <button className="bg-red-500 text-white px-4 py-2 rounded-lg">
+                <button className="bg-red-500 text-white px-4 py-2 rounded-lg w-full sm:w-auto">
                   Pay with Wallet
                 </button>
               </div>
@@ -48,54 +48,38 @@ const FeeStatus: React.FC = () => {
           {/* Payment History Section */}
           <div className="mb-6">
             <h2 className="text-lg font-semibold mb-2">Payment History</h2>
-            <table className="w-full border-collapse border border-gray-200">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="border border-gray-200 px-4 py-2">Date</th>
-                  <th className="border border-gray-200 px-4 py-2">Amount</th>
-                  <th className="border border-gray-200 px-4 py-2">
-                    Transaction ID
-                  </th>
-                  <th className="border border-gray-200 px-4 py-2">Method</th>
-                  <th className="border border-gray-200 px-4 py-2">Status</th>
-                  <th className="border border-gray-200 px-4 py-2">Receipt</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="border border-gray-200 px-4 py-2">
-                    23/12/2024
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">₹50,000</td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    TXN123456
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">WALLET</td>
-                  <td className="border border-gray-200 px-4 py-2 text-green-500">
-                    SUCCESS
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-blue-500 underline cursor-pointer">
-                    Download
-                  </td>
-                </tr>
-                <tr>
-                  <td className="border border-gray-200 px-4 py-2">
-                    21/12/2024
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">₹25,000</td>
-                  <td className="border border-gray-200 px-4 py-2">
-                    TXN123457
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2">WALLET</td>
-                  <td className="border border-gray-200 px-4 py-2 text-green-500">
-                    SUCCESS
-                  </td>
-                  <td className="border border-gray-200 px-4 py-2 text-blue-500 underline cursor-pointer">
-                    Download
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse border border-gray-200">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border border-gray-200 px-4 py-2">Date</th>
+                    <th className="border border-gray-200 px-4 py-2">Amount</th>
+                    <th className="border border-gray-200 px-4 py-2">Transaction ID</th>
+                    <th className="border border-gray-200 px-4 py-2">Method</th>
+                    <th className="border border-gray-200 px-4 py-2">Status</th>
+                    <th className="border border-gray-200 px-4 py-2">Receipt</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td className="border border-gray-200 px-4 py-2">23/12/2024</td>
+                    <td className="border border-gray-200 px-4 py-2">₹50,000</td>
+                    <td className="border border-gray-200 px-4 py-2">TXN123456</td>
+                    <td className="border border-gray-200 px-4 py-2">WALLET</td>
+                    <td className="border border-gray-200 px-4 py-2 text-green-500">SUCCESS</td>
+                    <td className="border border-gray-200 px-4 py-2 text-blue-500 underline cursor-pointer">Download</td>
+                  </tr>
+                  <tr>
+                    <td className="border border-gray-200 px-4 py-2">21/12/2024</td>
+                    <td className="border border-gray-200 px-4 py-2">₹25,000</td>
+                    <td className="border border-gray-200 px-4 py-2">TXN123457</td>
+                    <td className="border border-gray-200 px-4 py-2">WALLET</td>
+                    <td className="border border-gray-200 px-4 py-2 text-green-500">SUCCESS</td>
+                    <td className="border border-gray-200 px-4 py-2 text-blue-500 underline cursor-pointer">Download</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           {/* Support Section */}
