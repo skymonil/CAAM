@@ -2,10 +2,9 @@ import React from "react";
 
 type LoginProps = {
   onLogin: (username: string, password: string) => void;
-  onRegister: () => void;
 };
 
-const Login: React.FC<LoginProps> = ({ onLogin, onRegister }) => {
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
 
@@ -17,10 +16,15 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegister }) => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-        <h2 className="text-2xl font-semibold text-center text-gray-700 sm:text-3xl">Login</h2>
+        <h2 className="text-2xl font-semibold text-center text-gray-700 sm:text-3xl">
+          Login
+        </h2>
         <form onSubmit={handleSubmit} className="mt-6">
           <div className="mb-4">
-            <label htmlFor="username" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-600"
+            >
               Username
             </label>
             <input
@@ -33,7 +37,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegister }) => {
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
               Password
             </label>
             <input
@@ -53,11 +60,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onRegister }) => {
           </button>
         </form>
         <div className="mt-4 text-center">
-          <span className="text-sm text-gray-600 sm:text-base">Don't have an account? </span>
-          <button
-            onClick={onRegister}
-            className="mt-2 text-blue-500 hover:underline focus:outline-none sm:text-base"
-          >
+          <span className="text-sm text-gray-600 sm:text-base">
+            Don't have an account?{" "}
+          </span>
+          <button className="mt-2 text-blue-500 hover:underline focus:outline-none sm:text-base">
             Register here
           </button>
         </div>
