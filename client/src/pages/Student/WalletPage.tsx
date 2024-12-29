@@ -56,7 +56,7 @@ function WalletPage(): React.ReactElement {
 
           {/* Add Funds Button */}
           <div className='flex justify-center lg:justify-end px-3'>
-            <button className='bg-blue-500 text-white px-2 py-3 rounded-lg hover:bg-blue-700 text-lg'>
+            <button className='bg-blue-500 text-white px-3 py-3 rounded-lg hover:bg-blue-700 text-lg'>
               <span className='flex items-center gap-1'>
                 <Plus size={20} /><span>Add Funds</span>
               </span>
