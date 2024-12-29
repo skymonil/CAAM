@@ -22,8 +22,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
       <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-md">
         {/* Left side with logo */}
-        <div className="hidden lg:flex lg:w-1/2 items-center justify-center bg-gray-100 p-6">
-          <img src={logo} alt="Logo" className="max-h-64" />
+        <div className="hidden lg:flex lg:w-1/2 items-center justify-center bg-gray-50 p-6">
+          <img src={logo} alt="Logo" className="max-h-80" />
         </div>
 
         {/* Right side with form */}

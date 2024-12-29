@@ -29,7 +29,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
       <div className="flex w-full max-w-3xl bg-white rounded-lg shadow-lg overflow-hidden">
         {/* Left side with logo */}
         <div className="hidden lg:flex lg:w-1/2 items-center justify-center bg-gray-50 p-4">
-          <img src={logo} alt="Logo" className="max-h-32 object-contain" />
+          <img src={logo} alt="Logo" className="object-contain" />
         </div>
 
         {/* Right side with form */}
