@@ -19,6 +19,7 @@ import GrievanceList from "./pages/HOD/GrievanceList";
 import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 import NotFound from "./pages/NotFound";
 import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
+import SuperAdmin from "./pages/SuperAdmin/page";
 
 const AppContent = () => {
   const location = useLocation();
@@ -29,6 +30,7 @@ const AppContent = () => {
     "/student-detail",
     "/wallet",
     "/grievance",
+    "/admission/*",
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
@@ -78,6 +80,7 @@ const AppContent = () => {
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage />} />
         <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
+        <Route path="/Super-Admin" element={<SuperAdmin />} />
         <Route path="/*" element={<NotFound />} />
 
         <Route
