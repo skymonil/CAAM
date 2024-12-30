@@ -90,7 +90,7 @@ const Modal: React.FC<ModalProps> = ({ student, onClose, onDone }) => {
           </button>
           <button
             onClick={handleSubmit}
-            className="bg-blue-500 text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-blue-600 transition duration-200"
+            className="bg-[#9c231b] text-white py-2 px-6 rounded-lg text-sm font-semibold hover:bg-blue-600 transition duration-200"
           >
             Done
           </button>
@@ -125,7 +125,7 @@ const MarksAdmin: React.FC = () => {
   return (
     <div className="p-5 bg-gray-50 min-h-screen">
       <Navbar />
-      <h1 className="text-3xl font-bold text-center text-blue-600 mb-6 mt-6">
+      <h1 className="text-3xl font-bold text-center text-[#9c231b] mb-6 mt-6">
         Marks Administration
       </h1>
 
