@@ -1,4 +1,3 @@
-import React from "react";
 import { Clock, CheckCircle, IndianRupee } from "lucide-react"; // Importing icons from Lucide
 
 const Courses = () => {

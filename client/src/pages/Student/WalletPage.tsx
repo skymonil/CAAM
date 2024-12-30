@@ -16,7 +16,7 @@ function WalletPage(): React.ReactElement {
     particulars: string,
     status: boolean
   }
-  const [pendingTasks, setPendingTasks] = useState<pendingTask[]>([{
+  const [pendingTasks, _setPendingTasks] = useState<pendingTask[]>([{
     date: "23/12/2024",
     amount: "500",
     particulars: "Journal"
@@ -26,7 +26,7 @@ function WalletPage(): React.ReactElement {
     amount: "600",
     particulars: "Ledger"
   }])
-  const [completedTasks, setCompletedTasks] = useState<completedTask[]>([{
+  const [completedTasks, _setCompletedTasks] = useState<completedTask[]>([{
     date: "24/12/2024",
     amount: "62500",
     particulars: "Fees",
