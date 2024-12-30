@@ -16,8 +16,8 @@ import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
 import Admission from "./pages/Student/Admission";
 import GrievanceList from "./pages/HOD/GrievanceList";
-import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 import NotFound from "./pages/NotFound";
+import LeaveApproval from "./pages/HOD/LeaveApproval";
 import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 import SuperAdmin from "./pages/SuperAdmin/page";
 
@@ -30,6 +30,8 @@ const AppContent = () => {
     "/student-detail",
     "/wallet",
     "/grievance",
+    "admin-grievance",
+    "admin-leave",
     "/admission/*",
   ]; // List of paths where the navbar should appear
 
@@ -83,15 +85,8 @@ const AppContent = () => {
         <Route path="/Super-Admin" element={<SuperAdmin />} />
         <Route path="/*" element={<NotFound />} />
 
-        <Route
-          path="/admin-grievance"
-          element={
-            <>
-              <HOD_Navbar />
-              <GrievanceList />
-            </>
-          }
-        />
+        <Route path="/admin-grievance" element={<GrievanceList />}/>
+        <Route path="/admin-leave" element={<LeaveApproval/>}/>
       </Routes>
     </>
   );
