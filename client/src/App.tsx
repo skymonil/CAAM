@@ -17,6 +17,7 @@ import Grievance from "./pages/Student/Grievance";
 import GrievanceList from "./pages/HOD/GrievanceList";
 import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 import NotFound from "./pages/NotFound";
+import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 
 const AppContent = () => {
   const location = useLocation();
@@ -74,6 +75,7 @@ const AppContent = () => {
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage />} />
+        <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
         <Route path="/*" element={<NotFound />} />
 
         <Route
