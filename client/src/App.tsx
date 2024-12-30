@@ -21,7 +21,9 @@ import LeaveApproval from "./pages/HOD/LeaveApproval";
 import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 import SuperAdmin from "./pages/SuperAdmin/page";
 import MarksAdmin from "./pages/MarksAdmin/page";
-import Scholarship from "./pages/HOD/Scholarship";
+import Scholarship from "./pages/Student/Scholarship";
+import ReExam from "./pages/Student/ReExam";
+import HODScholarship from "./pages/HOD/HODScholarship";
 
 const AppContent = () => {
   const location = useLocation();
@@ -35,7 +37,6 @@ const AppContent = () => {
     "admin-grievance",
     "admin-leave",
     "/admission/*",
-    "admin-scholarship/*"
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
@@ -84,14 +85,16 @@ const AppContent = () => {
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage />} />
+        <Route path="/scholarship" element={<Scholarship />} />
+        <Route path="/reexam" element={<ReExam />} />
         <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
-        <Route path="/Super-Admin" element={<SuperAdmin />} />
-        <Route path="/Marks-Admin" element={<MarksAdmin />} />
+        <Route path="/super-admin" element={<SuperAdmin />} />
+        <Route path="/marks-admin" element={<MarksAdmin />} />
         <Route path="/*" element={<NotFound />} />
 
         <Route path="/admin-grievance" element={<GrievanceList />}/>
         <Route path="/admin-leave" element={<LeaveApproval/>}/>
-        <Route path="/admin-scholarship/*" element={<Scholarship/>}/>
+        <Route path="/admin-scholarship/*" element={<HODScholarship/>}/>
       </Routes>
     </>
   );
