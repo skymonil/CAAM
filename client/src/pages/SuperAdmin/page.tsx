@@ -5,7 +5,7 @@ import CollegeTransactions from "../../components/SuperAdmin/CollegeTransactions
 import ScholarshipApproval from "../../components/SuperAdmin/ScholarshipApproval";
 import Nabar from "./Navbar";
 
-const App = () => {
+const page = () => {
   const [activeTab, setActiveTab] = useState(1);
 
   return (
@@ -66,4 +66,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default page;

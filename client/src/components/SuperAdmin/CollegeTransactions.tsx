@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface Transaction {
   id: string;
@@ -9,7 +9,7 @@ interface Transaction {
 }
 
 const CollegeTransactionJournal = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>([
+  const [transactions, _setTransactions] = useState<Transaction[]>([
     {
       id: "txn001",
       type: "Journal",
@@ -65,9 +65,10 @@ const CollegeTransactionJournal = () => {
 
   // Handle printing of the transaction report
   const handlePrint = () => {
-    const printContent = document.getElementById('transaction-table')?.innerHTML;
-    const printWindow = window.open('', '_blank');
-  
+    const printContent =
+      document.getElementById("transaction-table")?.innerHTML;
+    const printWindow = window.open("", "_blank");
+
     // Add print-specific CSS to the print window
     printWindow?.document.write(`
       <html>
@@ -116,17 +117,16 @@ const CollegeTransactionJournal = () => {
               </tr>
             </thead>
             <tbody>
-              ${printContent || ''}
+              ${printContent || ""}
             </tbody>
           </table>
         </body>
       </html>
     `);
-    
+
     printWindow?.document.close();
     printWindow?.print();
   };
-  
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-lg">
@@ -135,19 +135,20 @@ const CollegeTransactionJournal = () => {
       </h2>
 
       {/* Filter Section */}
-      <div className="mb-4 flex justify-between items-center">
-        <div className="flex space-x-4">
+      <div className="mb-4 flex flex-wrap justify-between items-center">
+        <div className="flex flex-col md:flex-row space-x-4 mb-4 sm:mb-0">
           <input
             type="date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 rounded w-full sm:w-auto"
           />
           <input
             type="date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="p-2 border border-gray-300 rounded"
+            className="p-2 border border-gray-300 rounded w-full sm:w-auto ml-0"
+            style={{ marginLeft: 0 }}
           />
         </div>
         <button
