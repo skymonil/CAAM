@@ -21,6 +21,7 @@ import LeaveApproval from "./pages/HOD/LeaveApproval";
 import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 import SuperAdmin from "./pages/SuperAdmin/page";
 import MarksAdmin from "./pages/MarksAdmin/page";
+import Scholarship from "./pages/HOD/Scholarship";
 
 const AppContent = () => {
   const location = useLocation();
@@ -34,6 +35,7 @@ const AppContent = () => {
     "admin-grievance",
     "admin-leave",
     "/admission/*",
+    "admin-scholarship/*"
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
@@ -89,6 +91,7 @@ const AppContent = () => {
 
         <Route path="/admin-grievance" element={<GrievanceList />}/>
         <Route path="/admin-leave" element={<LeaveApproval/>}/>
+        <Route path="/admin-scholarship/*" element={<Scholarship/>}/>
       </Routes>
     </>
   );

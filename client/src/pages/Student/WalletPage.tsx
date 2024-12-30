@@ -37,7 +37,7 @@ function WalletPage(): React.ReactElement {
       <Navbar />
       <div className='p-2 md:py-4 max-w-4xl m-auto'>
         {/* Heading */}
-        <div className='my-3 text-4xl font-semibold mb-6'>
+        <div className='my-3 text-4xl font-semibold mb-6 text-[#9c231b]'>
           <span>
             Your Wallet
           </span>
