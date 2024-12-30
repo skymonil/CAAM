@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   useLocation,
+  matchPath,
 } from "react-router-dom";
 import Register from "./pages/Register";
 import AdminRegister from "./pages/AdminRegister";
@@ -13,10 +14,15 @@ import FeeStatus from "./pages/Student/FeeStatus";
 import WalletPage from "./pages/Student/WalletPage";
 import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
+import NotFound from "./pages/NotFound";
 
 const AppContent = () => {
   const location = useLocation();
-  const hideNavbarPaths = ["/log-in", "/register", "/admin-register"]; // List of paths where the navbar should not appear
+  const hideNavbarPaths = ["/leave", "/fee-status", "/admin-register", "/student-detail", "/wallet", "/grievance"]; // List of paths where the navbar should appear
+
+  const shouldHaveNavbar = hideNavbarPaths.some((path) =>
+    matchPath({ path, end: true }, location.pathname)
+  );
 
   const handleLogin = (username: string, password: string) => {
     console.log("Logging in with:", { username, password });
@@ -35,7 +41,7 @@ const AppContent = () => {
 
   return (
     <>
-      {!hideNavbarPaths.includes(location.pathname) && <Navbar />}
+      {shouldHaveNavbar && <Navbar />}
       <Routes>
         <Route
           path="/log-in"
@@ -47,7 +53,8 @@ const AppContent = () => {
         <Route path="/fee-status" element={<FeeStatus />} />
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
-        <Route path="/wallet" element={<WalletPage/>}/>
+        <Route path="/wallet" element={<WalletPage />}/>
+        <Route path="/*" element={<NotFound />}/>
       </Routes>
     </>
   );
