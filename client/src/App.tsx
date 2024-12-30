@@ -13,6 +13,8 @@ import FeeStatus from "./pages/Student/FeeStatus";
 import WalletPage from "./pages/Student/WalletPage";
 import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
+import GrievanceList from "./pages/HOD/GrievanceList";
+import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 
 const AppContent = () => {
   const location = useLocation();
@@ -48,6 +50,8 @@ const AppContent = () => {
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage/>}/>
+        
+        <Route path="/admin-grievance" element={<><HOD_Navbar/><GrievanceList/></>}/>
       </Routes>
     </>
   );
