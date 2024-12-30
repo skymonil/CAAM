@@ -1,4 +1,4 @@
-import { NavLink, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import AdmissionTabs from "../../components/student-admission/AdmissionTabs";
 import Navbar from "./Navbar";
 import AdmissionGuidelines from "../../components/student-admission/AdmissionGuidelines";
