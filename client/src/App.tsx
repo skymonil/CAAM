@@ -20,6 +20,7 @@ import NotFound from "./pages/NotFound";
 import LeaveApproval from "./pages/HOD/LeaveApproval";
 import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 import SuperAdmin from "./pages/SuperAdmin/page";
+import MarksAdmin from "./pages/MarksAdmin/page";
 
 const AppContent = () => {
   const location = useLocation();
@@ -83,6 +84,7 @@ const AppContent = () => {
         <Route path="/wallet" element={<WalletPage />} />
         <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
         <Route path="/Super-Admin" element={<SuperAdmin />} />
+        <Route path="/Marks-Admin" element={<MarksAdmin />} />
         <Route path="/*" element={<NotFound />} />
 
         <Route path="/admin-grievance" element={<GrievanceList />}/>
