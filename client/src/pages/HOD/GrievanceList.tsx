@@ -1,4 +1,5 @@
 import { useState } from "react"
+import HOD_Navbar from "./HOD_Navbar"
 
 interface grievance {
   grievanceId: string,
@@ -52,6 +53,8 @@ function GrievanceList() {
 
   const filteredGrievances = grievances.filter((grievance)=> grievance.status === (isPendingOpen?'pending':'resolved'))
 return(
+  <>
+  <HOD_Navbar/>
     <div className='max-w-screen lg:max-w-6xl min-h-96 p-5 shadow-lg m-auto'>
       <div>
         <h2 className='text-3xl font-semibold'>Grievances Addressal</h2>
@@ -88,7 +91,7 @@ return(
                 {
                   filteredGrievances.map((grievance) => {
                     return (
-                    <tr className='border-b border-gray-200'>
+                      <tr className='border-b border-gray-200'>
                           <td className='p-4 font-semibold'>
                             {grievance.studentId}
                           </td>
@@ -114,6 +117,7 @@ return(
           </div>
         </div>
     </div>
+  </>
   )
 }
 

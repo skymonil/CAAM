@@ -16,7 +16,6 @@ import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
 import Admission from "./pages/Student/Admission";
 import GrievanceList from "./pages/HOD/GrievanceList";
-import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 import NotFound from "./pages/NotFound";
 
 const AppContent = () => {
@@ -79,14 +78,7 @@ const AppContent = () => {
         <Route path="/wallet" element={<WalletPage />} />
         <Route path="/*" element={<NotFound />} />
 
-        <Route
-          path="/admin-grievance"
-          element={
-            <>
-              <HOD_Navbar />
-              <GrievanceList />
-            </>
-          }
+        <Route path="/admin-grievance" element={<GrievanceList />}
         />
       </Routes>
     </>
