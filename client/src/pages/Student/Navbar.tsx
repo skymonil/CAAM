@@ -2,13 +2,14 @@ import { useState } from "react";
 import {
   User,
   FileText,
-  ClipboardList,
   List,
   BarChart,
   Menu,
   X,
   Wallet,
   CalendarX,
+  IndianRupeeIcon,
+  Repeat,
 } from "lucide-react";
 import { IconContext } from "react-icons";
 import { NavLink } from "react-router-dom";
@@ -81,15 +82,15 @@ const Navbar = () => {
     </li>
     <li>
       <NavLink
-        to="/exam-registration"
+        to="/reexam"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
             isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
           }`
         }
       >
-        <ClipboardList size={20} />
-        <span className="ml-2">Exam Registration</span>
+        <Repeat size={20} />
+        <span className="ml-2">Re-Exam</span>
       </NavLink>
     </li>
     <li>
@@ -107,6 +108,19 @@ const Navbar = () => {
     </li>
     <li>
       <NavLink
+        to="/scholarship"
+        className={({ isActive }) =>
+          `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
+            isActive ? "bg-gray-100 text-red-600" : "hover:bg-gray-400"
+          }`
+        }
+      >
+        <IndianRupeeIcon size={20} />
+        <span className="ml-2">Scholarship</span>
+      </NavLink>
+    </li>
+    <li>
+      <NavLink
         to="/grievance"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
@@ -115,7 +129,7 @@ const Navbar = () => {
         }
       >
         <BsExclamationCircle size={20} />
-        <span className="ml-2">Grievance Redressal</span>
+        <span className="ml-2">Grievance</span>
       </NavLink>
     </li>
     <li>
@@ -128,7 +142,7 @@ const Navbar = () => {
         }
       >
         <CalendarX size={20} />
-        <span className="ml-2">Apply for Leave</span>
+        <span className="ml-2">Leave</span>
       </NavLink>
     </li>
           <li>
