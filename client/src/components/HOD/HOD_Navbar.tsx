@@ -23,7 +23,7 @@ function HOD_Navbar() {
     </li>
     <li>
       <NavLink
-        to="/leave"
+        to="/admin-leave"
         className={({ isActive }) =>
           `flex items-center px-4 py-2 transition-all duration-300${
             isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"

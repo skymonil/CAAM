@@ -1,5 +1,5 @@
 import { useState } from "react"
-import HOD_Navbar from "./HOD_Navbar"
+import HOD_Navbar from "../../components/HOD/HOD_Navbar"
 
 interface grievance {
   grievanceId: string,
