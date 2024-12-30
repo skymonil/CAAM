@@ -30,14 +30,14 @@ function WalletPage(): React.ReactElement {
     date: "24/12/2024",
     amount: "62500",
     particulars: "Fees",
-    status: false
+    status: true
   },])
   return (
     <div>
       <Navbar />
-      <div className='p-2 md:py-4 w-3/4 m-auto'>
+      <div className='p-2 md:py-4 max-w-4xl m-auto'>
         {/* Heading */}
-        <div className='my-3 text-3xl font-semibold mb-6'>
+        <div className='my-3 text-4xl font-semibold mb-6'>
           <span>
             Your Wallet
           </span>
@@ -46,9 +46,9 @@ function WalletPage(): React.ReactElement {
         {/* Wallet Balance Container */}
         <div className='min-w-screen shadow-lg flex flex-col lg:flex-row md:flex-row  justify-between gap-5 bg-blue-100 p-5'>
           <div className='flex flex-col lg:flex-row md:flex-row text-3xl gap-2 items-center'>
-            <Wallet size={40} className='text-blue-900' />
+            <Wallet size={44} className='text-blue-900' />
             <span className='text-gray-600 text-lg lg:text-3xl'>Current Balance: </span>
-            <span className='flex items-center font-semibold text-2xl lg:text-3xl'>
+            <span className='flex items-center font-semibold text-2xl lg:text-3xl text-blue-900'>
               <IndianRupee size={24} />
               <span>5,000</span>
             </span>
@@ -64,10 +64,10 @@ function WalletPage(): React.ReactElement {
           </div>
         </div>
         <div className='py-5 flex justify-evenly px-2 text-xl md:text-base font-semibold cursor-pointer'>
-          <div className={`${isPendingExpOpen && 'text-red-500 border-b-2 border-red-500'} text-md lg:text-xl`} onClick={() => setPendingExpOpen(true)}>
+          <div className={`${isPendingExpOpen && 'text-red-500 border-b-4 border-red-500'} text-md lg:text-xl py-2`} onClick={() => setPendingExpOpen(true)}>
             Pending Expenses
           </div>
-          <div className={`${!isPendingExpOpen && 'text-green-500 border-b-2 border-green-500'} lg:text-xl`} onClick={() => setPendingExpOpen(false)}>
+          <div className={`${!isPendingExpOpen && 'text-green-500 border-b-4 border-green-500'} lg:text-xl py-2`} onClick={() => setPendingExpOpen(false)}>
             Payment History
           </div>
         </div>
@@ -78,7 +78,7 @@ function WalletPage(): React.ReactElement {
               amount={task.amount}
               particulars={task.particulars}
               childComponent={<div>
-                <button className='bg-green-400 hover:bg-green-600 px-8 py-2 text-white rounded-lg'>Pay using Wallet</button>
+                <button className='bg-green-400 hover:bg-green-600 px-6 py-2 text-2xl text-white rounded-lg'>Pay</button>
               </div>} />
           })}
         </div>
@@ -89,7 +89,7 @@ function WalletPage(): React.ReactElement {
                 date={task.date}
                 amount={task.amount}
                 particulars={task.particulars}
-                childComponent={<div className={`px-2 ${task.status ? 'bg-green-200 text-green-500' : 'bg-red-200 text-red-500'} rounded-lg`}>
+                childComponent={<div className={`px-3 py-1 font-semibold ${task.status ? 'bg-green-200 text-green-500' : 'bg-red-200 text-red-500'} rounded-lg`}>
                   <span>{task.status ? "SUCCESS" : "FAILURE"}</span>
                 </div>}
               />
