@@ -14,6 +14,7 @@ import FeeStatus from "./pages/Student/FeeStatus";
 import WalletPage from "./pages/Student/WalletPage";
 import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
+import Admission from "./pages/Student/Admission";
 import GrievanceList from "./pages/HOD/GrievanceList";
 import HOD_Navbar from "./pages/HOD/HOD_Navbar";
 import NotFound from "./pages/NotFound";
@@ -72,6 +73,7 @@ const AppContent = () => {
         />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
+        <Route path="/admission/*" element={<Admission />} />
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage />} />
