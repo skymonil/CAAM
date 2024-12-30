@@ -3,7 +3,7 @@ import HOD_Navbar from '../../components/HOD/HOD_Navbar'
 import AddScholarship from '../../components/HOD/AddScholarship'
 import ApproveScholarship from '../../components/HOD/ApproveScholarship'
 
-function Scholarship() {
+function HODScholarship() {
   return (
     <>
     <HOD_Navbar/>
@@ -32,4 +32,4 @@ function Scholarship() {
   )
 }
 
-export default Scholarship
+export default HODScholarship
