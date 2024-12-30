@@ -15,6 +15,7 @@ import Leave from "./pages/Student/Leave";
 import Grievance from "./pages/Student/Grievance";
 import GrievanceList from "./pages/HOD/GrievanceList";
 import HOD_Navbar from "./pages/HOD/HOD_Navbar";
+import Admission from "./pages/Student/Admission";
 
 const AppContent = () => {
   const location = useLocation();
@@ -47,6 +48,7 @@ const AppContent = () => {
         <Route path="/admin-register" element={<AdminRegister onAdminRegister={handleAdminRegister}/>} />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
+        <Route path="/admission/*" element={<Admission />} />
         <Route path="/leave" element={<Leave />} />
         <Route path="/grievance" element={<Grievance />} />
         <Route path="/wallet" element={<WalletPage/>}/>
