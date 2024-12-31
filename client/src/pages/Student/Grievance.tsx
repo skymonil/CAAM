@@ -14,10 +14,11 @@ const Grievance = () => {
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
           {/* Page Header */}
           <div className="border-b pb-4 mb-6">
-            <h1 className="text-2xl font-semibold">Grievance Redressal Forum</h1>
+            <h1 className="text-2xl font-bold text-center text-[#9c231b]">Grievance Redressal</h1>
           </div>
 
           {/* Grievance Form */}
+          <h2 className="text-xl font-semibold mb-4">Grievance Redressal Form</h2>
           <form>
             <div className="mb-4">
               <label

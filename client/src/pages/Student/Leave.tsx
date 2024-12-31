@@ -32,7 +32,7 @@ const Leave = () => {
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
           {/* Page Header */}
           <div className="border-b pb-4 mb-4">
-            <h1 className="text-2xl font-semibold">Leave Application Forum</h1>
+            <h1 className="text-2xl font-bold text-center text-[#9c231b]">Leave Application</h1>
           </div>
 
           {/* Leave Application Form */}

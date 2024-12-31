@@ -1,4 +1,3 @@
-import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
 const AdmissionHelp = () => {
@@ -26,7 +25,9 @@ const AdmissionHelp = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
-      <h2 className="text-2xl font-bold mb-6 text-center text-[#9c231b]">Help & Support</h2>
+      <h2 className="text-2xl font-bold mb-6 text-center text-[#9c231b]">
+        Help & Support
+      </h2>
 
       {/* FAQs Section */}
       <div className="mb-8">
@@ -43,11 +44,11 @@ const AdmissionHelp = () => {
                 <span className="text-lg font-semibold text-gray-700">
                   {faq.question}
                 </span>
-                <ChevronDown
-                  className={`h-5 w-5 transform transition-transform ${
+                <i
+                  className={`fas fa-chevron-down transform transition-transform ${
                     openFAQ === index ? "rotate-180" : ""
                   }`}
-                />
+                ></i>
               </div>
               {openFAQ === index && (
                 <div className="pl-6 pb-3 text-gray-600">{faq.answer}</div>
