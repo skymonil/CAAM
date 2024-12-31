@@ -4,15 +4,21 @@
   "description": "College e-Governance is an innovative and comprehensive platform designed to streamline and digitize the administrative, academic, and operational processes of educational institutions. It enables colleges to achieve seamless governance by integrating modern technology into day-to-day operations, ensuring transparency, efficiency, and ease of access.",
   "license": "ISC",
   "author": "Chirag Varu",
-  "type": "commonjs",
-  "main": "app.js",
+  "type": "module",
+  "main": "src/app.js",
   "scripts": {
     "start": "node src/app.js",
     "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "^4.21.2"
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"

@@ -12,7 +12,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onLogin(username, password);
-    window.location.href = "/student-detail";
+    window.location.href = "/admission/form";
   };
 
   const handleNavigation = () => {
