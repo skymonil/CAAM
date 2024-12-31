@@ -43,7 +43,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <input
                 type="text"
                 id="username"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500 sm:text-base"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -59,7 +59,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
               <input
                 type="password"
                 id="password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-blue-500 sm:text-base"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -67,7 +67,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </div>
             <button
               type="submit"
-              className="w-full px-4 py-2 text-white bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 sm:text-base"
+              className="w-full px-4 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring focus:ring-blue-300 sm:text-base"
             >
               Log In
             </button>
@@ -76,7 +76,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             <span className="text-sm text-gray-600 sm:text-base">
               Don't have an account?{" "}
             </span>
-            <button className="mt-2 text-blue-500 hover:underline focus:outline-none sm:text-base" onClick={handleNavigation}>
+            <button className="mt-2 text-[#9c241bba] hover:underline focus:outline-none sm:text-base" onClick={handleNavigation}>
               Register here
             </button>
           </div>

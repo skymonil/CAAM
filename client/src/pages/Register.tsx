@@ -54,7 +54,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               <input
                 type="text"
                 id="username"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
@@ -70,7 +70,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               <input
                 type="email"
                 id="email"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -86,7 +86,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               <input
                 type="password"
                 id="password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -102,7 +102,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               <input
                 type="password"
                 id="confirm-password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -117,7 +117,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               </label>
               <select
                 id="college"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={college}
                 onChange={(e) => setCollege(e.target.value)}
                 required
@@ -132,7 +132,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="w-full px-6 py-2 text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300"
+                className="w-full px-6 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring-2 focus:ring-green-300"
               >
                 Register
               </button>
@@ -146,7 +146,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               Already have an account?{" "}
             </span>
             <button
-              className="text-blue-500 hover:underline focus:outline-none"
+              className="text-[#9c241bbd] hover:underline focus:outline-none"
               onClick={handleNavigation}
             >
               Login here

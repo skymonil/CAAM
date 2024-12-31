@@ -35,6 +35,7 @@ const Scholarship: React.FC = () => {
   );
   const [confirmationMessage, setConfirmationMessage] = useState<string>("");
   const [selectedScholarship, setSelectedScholarship] = useState<Scholarship | null>(null);
+
   const handleApply = (scholarship: Scholarship) => {
     if (!appliedScholarships.some((s) => s.id === scholarship.id)) {
       setAppliedScholarships([...appliedScholarships, scholarship]);
@@ -44,7 +45,8 @@ const Scholarship: React.FC = () => {
       setConfirmationMessage(
         `You have successfully applied for "${scholarship.title}"! The test is on ${scholarship.testDate}`
       );
-      setTimeout(() => setConfirmationMessage(""), 3000); // Clear message after 3 seconds
+      setTimeout(() => setConfirmationMessage(""), 3000);
+      setSelectedScholarship(null);
     }
   };
 

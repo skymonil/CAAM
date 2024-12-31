@@ -16,15 +16,15 @@ const FeeStatus: React.FC = () => {
 
           {/* Fee Summary Section */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-            <div className="bg-blue-400 p-4 rounded-lg text-center flex flex-col justify-center">
+            <div className="bg-blue-200 p-4 rounded-lg text-center flex flex-col justify-center">
               <p className="text-sm">Total Fee</p>
               <p className="text-lg font-bold">₹125,000</p>
             </div>
-            <div className="bg-green-400 p-4 rounded-lg text-center  flex flex-col justify-center">
+            <div className="bg-green-200 p-4 rounded-lg text-center  flex flex-col justify-center">
               <p className="text-sm">Paid Amount</p>
               <p className="text-lg font-bold">₹75,000</p>
             </div>
-            <div className="bg-red-400 p-4 rounded-lg text-center  flex flex-col justify-center">
+            <div className="bg-red-200 p-4 rounded-lg text-center  flex flex-col justify-center">
               <p className="text-sm">Balance Due</p>
               <p className="text-lg font-bold">₹50,000</p>
               <p className="text-xs">Due by 31/12/2024</p>
