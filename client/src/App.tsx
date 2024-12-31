@@ -88,14 +88,16 @@ const AppContent = () => {
         <Route path="/wallet" element={<WalletPage />} />
         <Route path="/scholarship" element={<Scholarship />} />
         <Route path="/reexam" element={<ReExam />} />
+
         <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
         <Route path="/super-admin" element={<SuperAdmin />} />
         <Route path="/marks-admin" element={<MarksAdmin />} />
-        <Route path="/*" element={<NotFound />} />
 
         <Route path="/admin-grievance" element={<GrievanceList />}/>
         <Route path="/admin-leave" element={<LeaveApproval/>}/>
         <Route path="/admin-scholarship/*" element={<HODScholarship/>}/>
+
+        <Route path="/*" element={<NotFound />} />
       </Routes>
     </>
   );
