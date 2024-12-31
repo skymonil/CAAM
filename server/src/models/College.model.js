@@ -1,41 +1,34 @@
-const mongoose = require('mongoose')
+import { Schema, model } from "mongoose";
 
-const collegeSchema = mongoose.Schema
-(
+const collegeSchema = Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  courses: [
     {
-        collegeId: {
-            type: String,
-            required: true,
-            unique: true
-        },
-        name: {
-            type: String,
-            required: true
-        },
-        address: {
-            type: String,
-            required: true
-        },
-        courses:[{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Course',
-        }],
-        feeStructure: [{
-            title: {
-                type: String,
-                required: true
-            },
-            amount: {
-                type: Number,
-                required: true
-            }
-        }]
+      type: Schema.Types.ObjectId,
+      ref: "Course",
     },
+  ],
+  feeStructure: [
     {
-        timestamps: true,
-    }
-)
+      title: {
+        type: String,
+        required: true,
+      },
+      amount: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+});
 
-const College = mongoose.model('College',collegeSchema)
+const College = model("College", collegeSchema);
 
-module.exports = College
+export default College;

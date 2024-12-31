@@ -1,26 +1,26 @@
-const mongoose = require('mongoose');
+import { Schema, model } from "mongoose";
 
-const resultSchema = mongoose.Schema
-(
+const resultSchema = Schema({
+  studentId: {
+    type: Schema.Types.ObjectId,
+    ref: "Student",
+    required: true,
+  },
+  marksObtained: [
     {
-        studentId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Student',
-            required: true
-        },
-        marksObtained:[{
-            subjectId: {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Subject',
-                required: true
-            },
-            marks:{
-                type: Number,
-                required: true
-            }
-        }]
-    }
-)
+      subjectId: {
+        type: Schema.Types.ObjectId,
+        ref: "Subject",
+        required: true,
+      },
+      marks: {
+        type: Number,
+        required: true,
+      },
+    },
+  ],
+});
 
-const Result = mongoose.model('Result',resultSchema);
-module.exports = Result;
+const Result = model("Result", resultSchema);
+
+export default Result;
