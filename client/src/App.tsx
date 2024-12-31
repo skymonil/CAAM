@@ -37,6 +37,7 @@ const AppContent = () => {
     "admin-grievance",
     "admin-leave",
     "/admission/*",
+    "/reexam"
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
