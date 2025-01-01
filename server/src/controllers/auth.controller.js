@@ -25,7 +25,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 5);
 
-    const newUser = new User({
+    const newStudent = new Student({
       username,
       email,
       password: hashedPassword,
@@ -50,8 +50,8 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
-    if (!user) {
+    const student = await Student.findOne({ email });
+    if (!student) {
       return res.status(400).json({
         message: "Username or password is incorrect",
         error: "Username or password is incorrect",
