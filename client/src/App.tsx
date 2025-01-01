@@ -47,11 +47,6 @@ const AppContent = () => {
     matchPath({ path, end: true }, location.pathname)
   );
 
-  const handleLogin = (username: string, password: string) => {
-    console.log("Logging in with:", { username, password });
-    // Add login logic (e.g., API calls) here
-  };
-
   const handleAdminRegister = (
     CollegeName: string,
     email: string,
@@ -65,7 +60,7 @@ const AppContent = () => {
     <>
       {shouldHaveNavbar && <Navbar />}
       <Routes>
-        <Route path="/log-in" element={<LogIn onLogin={handleLogin} />} />
+        <Route path="/log-in" element={<LogIn />} />
         <Route
           path="/register"
           element={<Register />}

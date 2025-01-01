@@ -1,22 +1,59 @@
-import React from "react";
+import axios from "axios";
+import { useState, ChangeEvent, FormEvent } from "react";
 import logo from "../assets/logo.jpeg";
+import { useNavigate } from "react-router-dom";
 
-type LoginProps = {
-  onLogin: (username: string, password: string) => void;
-};
+interface FormData {
+  username: string;
+  password: string;
+}
 
-const Login: React.FC<LoginProps> = ({ onLogin }) => {
-  const [username, setUsername] = React.useState("");
-  const [password, setPassword] = React.useState("");
+const Login: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    username: "",
+    password: "",
+  });
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/login",
+        formData,
+        { withCredentials: true }
+      );
+      console.log("User Login:", response.data);
+      navigate("/admission/form");
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const backendErrors = error.response.data.errors || error.response.data.error;
+
+        if (Array.isArray(backendErrors)) {
+          const formattedErrors = backendErrors.map(err => err.msg).join(", ");
+          setError(formattedErrors);
+        } else {
+          setError(backendErrors);
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onLogin(username, password);
-    window.location.href = "/admission/form";
+    handleRegister(e);
   };
 
   const handleNavigation = () => {
-    window.location.href = "/register";
+    navigate("/register");
   }
 
   return (
@@ -44,8 +81,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 type="text"
                 id="username"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={formData.username}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -60,8 +97,8 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
                 type="password"
                 id="password"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={formData.password}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -81,6 +118,9 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             </button>
           </div>
         </div>
+        {error && (
+            <p className="text-[#ff2f2f] text-sm mb-4">{error}</p>
+          )}
       </div>
     </div>
   );
