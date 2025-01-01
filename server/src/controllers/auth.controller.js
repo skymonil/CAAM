@@ -1,6 +1,6 @@
 import { generateToken } from "../lib/utils.js";
 import bcrypt from "bcryptjs";
-import User from "../models/Student.model.js";
+import Student from "../models/Student.model.js";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
@@ -16,7 +16,7 @@ export const register = async (req, res) => {
         .json({ message: "Password must be at least 6 characters long" });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await Student.findOne({ email });
 
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
@@ -24,7 +24,7 @@ export const register = async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 5);
 
-    const newUser = new User({
+    const newUser = new Student({
       username,
       email,
       password: hashedPassword,
@@ -45,7 +45,7 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user = await Student.findOne({ email });
     if (!user) {
       return res.status(400).json({
         message: "Username or password is incorrect",
