@@ -32,8 +32,10 @@ export const register = async (req, res) => {
     });
     if (newStudent) {
       await newStudent.save();
+      generateToken(newStudent._id, res);
       console.log("Student registered:", newStudent);
       res.status(201).json({
+        _id: newStudent._id,
         message: "Registration Successful",
       });
       // TODO: OTP Verification

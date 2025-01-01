@@ -1,22 +1,97 @@
-import React from "react";
+import { useState, FormEvent } from "react";
 import logo from "../assets/logo.jpeg";
+import axios from "axios";
 
-type RegisterProps = {
-  onRegister: (username: string, email: string, password: string) => void;
-};
+interface FormData {
+  username: string;
+  email: string;
+  password: string; 
+}
 
-const Register: React.FC<RegisterProps> = ({ onRegister }) => {
-  const [username, setUsername] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [college, setCollege] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
+const Register: React.FC = () => {
+  const [_username, setUsername] = useState("");
+  const [_email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [college, setCollege] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  // const [otp, setOtp] = useState<string | "614362">("614362"); // for OTP 
+  // const [message, setMessage] = useState(''); // for otp
+  const [_accountId, setAccountId] = useState<string>("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [formData, _setFormData] = useState<FormData>({
+    username: "",
+    email: "",
+    password: "",
+  });
+
+  // const generateOTP = () => {
+  //   let otp = '';
+  //   for (let i = 0; i < 6; i++) {
+  //     otp += Math.floor(Math.random() * 10);
+  //   }
+  //   return otp;
+  // };
+
+  // Function to send OTP to user's email
+  // const sendOTP = () => {
+  //   const otpCode = generateOTP();
+  //   setOtp(otpCode);
+
+  //   const templateParams = {
+  //     to_email: email,
+  //     otp: otpCode,
+  //   };
+
+  //   emailjs
+  //     .send(
+  //       'Template ID', 
+  //       'Template ID', 
+  //       templateParams,
+  //       'User ID' 
+  //     )
+  //     .then(
+  //       (response) => {
+  //         console.log('OTP sent successfully:', response);
+  //         setMessage('OTP sent to your email!');
+  //       },
+  //       (error) => {
+  //         console.log('Error sending OTP:', error);
+  //         setMessage('Failed to send OTP, try again.');
+  //       }
+  //     );
+  // };
+
+  const handleRegister = async (e: FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/register",
+        formData
+      );
+      console.log("User registered: ", response.data);
+      setAccountId(response.data._id);
+      // setIsOtpModalOpen(true);
+    } catch (error: any) {
+      if (error.response && error.response.data) {
+        const backendErrors = error.response.data.errors || error.response.data.error;
+  
+        if (Array.isArray(backendErrors)) {
+          const formattedErrors = backendErrors.map(err => err.msg).join(", ");
+          setError(formattedErrors);
+        } else {
+          setError(backendErrors);
+        }
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (password === confirmPassword) {
-      onRegister(username, email, password);
+      handleRegister(e);
     } else {
       setError("Passwords do not match!");
       setTimeout(() => setError(null), 3000);
@@ -55,7 +130,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 type="text"
                 id="username"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
-                value={username}
+              value={formData.username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
@@ -71,7 +146,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 type="email"
                 id="email"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
-                value={email}
+              value={formData.email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
@@ -87,7 +162,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
                 type="password"
                 id="password"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
-                value={password}
+              value={formData.password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
@@ -133,6 +208,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
               <button
                 type="submit"
                 className="w-full px-6 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring-2 focus:ring-green-300"
+            // onClick={sendOTP}
               >
                 Register
               </button>
@@ -154,6 +230,15 @@ const Register: React.FC<RegisterProps> = ({ onRegister }) => {
           </div>
         </div>
       </div>
+
+      {/* {isOtpModalOpen && (
+        <OtpModal
+          accountId={accountId}
+          email={formData.email}
+          OTP={otp}
+          onClose={() => setIsOtpModalOpen(false)}
+        />
+      )} */}
     </div>
   );
 };

@@ -52,15 +52,6 @@ const AppContent = () => {
     // Add login logic (e.g., API calls) here
   };
 
-  const handleRegister = (
-    username: string,
-    email: string,
-    password: string
-  ) => {
-    console.log("Registration with:", { username, email, password });
-    // Add navigation logic (e.g., using `useNavigate` from `react-router-dom`) here
-  };
-
   const handleAdminRegister = (
     CollegeName: string,
     email: string,
@@ -77,7 +68,7 @@ const AppContent = () => {
         <Route path="/log-in" element={<LogIn onLogin={handleLogin} />} />
         <Route
           path="/register"
-          element={<Register onRegister={handleRegister} />}
+          element={<Register />}
         />
         <Route
           path="/admin-register"
