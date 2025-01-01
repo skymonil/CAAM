@@ -52,3 +52,5 @@ temp/
 # Debugging files
 *.log
 *.gz
+
+dist

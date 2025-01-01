@@ -9,7 +9,7 @@ interface Leave {
     status: string
 }
 function LeaveApproval() {
-    const [leave, setLeave] = useState<Leave[]>([
+    const [leave, _setLeave] = useState<Leave[]>([
         {
             leaveId: '00998',
             startDate: '12/12/24',
