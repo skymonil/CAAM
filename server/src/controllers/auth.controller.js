@@ -22,7 +22,6 @@ export const register = async (req, res) => {
       return res.status(400).json({ message: "Student already exists" });
     }
     const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
 
     const hashedPassword = await bcrypt.hash(password, 5);
 
