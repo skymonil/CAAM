@@ -1,6 +1,6 @@
 import { generateToken } from "../lib/utils.js";
 import bcrypt from "bcryptjs";
-import Student from "../models/student.model.js";
+import Student from "../models/Student.model.js";
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;

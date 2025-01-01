@@ -1,9 +1,9 @@
 import jwt from "jsonwebtoken";
-import User from "../models/Student.model.js";
+import Student from "../models/Student.model.js";
 
 export const authenticate = async (req, res, next) => {
   try {
-    const jwt_token = req.cookies.token;
+    const jwt_token = req.cookies?.token;
 
     if (!jwt_token) {
       return res
@@ -17,18 +17,18 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized - Invalid Token" });
     }
 
-    const user = await User.findById(decoded_token.StudentID).select(
+    const student = await Student.findById(decoded_token._id).select(
       "-password"
     );
 
-    if (!user) {
-      return res.status(401).json({ message: "Unauthorized - User Not Found" });
+    if (!student) {
+      return res.status(401).json({ message: "Unauthorized - Student Not Found" });
     }
 
-    req.user = user;
+    req.student = student;
     next();
   } catch (err) {
-    console.log("Error on authentication: " + err);
+    console.log("Error in authentication middleware: " + err);
     res.status(500).json({ message: "Internal server error" });
   }
 };

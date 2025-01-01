@@ -6,7 +6,7 @@ interface students{
     scholarshipStatus: string
 }
 function ApproveScholarship() {
-    const [students,setStudents] = useState<students[]>([
+    const [students,_setStudents] = useState<students[]>([
         {
             studentId: 'S098',
             studentName: 'Aditya Pai',
