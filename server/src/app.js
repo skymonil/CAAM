@@ -1,6 +1,5 @@
 import express from 'express';
 import cors from 'cors';
-// import { json } from 'body-parser'; // dont use
 import connectDB from './lib/db.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
@@ -21,7 +20,6 @@ app.use(cors({
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-// app.use(json());
 
 app.get('/api/auth', authRoute);
 
