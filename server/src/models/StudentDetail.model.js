@@ -7,6 +7,10 @@ const studentDetailsSchema = new Schema({
         required: true,
         unique: true,
     },
+    fullName: {
+        type: String,
+        required: true
+    },
     dob: {
         type: Date,
         required: true,

@@ -5,6 +5,7 @@ import {
   login,
   logout,
   checkAuth,
+  verifyOTP,
 } from "../controllers/auth.controller.js";
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post("/logout", logout);
 
 router.post("/check", authenticate, checkAuth);
 
+router.post("/verify-otp",verifyOTP);
 
 export default router;
