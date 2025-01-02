@@ -16,4 +16,5 @@ router.post("/logout", logout);
 
 router.post("/check", authenticate, checkAuth);
 
+
 export default router;
