@@ -1,14 +1,12 @@
 import express from 'express';
 import cors from 'cors';
-import connectDB from './lib/db.js';
+import {connectDB} from './lib/db.js';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import authRoute from './routes/auth.route.js';
 
 const app = express();
 const PORT = 5000;
-
-require('dotenv').config();
 
 dotenv.config();
 connectDB();

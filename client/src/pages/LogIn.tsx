@@ -80,6 +80,7 @@ const Login: React.FC = () => {
               <input
                 type="text"
                 id="username"
+                name="username"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                 value={formData.username}
                 onChange={handleChange}
@@ -96,6 +97,7 @@ const Login: React.FC = () => {
               <input
                 type="password"
                 id="password"
+                name="password"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                 value={formData.password}
                 onChange={handleChange}
@@ -108,6 +110,9 @@ const Login: React.FC = () => {
             >
               Log In
             </button>
+            {error && (
+              <p className="text-[#ff2f2f] text-sm mt-4 text-center">{error}</p>
+            )}
           </form>
           <div className="mt-4 text-center">
             <span className="text-sm text-gray-600 sm:text-base">
@@ -118,9 +123,6 @@ const Login: React.FC = () => {
             </button>
           </div>
         </div>
-        {error && (
-            <p className="text-[#ff2f2f] text-sm mb-4">{error}</p>
-          )}
       </div>
     </div>
   );
