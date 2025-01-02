@@ -1,24 +1,78 @@
-import React from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import logo from "../assets/logo.jpeg";
+import axios from "axios";
 
-type RegisterProps = {
-  onAdminRegister: (CollegeName: string, email: string, password: string) => void;
-};
+interface FormData {
+  username: string;
+  email: string;
+  password: string;
+}
 
-const AdminRegister: React.FC<RegisterProps> = ({ onAdminRegister }) => {
-  const [CollegeName, setCollegeName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [confirmPassword, setConfirmPassword] = React.useState("");
-  const [error, setError] = React.useState<string | null>(null);
+const AdminRegister: React.FC = () => {
+  const [formData, setFormData] = useState<FormData>({
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [CollegeName, setCollegeName] = useState("");
+  const [email, setEmail] = useState("");
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [otpError, setOtpError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      onAdminRegister(CollegeName, email, password);
-    } else {
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/admin-register",
+        formData
+      );
+      console.log("User registered: ", response.data);
+      setIsModalOpen(true);
+    } catch (error: any) {
+      if (error.response?.data) {
+        const backendErrors =
+          error.response.data.errors || error.response.data.error;
+        setError(
+          Array.isArray(backendErrors)
+            ? backendErrors.map((err) => err.msg).join(", ")
+            : backendErrors
+        );
+      } else {
+        setError("An unexpected error occurred. Please try again.");
+      }
+    }
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (formData.password !== confirmPassword) {
       setError("Passwords do not match!");
       setTimeout(() => setError(null), 3000);
+      return;
+    }
+    handleRegister(e);
+  };
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleOtpSubmit = async () => {
+    try {
+      const trimmedOtp = otp.trim();
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-otp",
+        { email: formData.email, otp: trimmedOtp }
+      );
+      console.log(response.data);
+      window.location.href = "/log-in"; // Redirect after successful OTP verification
+    } catch (error: any) {
+      setOtpError("Invalid OTP or OTP has expired");
     }
   };
 
@@ -82,14 +136,28 @@ const AdminRegister: React.FC<RegisterProps> = ({ onAdminRegister }) => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-400"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                {passwordVisible ? (
+                  <i
+                    className="fa-solid fa-eye absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-solid fa-eye-slash absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                )}
+              </div>
             </div>
             <div>
               <label
@@ -132,6 +200,39 @@ const AdminRegister: React.FC<RegisterProps> = ({ onAdminRegister }) => {
           </div>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg w-80">
+            <h3 className="text-lg font-semibold mb-4">Enter OTP</h3>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            {otpError && (
+              <p className="text-red-500 text-center text-sm pb-4">{otpError}</p>
+            )}
+            <div className="flex justify-between">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28]"
+                onClick={handleOtpSubmit}
+              >
+                Verify OTP
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
