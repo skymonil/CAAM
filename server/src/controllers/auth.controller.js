@@ -2,6 +2,7 @@ import { generateToken } from "../lib/utils.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import mongoose from "mongoose";
 import Student from "../models/Student.model.js";
 
 const otpStore = {};
@@ -38,10 +39,14 @@ export const sendOTP = async (req, res) => {
 
 export const register = async (req, res) => {
   const { username, email, password } = req.body;
+  console.log("User model:", Student);
+  console.log("Request body:", req.body);
+
   try {
     if (!username || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
+    console.log("MongoDB connection state:", mongoose.connection.readyState);
 
     if (password.length < 6) {
       return res
@@ -54,8 +59,7 @@ export const register = async (req, res) => {
     if (existingStudent) {
       return res.status(400).json({ message: "Student already exists" });
     }
-    const salt = await bcrypt.genSalt(10);
-
+    const salt = bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const otp = await sendOTP(email);
@@ -94,7 +98,7 @@ export const verifyOTP = async (req, res) => {
     }
 
     const newStudent = new Student({
-      username,
+      name: username,
       email,
       password: hashedPassword,
     });
@@ -116,15 +120,24 @@ export const login = async (req, res) => {
 
   try {
     const student = await Student.findOne({ email });
+    console.log("Student:", student);
+    console.log("email:", email);
+    console.log("password:", password);
+
     if (!student) {
       return res.status(400).json({
         message: "Username or password is incorrect",
         error: "Username or password is incorrect",
       });
     }
+    console.log("here1");
 
     const isValidPassword = await bcrypt.compare(password, student.password);
     if (!isValidPassword) {
+      console.log("Password comparison failed:", {
+        password,
+        hashed: student.password,
+      });
       return res.status(400).json({
         message: "Username or password is incorrect",
         error: "Username or password is incorrect",
@@ -148,12 +161,13 @@ export const login = async (req, res) => {
   }
 };
 
-export const logout = (_req, res) => {
+export const logout = (req, res) => {
   try {
     res.clearCookie("token");
+    console.log("Token cookie cleared.");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.log("Error in logout controller: " + error);
+    console.error("Error in logout controller:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
