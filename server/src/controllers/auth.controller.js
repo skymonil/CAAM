@@ -7,7 +7,7 @@ import Student from "../models/Student.model.js";
 
 const otpStore = {};
 
-export const sendOTP = async (req, res) => {
+export const sendOTP = async (email) => {
   const otp = crypto.randomInt(100000, 999999);
   const expiresAt = Date.now() + 5 * 60 * 1000;
   otpStore[email] = { otp, expiresAt  };
@@ -59,7 +59,7 @@ export const register = async (req, res) => {
     if (existingStudent) {
       return res.status(400).json({ message: "Student already exists" });
     }
-    const salt = bcrypt.genSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
     const otp = await sendOTP(email);
