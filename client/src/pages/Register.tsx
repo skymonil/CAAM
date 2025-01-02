@@ -1,6 +1,4 @@
 import { useState, FormEvent, ChangeEvent } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
 
@@ -20,7 +18,9 @@ const Register: React.FC = () => {
   const [college, setCollege] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [otpError, setOtpError] = useState("");
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -30,7 +30,7 @@ const Register: React.FC = () => {
         formData
       );
       console.log("User registered: ", response.data);
-      window.location.href = "/log-in"; 
+      setIsModalOpen(true); 
     } catch (error: any) {
       if (error.response?.data) {
         const backendErrors =
@@ -61,6 +61,20 @@ const Register: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleOtpSubmit = async () => {
+    try {
+      const trimmedOtp = otp.trim();
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-otp",
+        { email: formData.email, otp: trimmedOtp }
+      );
+      console.log(response.data);
+      window.location.href = "/log-in"; // Redirect after successful OTP verification
+    } catch (error: any) {
+      setOtpError("Invalid OTP or OTP has expired");
+    }
+  };
+
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
       <div className="flex w-full max-w-4xl bg-white rounded-lg shadow-lg overflow-hidden">
@@ -70,16 +84,19 @@ const Register: React.FC = () => {
         </div>
 
         {/* Right side with form */}
-        <div className="w-full lg:w-1/2 p-6 space-y-5">
-          <h2 className="text-2xl font-semibold text-center text-gray-800 underline">
-            Create Account
+        <div className="w-full lg:w-1/2 p-6 space-y-3">
+          <h2 className="text-2xl font-semibold text-center text-gray-800">
+            CREATE ACCOUNT
           </h2>
           <p className="text-center text-gray-600 text-sm">
             Join us today to get started
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="username"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Username
               </label>
               <input
@@ -93,7 +110,10 @@ const Register: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email Address
               </label>
               <input
@@ -107,7 +127,10 @@ const Register: React.FC = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Password
               </label>
               <div className="relative">
@@ -120,35 +143,42 @@ const Register: React.FC = () => {
                   onChange={handleChange}
                   required
                 />
-                <FontAwesomeIcon
-                  icon={passwordVisible ? faEye :faEyeSlash }
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
-                  onClick={() => setPasswordVisible(!passwordVisible)}
-                />
+                {passwordVisible ? (
+                  <i
+                    className="fa-solid fa-eye absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-solid fa-eye-slash absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                )}
               </div>
             </div>
             <div>
-              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="confirm-password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Confirm Password
               </label>
               <div className="relative">
                 <input
-                  type={confirmPasswordVisible ? "text" : "password"}
+                  type="password"
                   id="confirm-password"
                   className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
                   required
                 />
-                <FontAwesomeIcon
-                  icon={confirmPasswordVisible ? faEye :faEyeSlash }
-                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
-                  onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-                />
               </div>
             </div>
             <div>
-              <label htmlFor="college" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="college"
+                className="block text-sm font-medium text-gray-700"
+              >
                 College
               </label>
               <select
@@ -169,7 +199,7 @@ const Register: React.FC = () => {
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="w-full px-6 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring-2 focus:ring-green-300"
+                className="w-full px-6 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring-2 focus:ring-black"
               >
                 Register
               </button>
@@ -189,6 +219,39 @@ const Register: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* OTP Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
+          <div className="bg-white p-6 rounded-lg w-80">
+            <h3 className="text-lg font-semibold mb-4">Enter OTP</h3>
+            <input
+              type="text"
+              className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+              placeholder="Enter OTP"
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+            {otpError && (
+              <p className="text-red-500 text-center text-sm pb-4">{otpError}</p>
+            )}
+            <div className="flex justify-between">
+              <button
+                className="px-4 py-2 bg-gray-300 rounded-lg hover:bg-gray-400"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-4 py-2 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28]"
+                onClick={handleOtpSubmit}
+              >
+                Verify OTP
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

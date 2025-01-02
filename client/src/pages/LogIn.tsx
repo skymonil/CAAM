@@ -66,8 +66,8 @@ const Login: React.FC = () => {
 
         {/* Right side with form */}
         <div className="w-full lg:w-1/2 p-6">
-          <h2 className="text-2xl font-semibold text-center underline text-gray-700 sm:text-3xl">
-            Login
+          <h2 className="text-2xl font-semibold text-center text-gray-700 sm:text-3xl">
+            LOGIN
           </h2>
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="mb-4">
