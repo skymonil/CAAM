@@ -1,4 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
 
@@ -9,58 +11,16 @@ interface FormData {
 }
 
 const Register: React.FC = () => {
-  const [_username, setUsername] = useState("");
-  const [_email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [college, setCollege] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  // const [otp, setOtp] = useState<string | "614362">("614362"); // for OTP 
-  // const [message, setMessage] = useState(''); // for otp
-  const [_accountId, setAccountId] = useState<string>("");
-
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     password: "",
   });
-
-  // const generateOTP = () => {
-  //   let otp = '';
-  //   for (let i = 0; i < 6; i++) {
-  //     otp += Math.floor(Math.random() * 10);
-  //   }
-  //   return otp;
-  // };
-
-  // Function to send OTP to user's email
-  // const sendOTP = () => {
-  //   const otpCode = generateOTP();
-  //   setOtp(otpCode);
-
-  //   const templateParams = {
-  //     to_email: email,
-  //     otp: otpCode,
-  //   };
-
-  //   emailjs
-  //     .send(
-  //       'Template ID', 
-  //       'Template ID', 
-  //       templateParams,
-  //       'User ID' 
-  //     )
-  //     .then(
-  //       (response) => {
-  //         console.log('OTP sent successfully:', response);
-  //         setMessage('OTP sent to your email!');
-  //       },
-  //       (error) => {
-  //         console.log('Error sending OTP:', error);
-  //         setMessage('Failed to send OTP, try again.');
-  //       }
-  //     );
-  // };
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [college, setCollege] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+  const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
@@ -70,18 +30,16 @@ const Register: React.FC = () => {
         formData
       );
       console.log("User registered: ", response.data);
-      setAccountId(response.data._id);
-      // setIsOtpModalOpen(true);
+      window.location.href = "/log-in"; 
     } catch (error: any) {
-      if (error.response && error.response.data) {
-        const backendErrors = error.response.data.errors || error.response.data.error;
-
-        if (Array.isArray(backendErrors)) {
-          const formattedErrors = backendErrors.map(err => err.msg).join(", ");
-          setError(formattedErrors);
-        } else {
-          setError(backendErrors);
-        }
+      if (error.response?.data) {
+        const backendErrors =
+          error.response.data.errors || error.response.data.error;
+        setError(
+          Array.isArray(backendErrors)
+            ? backendErrors.map((err) => err.msg).join(", ")
+            : backendErrors
+        );
       } else {
         setError("An unexpected error occurred. Please try again.");
       }
@@ -90,21 +48,17 @@ const Register: React.FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (password === confirmPassword) {
-      handleRegister(e);
-    } else {
+    if (formData.password !== confirmPassword) {
       setError("Passwords do not match!");
       setTimeout(() => setError(null), 3000);
+      return;
     }
+    handleRegister(e);
   };
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
-
-  const handleNavigation = () => {
-    window.location.href = "/log-in";
   };
 
   return (
@@ -125,10 +79,7 @@ const Register: React.FC = () => {
           </p>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label
-                htmlFor="username"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="username" className="block text-sm font-medium text-gray-700">
                 Username
               </label>
               <input
@@ -142,10 +93,7 @@ const Register: React.FC = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email Address
               </label>
               <input
@@ -159,43 +107,48 @@ const Register: React.FC = () => {
               />
             </div>
             <div>
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={passwordVisible ? faEye :faEyeSlash }
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                  onClick={() => setPasswordVisible(!passwordVisible)}
+                />
+              </div>
             </div>
             <div>
-              <label
-                htmlFor="confirm-password"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
                 Confirm Password
               </label>
-              <input
-                type="password"
-                id="confirm-password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={confirmPasswordVisible ? "text" : "password"}
+                  id="confirm-password"
+                  className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                />
+                <FontAwesomeIcon
+                  icon={confirmPasswordVisible ? faEye :faEyeSlash }
+                  className="absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                  onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
+                />
+              </div>
             </div>
             <div>
-              <label
-                htmlFor="college"
-                className="block text-sm font-medium text-gray-700"
-              >
+              <label htmlFor="college" className="block text-sm font-medium text-gray-700">
                 College
               </label>
               <select
@@ -217,37 +170,25 @@ const Register: React.FC = () => {
               <button
                 type="submit"
                 className="w-full px-6 py-2 text-white bg-[#9c231b] rounded-lg hover:bg-[#502b28] focus:outline-none focus:ring-2 focus:ring-green-300"
-              // onClick={sendOTP}
               >
                 Register
               </button>
             </div>
           </form>
-          {error && (
-            <p className="text-red-500 text-center mt-2">{error}</p> // Display error message
-          )}
+          {error && <p className="text-red-500 text-center mt-2">{error}</p>}
           <div className="text-center">
             <span className="text-sm text-gray-600">
               Already have an account?{" "}
             </span>
             <button
-              className="text-[#9c241bbd] hover:underline focus:outline-none"
-              onClick={handleNavigation}
+              className="text-[#9c231b] hover:underline focus:outline-none"
+              onClick={() => (window.location.href = "/log-in")}
             >
               Login here
             </button>
           </div>
         </div>
       </div>
-
-      {/* {isOtpModalOpen && (
-        <OtpModal
-          accountId={accountId}
-          email={formData.email}
-          OTP={otp}
-          onClose={() => setIsOtpModalOpen(false)}
-        />
-      )} */}
     </div>
   );
 };

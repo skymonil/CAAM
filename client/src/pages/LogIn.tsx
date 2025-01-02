@@ -4,13 +4,13 @@ import logo from "../assets/logo.jpeg";
 import { useNavigate } from "react-router-dom";
 
 interface FormData {
-  username: string;
+  email: string;
   password: string;
 }
 
 const Login: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
-    username: "",
+    email: "",
     password: "",
   });
   const [error, setError] = useState<string | null>(null);
@@ -72,17 +72,17 @@ const Login: React.FC = () => {
           <form onSubmit={handleSubmit} className="mt-6">
             <div className="mb-4">
               <label
-                htmlFor="username"
+                htmlFor="email"
                 className="block text-sm font-medium text-gray-600"
               >
-                Username
+                email
               </label>
               <input
                 type="text"
-                id="username"
-                name="username"
+                id="email"
+                name="email"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
-                value={formData.username}
+                value={formData.email}
                 onChange={handleChange}
                 required
               />
