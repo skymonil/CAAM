@@ -55,7 +55,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/log-in" element={<LogIn />} />
         <Route
-          path="/register"
+          path="/"
           element={<Register />}
         />
         <Route

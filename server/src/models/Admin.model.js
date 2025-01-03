@@ -7,6 +7,12 @@ const adminSchema = new Schema({
         unique: true,
         minlength: 4,
     },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      match: /.+\@.+\..+/,
+    },
     password: {
         type: String,
         required: true,

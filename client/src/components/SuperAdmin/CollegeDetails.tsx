@@ -1,13 +1,8 @@
 import { useState } from "react";
+import axios from "axios";
 
-// Define the type for the subject marks
 interface SubjectMarks {
-  [key: string]: { min: number; max: number }; // This is a general type for subject marks
-}
-
-interface FeeStructure {
-  Undergraduate: number;
-  Postgraduate: number;
+  [key: string]: { min: number; max: number };
 }
 
 const CollegeDetails = () => {
@@ -15,18 +10,34 @@ const CollegeDetails = () => {
   const [collegeName, setCollegeName] = useState("Sample College");
   const [collegeAddress, setCollegeAddress] = useState("123 College St, City");
   const [subjectList, setSubjectList] = useState(["Mathematics"]);
-  const [newSubject, setNewSubject] = useState(""); // State for the new subject input
+  const [newSubject, setNewSubject] = useState("");
+  const [feeStructure, setFeeStructure] = useState<{ [key: string]: { [key: string]: number } }>({});
+  const [newCourse, setNewCourse] = useState("");
+  const [newAmount, setNewAmount] = useState("");
+  const [newFeeName, setNewFeeName] = useState("");
   const [subjectMarks, setSubjectMarks] = useState<SubjectMarks>({
     Mathematics: { min: 35, max: 100 },
     Physics: { min: 30, max: 100 },
     Chemistry: { min: 40, max: 100 },
   });
-  const [feeStructure, setFeeStructure] = useState<FeeStructure>({
-    Undergraduate: 50000,
-    Postgraduate: 80000,
-  });
 
-  // Handle changes in the subject marks
+
+  const handleAddFee = () => {
+    if (newCourse.trim() && newFeeName.trim() && newAmount.trim() && !isNaN(Number(newAmount))) {
+      setFeeStructure((prev) => ({
+        ...prev,
+        [newCourse]: {
+          ...(prev[newCourse] || {}),
+          [newFeeName]: parseInt(newAmount),
+        },
+      }));
+      setNewFeeName("");
+      setNewAmount("");
+    } else {
+      alert("Please enter valid course name, fee name, and amount.");
+    }
+  };
+
   const handleSubjectMarksChange = (
     subject: string,
     type: "min" | "max",
@@ -38,17 +49,6 @@ const CollegeDetails = () => {
     setSubjectMarks(updatedMarks);
   };
 
-  // Handle changes in the fee structure
-  const handleFeeStructureChange = (
-    course: "Undergraduate" | "Postgraduate",
-    value: number
-  ) => {
-    const updatedFees = { ...feeStructure };
-    updatedFees[course] = value;
-    setFeeStructure(updatedFees);
-  };
-
-  // Handle adding a new subject
   const handleAddSubject = () => {
     if (newSubject && !subjectMarks[newSubject]) {
       setSubjectMarks({
@@ -57,6 +57,37 @@ const CollegeDetails = () => {
       });
       setSubjectList([...subjectList, newSubject]);
       setNewSubject(""); // Clear the new subject input
+    }
+  };
+
+  const handleSaveCollege = async (e: any) => {
+    e.preventDefault();
+
+    const subjects = Object.entries(subjectMarks).map(([subjectName, marks]) => ({
+      subjectName,
+      marks: { min: marks.min, max: marks.max },
+    }));
+
+    const courses = Object.entries(feeStructure).map(([courseName, fees]) => ({
+      courseName,
+      subject: subjects,
+      fees: Object.entries(fees).map(([title, amount]) => ({ title, amount })),
+    }));
+
+    const collegeData = {
+      collegeID,
+      collegeName,
+      address: collegeAddress,
+      courses,
+    };
+
+    try {
+      const response = await axios.post("http://localhost:5000/api/college/add", collegeData);
+      console.log("College added successfully:", response.data);
+      alert("College saved successfully!");
+    } catch (error: any) {
+      console.error("Error saving college details:", error);
+      alert("Error saving college details. Please try again.");
     }
   };
 
@@ -167,24 +198,108 @@ const CollegeDetails = () => {
       {/* Fee Structure */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
-          Fee Structure (According to Courses):
+          Fee Structure (Add Fees):
         </label>
-        {Object.keys(feeStructure).map((course) => (
-          <div key={course} className="mt-4">
-            <label className="block text-gray-700">{course} Fee:</label>
-            <input
-              type="number"
-              value={feeStructure[course as keyof FeeStructure]}
-              onChange={(e) =>
-                handleFeeStructureChange(
-                  course as "Undergraduate" | "Postgraduate",
-                  parseInt(e.target.value)
-                )
-              }
-              className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            />
-          </div>
-        ))}
+
+        <div className="mt-4 flex gap-4 items-center">
+          <input
+            type="text"
+            placeholder="Course Name"
+            value={newCourse}
+            onChange={(e) => setNewCourse(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+          <input
+            type="text"
+            placeholder="Fee Name"
+            value={newFeeName}
+            onChange={(e) => setNewFeeName(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+          <input
+            type="number"
+            placeholder="Amount"
+            value={newAmount}
+            onChange={(e) => setNewAmount(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          />
+          <button
+            onClick={handleAddFee}
+            className="p-3 bg-blue-500 text-white font-medium rounded-lg shadow-sm hover:bg-blue-600"
+          >
+            Add
+          </button>
+        </div>
+
+        <div className="mt-6">
+          {Object.keys(feeStructure).length > 0 ? (
+            Object.entries(feeStructure).map(([course, fees]) => (
+              <div key={course} className="mt-4">
+                <h3 className="text-xl font-medium text-gray-700 mb-2">{course}</h3>
+                <table className="table-auto w-full border-collapse border border-gray-300">
+                  <thead>
+                    <tr>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Fee Name</th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Amount</th>
+                      <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {Object.entries(fees).map(([feeName, amount]) => (
+                      <tr key={feeName}>
+                        <td className="border border-gray-300 px-4 py-2">{feeName}</td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          <input
+                            type="number"
+                            value={amount}
+                            onChange={(e) =>
+                              setFeeStructure((prev) => ({
+                                ...prev,
+                                [course]: {
+                                  ...prev[course],
+                                  [feeName]: parseInt(e.target.value),
+                                },
+                              }))
+                            }
+                            className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+                          />
+                        </td>
+                        <td className="border border-gray-300 px-4 py-2">
+                          <button
+                            onClick={() =>
+                              setFeeStructure((prev) => {
+                                const newStructure = { ...prev };
+                                delete newStructure[course][feeName];
+                                if (Object.keys(newStructure[course]).length === 0) {
+                                  delete newStructure[course];
+                                }
+                                return newStructure;
+                              })
+                            }
+                            className="p-2 bg-red-500 text-white font-medium rounded-lg shadow-sm hover:bg-red-600"
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))
+          ) : (
+            <p className="text-gray-500">No courses or fees added yet.</p>
+          )}
+        </div>
+      </div>
+      {/* Save College Button */}
+      <div className="mt-8">
+        <button
+          onClick={handleSaveCollege}
+          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+        >
+          Save College
+        </button>
       </div>
     </div>
   );
