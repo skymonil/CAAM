@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const adminSchema = new Schema({
     email: {
         type: String,
-        required: true,
         unique: true,
         match: /.+\@.+\..+/,
     },
@@ -24,7 +23,7 @@ const adminSchema = new Schema({
         type: String,
         required: true,
     },
-});
+}, {timestamps:true});
 
 const Admin = model('Admin', adminSchema);
 

@@ -32,7 +32,7 @@ const collegeSchema = Schema({
       },
     },
   ],
-});
+}, {timestamps:true});
 
 const College = model("College", collegeSchema);
 

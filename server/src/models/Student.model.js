@@ -16,7 +16,7 @@ const studentSchema = new Schema({
     required: true,
     minlength: 6,
   },
-});
+}, {timestamps:true});
 
 const Student = model("Student", studentSchema);
 
