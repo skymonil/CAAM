@@ -37,7 +37,6 @@ const CourseSchema = new Schema({
   fees: [FeeSchema],
 });
 
-// College Schema
 const CollegeSchema = new Schema({
   collegeID: {
     type: String,
