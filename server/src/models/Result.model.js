@@ -19,7 +19,7 @@ const resultSchema = Schema({
       },
     },
   ],
-});
+}, {timestamps:true});
 
 const Result = model("Result", resultSchema);
 

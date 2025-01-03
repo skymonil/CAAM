@@ -25,7 +25,7 @@ const feeSchema = new Schema({
         enum: ['Paid', 'Pending', 'Failed'],
         default: 'Pending', // Default status is Pending
     },
-});
+}, {timestamps:true});
 
 const Fee = model('Fee', feeSchema);
 

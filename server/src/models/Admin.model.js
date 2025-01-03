@@ -3,7 +3,6 @@ import { Schema, model } from 'mongoose';
 const adminSchema = new Schema({
     email: {
         type: String,
-        required: true,
         unique: true,
         match: /.+\@.+\..+/,
     },
@@ -17,14 +16,14 @@ const adminSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['superAdmin', 'DocAdmin', 'MarksAdmin', 'HOD'],
+        enum: ['superAdmin', 'docAdmin', 'marksAdmin', 'hod', 'accountantAdmin'],
         required: true,
     },
     collegeName: {
         type: String,
         required: true,
     },
-});
+}, {timestamps:true});
 
 const Admin = model('Admin', adminSchema);
 

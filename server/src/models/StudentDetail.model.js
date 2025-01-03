@@ -90,7 +90,7 @@ const studentDetailsSchema = new Schema({
         enum: ['Active', 'Inactive', 'Graduated'],
         default: 'Active', // Default status is Active
     },
-});
+}, {timestamps:true});
 
 const StudentDetails = model('StudentDetails', studentDetailsSchema);
 

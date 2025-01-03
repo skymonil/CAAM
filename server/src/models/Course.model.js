@@ -22,7 +22,7 @@ const courseSchema = new Schema({
         required: true,
         min: 0,
     },
-});
+}, {timestamps:true});
 
 const Course = model('Course', courseSchema);
 

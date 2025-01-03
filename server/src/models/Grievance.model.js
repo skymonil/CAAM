@@ -19,7 +19,7 @@ const grievanceSchema = new Schema({
         enum: ['Pending', 'Resolved', 'Rejected'],
         default: 'Pending', // Default status is Pending
     },
-});
+}, {timestamps:true});
 
 const Grievance = model('Grievance', grievanceSchema);
 

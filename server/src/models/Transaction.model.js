@@ -26,7 +26,7 @@ const transactionSchema = new Schema({
         enum: ['Pending', 'Completed', 'Failed'],
         default: 'Pending', // Default status is Pending
     },
-});
+}, {timestamps:true});
 
 const Transaction = model('Transaction', transactionSchema);
 

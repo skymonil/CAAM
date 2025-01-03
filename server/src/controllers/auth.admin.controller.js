@@ -46,7 +46,9 @@ export const adminRegister = async (req, res) => {
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters long" });
+      return res
+        .status(400)
+        .json({ message: "Password must be at least 6 characters long" });
     }
 
     const existingAdmin = await Admin.findOne({ email });
@@ -63,7 +65,8 @@ export const adminRegister = async (req, res) => {
     otpStore[email] = { otp, hashedPassword, collegeName };
 
     res.status(201).json({
-      message: "OTP sent to your email. Please verify to complete registration.",
+      message:
+        "OTP sent to your email. Please verify to complete registration.",
     });
   } catch (error) {
     console.log("Error in admin register controller: ", error.message);
@@ -79,7 +82,12 @@ export const adminVerifyOTP = async (req, res) => {
       return res.status(400).json({ message: "OTP has expired or is invalid" });
     }
 
-    const { otp: storedOTP, expiresAt, hashedPassword, collegeName } = otpStore[email];
+    const {
+      otp: storedOTP,
+      expiresAt,
+      hashedPassword,
+      collegeName,
+    } = otpStore[email];
 
     if (Date.now() > expiresAt) {
       delete otpStore[email];
@@ -87,21 +95,82 @@ export const adminVerifyOTP = async (req, res) => {
     }
 
     if (parseInt(otp) !== storedOTP) {
-      return res.status(400).json({ message: "Invalid OTP. Please try again!" });
+      return res
+        .status(400)
+        .json({ message: "Invalid OTP. Please try again!" });
     }
+
+    const collegeIdentifier = collegeName.split(" ")[0].toLowerCase();
 
     const newAdmin = new Admin({
       collegeName,
       email,
       password: hashedPassword,
-      role:'superAdmin',
-      username: 'superadmin',
+      role: "superAdmin",
+      username: `${collegeIdentifier}_superadmin`,
     });
 
     await newAdmin.save();
+
+    const admins = [
+      {
+        role: "marksAdmin",
+        username: `${collegeIdentifier}_marksadmin`,
+        password: "marks123",
+      },
+      {
+        role: "docAdmin",
+        username: `${collegeIdentifier}_docadmin`,
+        password: "doc123",
+      },
+      {
+        role: "accountantAdmin",
+        username: `${collegeIdentifier}_accountantadmin`,
+        password: "account123",
+      },
+      { role: "hod", username: `${collegeIdentifier}_hod`, password: "hod123" },
+    ];
+
+    const hashedAdminPasswords = await Promise.all(
+      admins.map(async (admin) => ({
+        ...admin,
+        password: await bcrypt.hash(admin.password, 10),
+      }))
+    );
+
+    await Admin.insertMany(
+      hashedAdminPasswords.map(({role, username, password}) => ({
+        collegeName,
+        email: `${username}@${collegeIdentifier}.com`,
+        password,
+        role,
+        username,
+      })
+    )
+  );
+
+  const transporter = nodemailer.createTransport({
+    service: "Gmail",
+    auth: {
+      user: process.env.EMAIL_ID,
+      pass: process.env.EMAIL_PASSWORD,
+    },
+  });
+
+  const credentialsMail = {
+    from: "CAAM - Admin Registration Bot",
+    to: email,
+    subject: "CAAM - Super Admin Credentials",
+    text: `Dear Super Admin,\n\nYour account has been successfully registered.\n\nUsername: ${collegeIdentifier}_superadmin\nPassword: Your chosen password\n\nPlease keep this information secure.\n\nBest regards,\nTeam CAAM`,
+  };
+
+  await transporter.sendMail(credentialsMail);
+
     delete otpStore[email];
 
-    res.status(200).json({ message: "Registration Successful. Admin can now login!" });
+    res
+      .status(200)
+      .json({ message: "Registration Successful. Admin can now login!" });
   } catch (error) {
     console.log("Error in admin verifyOTP controller: ", error.message);
     res.status(500).json({ message: "Internal server error" });
@@ -109,23 +178,23 @@ export const adminVerifyOTP = async (req, res) => {
 };
 
 export const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ username });
 
     if (!admin) {
       return res.status(400).json({
-        message: "Email or password is incorrect",
-        error: "Email or password is incorrect",
+        message: "Username or password is incorrect",
+        error: "Username or password is incorrect",
       });
     }
 
     const isValidPassword = await bcrypt.compare(password, admin.password);
     if (!isValidPassword) {
       return res.status(400).json({
-        message: "Email or password is incorrect",
-        error: "Email or password is incorrect",
+        message: "Username or password is incorrect",
+        error: "Username or password is incorrect",
       });
     }
 
@@ -137,7 +206,9 @@ export const adminLogin = async (req, res) => {
 
     const token = generateToken(admin._id, res);
 
-    res.status(200).json({ message: "Login Successful", token });
+    res
+      .status(200)
+      .json({ message: "Login Successful", token, role: admin.role });
   } catch (error) {
     console.log("Error in admin login controller: ", error.message);
     res.status(500).json({ message: "Internal Server Error" });
