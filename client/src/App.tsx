@@ -25,6 +25,7 @@ import Scholarship from "./pages/Student/Scholarship";
 import ReExam from "./pages/Student/ReExam";
 import HODScholarship from "./pages/HOD/HODScholarship";
 import AddMoney from "./pages/AccountantAdmin/AddMoney";
+import AdminLogin from "./pages/AdminLogin";
 
 const AppContent = () => {
   const location = useLocation();
@@ -61,6 +62,10 @@ const AppContent = () => {
         <Route
           path="/admin-register"
           element={<AdminRegister />}
+        />
+        <Route
+          path="/admin-login"
+          element={<AdminLogin />}
         />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />

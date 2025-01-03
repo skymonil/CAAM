@@ -109,23 +109,23 @@ export const adminVerifyOTP = async (req, res) => {
 };
 
 export const adminLogin = async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ username });
 
     if (!admin) {
       return res.status(400).json({
-        message: "Email or password is incorrect",
-        error: "Email or password is incorrect",
+        message: "Username or password is incorrect",
+        error: "Username or password is incorrect",
       });
     }
 
     const isValidPassword = await bcrypt.compare(password, admin.password);
     if (!isValidPassword) {
       return res.status(400).json({
-        message: "Email or password is incorrect",
-        error: "Email or password is incorrect",
+        message: "Username or password is incorrect",
+        error: "Username or password is incorrect",
       });
     }
 
@@ -137,7 +137,7 @@ export const adminLogin = async (req, res) => {
 
     const token = generateToken(admin._id, res);
 
-    res.status(200).json({ message: "Login Successful", token });
+    res.status(200).json({ message: "Login Successful", token, role: admin.role });
   } catch (error) {
     console.log("Error in admin login controller: ", error.message);
     res.status(500).json({ message: "Internal Server Error" });

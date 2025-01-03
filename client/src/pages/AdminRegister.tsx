@@ -44,7 +44,7 @@ const AdminRegister = () => {
       });
       console.log("OTP Verified: ", response.data);
       setIsModalOpen(false);
-      window.location.href = "/log-in"; // Redirect after verification
+      window.location.href = "/admin-login"; // Redirect after verification
     } catch (error: any) {
       setOtpError("Invalid OTP or OTP has expired");
     }

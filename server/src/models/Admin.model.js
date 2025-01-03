@@ -17,7 +17,7 @@ const adminSchema = new Schema({
     },
     role: {
         type: String,
-        enum: ['superAdmin', 'DocAdmin', 'MarksAdmin', 'HOD'],
+        enum: ['superAdmin', 'docAdmin', 'marksAdmin', 'hod', 'accountantAdmin'],
         required: true,
     },
     collegeName: {

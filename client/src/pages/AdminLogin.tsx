@@ -3,14 +3,14 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import logo from "../assets/logo.jpeg";
 import { useNavigate } from "react-router-dom";
 
-interface FormData {
-  email: string;
+interface AdminFormData {
+  username: string;
   password: string;
 }
 
-const Login: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
-    email: "",
+const AdminLogin: React.FC = () => {
+  const [formData, setFormData] = useState<AdminFormData>({
+    username: "",
     password: "",
   });
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -22,22 +22,42 @@ const Login: React.FC = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleRegister = async (e: FormEvent) => {
+  const handleLogin = async (e: FormEvent) => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "http://localhost:5000/api/auth/admin-login",
         formData,
         { withCredentials: true }
       );
-      console.log("User Login:", response.data);
-      navigate("/admission/form");
+      console.log("Admin Login Successful:", response.data);
+      const {role} = response.data;
+      switch (role) {
+        case "superAdmin":
+          navigate("/super-admin");
+          break;
+        case "docAdmin":
+          navigate("/doc-admin");
+          break;
+        case "marksAdmin":
+          navigate("/marks-admin");
+          break;
+        case "accountantAdmin":
+          navigate("/accountant-admin");
+          break;
+        case "hod":
+          navigate("/admin-grievance");
+          break;
+        default:
+          setError("Invalid role or unauthorized access.");
+          break;
+      }
     } catch (error: any) {
       if (error.response && error.response.data) {
         const backendErrors = error.response.data.errors || error.response.data.error;
 
         if (Array.isArray(backendErrors)) {
-          const formattedErrors = backendErrors.map(err => err.msg).join(", ");
+          const formattedErrors = backendErrors.map((err) => err.msg).join(", ");
           setError(formattedErrors);
         } else {
           setError(backendErrors);
@@ -47,15 +67,6 @@ const Login: React.FC = () => {
       }
     }
   };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleRegister(e);
-  };
-
-  const handleNavigation = () => {
-    navigate("/register");
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4 sm:px-6 lg:px-8">
@@ -68,22 +79,22 @@ const Login: React.FC = () => {
         {/* Right side with form */}
         <div className="w-full lg:w-1/2 p-6">
           <h2 className="text-2xl font-semibold text-center text-gray-700 sm:text-3xl">
-            LOGIN
+            ADMIN LOGIN
           </h2>
-          <form onSubmit={handleSubmit} className="mt-6">
+          <form onSubmit={handleLogin} className="mt-6">
             <div className="mb-4">
               <label
-                htmlFor="email"
+                htmlFor="username"
                 className="block text-sm font-medium text-gray-600"
               >
-                Email
+                Username
               </label>
               <input
                 type="text"
-                id="email"
-                name="email"
+                id="username"
+                name="username"
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
-                value={formData.email}
+                value={formData.username}
                 onChange={handleChange}
                 required
               />
@@ -128,18 +139,10 @@ const Login: React.FC = () => {
               <p className="text-[#ff2f2f] text-sm mt-4 text-center">{error}</p>
             )}
           </form>
-          <div className="mt-4 text-center">
-            <span className="text-sm text-gray-600 sm:text-base">
-              Don't have an account?{" "}
-            </span>
-            <button className="mt-2 text-[#9c241bba] hover:underline focus:outline-none sm:text-base" onClick={handleNavigation}>
-              Register here
-            </button>
-          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default AdminLogin;
