@@ -11,7 +11,7 @@ router.post("/add", async (req, res) => {
       collegeID,
       collegeName,
       address,
-      courses, 
+      courses,
     });
 
     await newCollege.save();

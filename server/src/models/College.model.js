@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model } from "mongoose";
 
 const FeeSchema = new Schema({
   title: {
@@ -55,6 +55,6 @@ const CollegeSchema = new Schema({
   courses: [CourseSchema],
 });
 
-const College = model('College', CollegeSchema);
+const College = model("College", CollegeSchema);
 
 export default College;
