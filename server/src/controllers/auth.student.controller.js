@@ -71,7 +71,7 @@ export const register = async (req, res) => {
         "OTP sent to your email. Please verify to complete registration.",
     });
   } catch (error) {
-    console.log("Error in register controller: ", error.message);
+    console.log("Error in student register controller: ", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -110,7 +110,7 @@ export const verifyOTP = async (req, res) => {
       .status(200)
       .json({ message: "Registration Succesfull. You can now login!" });
   } catch (error) {
-    console.log("Error in verifyOTP controller: ", error.message);
+    console.log("Error in student verifyOTP controller: ", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -156,7 +156,7 @@ export const login = async (req, res) => {
 
     res.status(200).json({ message: "Login Successful", token });
   } catch (error) {
-    console.log("Error in login controller: ", error.message);
+    console.log("Error in student login controller: ", error.message);
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
@@ -167,7 +167,7 @@ export const logout = (req, res) => {
     console.log("Token cookie cleared.");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
-    console.error("Error in logout controller:", error.message);
+    console.error("Error in student logout controller:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -176,7 +176,7 @@ export const checkAuth = (req, res) => {
   try {
     res.status(200).json(req.student);
   } catch (error) {
-    console.log("Error in checkAuth controller: " + error);
+    console.log("Error in student checkAuth controller: " + error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

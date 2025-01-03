@@ -30,7 +30,6 @@ const AppContent = () => {
   const hideNavbarPaths = [
     "/leave",
     "/fee-status",
-    "/admin-register",
     "/student-detail",
     "/wallet",
     "/grievance",
