@@ -1,11 +1,15 @@
 import { Schema, model } from 'mongoose';
 
 const adminSchema = new Schema({
-    username: {
+    email: {
         type: String,
         required: true,
         unique: true,
-        minlength: 4,
+        match: /.+\@.+\..+/,
+    },
+    username: {
+        type:String,
+        required:true,
     },
     email: {
       type: String,
@@ -22,9 +26,8 @@ const adminSchema = new Schema({
         enum: ['superAdmin', 'DocAdmin', 'MarksAdmin', 'HOD'],
         required: true,
     },
-    collegeId: {
-        type: Schema.Types.ObjectId,
-        ref: 'College', // Reference to the College model
+    collegeName: {
+        type: String,
         required: true,
     },
 });
