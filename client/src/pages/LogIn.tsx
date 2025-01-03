@@ -13,6 +13,7 @@ const Login: React.FC = () => {
     email: "",
     password: "",
   });
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
@@ -94,15 +95,28 @@ const Login: React.FC = () => {
               >
                 Password
               </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <div className="relative">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                {passwordVisible ? (
+                  <i
+                    className="fa-solid fa-eye absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-solid fa-eye-slash absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                )}
+              </div>
             </div>
             <button
               type="submit"

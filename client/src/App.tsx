@@ -31,7 +31,6 @@ const AppContent = () => {
   const hideNavbarPaths = [
     "/leave",
     "/fee-status",
-    "/admin-register",
     "/student-detail",
     "/wallet",
     "/grievance",
@@ -49,14 +48,6 @@ const AppContent = () => {
     matchPath({ path, end: true }, location.pathname)
   );
 
-  const handleAdminRegister = (
-    CollegeName: string,
-    email: string,
-    password: string
-  ) => {
-    console.log("Registration with:", { CollegeName, email, password });
-    // Add navigation logic (e.g., using `useNavigate` from `react-router-dom`) here
-  };
 
   return (
     <>
@@ -69,7 +60,7 @@ const AppContent = () => {
         />
         <Route
           path="/admin-register"
-          element={<AdminRegister onAdminRegister={handleAdminRegister} />}
+          element={<AdminRegister />}
         />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
