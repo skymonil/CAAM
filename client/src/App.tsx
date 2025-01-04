@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Register from "./pages/Register";
 import AdminRegister from "./pages/AdminRegister";
+import AdminLogin from "./pages/AdminLogin";
 import LogIn from "./pages/LogIn";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
@@ -61,6 +62,10 @@ const AppContent = () => {
         <Route
           path="/admin-register"
           element={<AdminRegister />}
+        />
+        <Route
+          path="/admin-login"
+          element={<AdminLogin />}
         />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
