@@ -8,7 +8,8 @@ import authRoute from "./routes/auth.route.js";
 import accountantRoute from "./routes/accountant.route.js";
 import grievanceRoute from "./routes/grievance.route.js";
 import leaveRoute from "./routes/leave.route.js";
-import college from "./routes/college.routes.js";
+import collegeRoute from "./routes/college.routes.js";
+import studentRoute from "./routes/student.route.js";
 
 const app = express();
 const PORT = 5000;
@@ -28,7 +29,8 @@ app.use(bodyParser.json());
 app.use(express.json());
 
 app.use("/api/auth", authRoute);
-app.use("/api/college", college);
+app.use("/api/student", studentRoute);
+app.use("/api/college", collegeRoute);
 
 //Endpoint to Add Money to Student Wallet from Accountant Side
 app.use("/api/admin/accountant", accountantRoute);

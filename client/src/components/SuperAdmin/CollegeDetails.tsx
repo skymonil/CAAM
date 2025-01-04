@@ -21,7 +21,6 @@ const CollegeDetails = () => {
     Chemistry: { min: 40, max: 100 },
   });
 
-
   const handleAddFee = () => {
     if (newCourse.trim() && newFeeName.trim() && newAmount.trim() && !isNaN(Number(newAmount))) {
       setFeeStructure((prev) => ({
@@ -84,7 +83,7 @@ const CollegeDetails = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/college/add", collegeData);
       console.log("College added successfully:", response.data);
-      alert("College saved successfully!");
+      // alert("College saved successfully!");
     } catch (error: any) {
       console.error("Error saving college details:", error);
       alert("Error saving college details. Please try again.");

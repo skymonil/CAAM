@@ -13,13 +13,19 @@ export const authenticate = async (req, res, next) => {
 
     const decoded_token = jwt.verify(jwt_token, process.env.SECRET_KEY);
 
+    // console.log(decoded_token);
+    
+
     if (!decoded_token) {
       return res.status(401).json({ message: "Unauthorized - Invalid Token" });
     }
 
-    const student = await Student.findById(decoded_token._id).select(
+    const student = await Student.findById(decoded_token.userID).select(
       "-password"
     );
+
+    // console.log(student);
+    
 
     if (!student) {
       return res.status(401).json({ message: "Unauthorized - Student Not Found" });
