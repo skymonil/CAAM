@@ -109,11 +109,6 @@ const CollegeTransactionJournal = () => {
           <table>
             <thead>
               <tr>
-                <th>Transaction ID</th>
-                <th>Type</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Direction</th>
               </tr>
             </thead>
             <tbody>

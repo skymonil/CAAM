@@ -31,7 +31,9 @@ const AdminLogin: React.FC = () => {
                 { withCredentials: true }
             );
             console.log("Admin Login:", response.data);
-            navigate(`/{response.data.role}-admin`);
+            console.log("Admin Role:", response.data.admin.role);
+            
+            navigate(`/${response.data.admin.role}`);
         } catch (error: any) {
             if (error.response && error.response.data) {
                 const backendErrors = error.response.data.errors || error.response.data.error;
