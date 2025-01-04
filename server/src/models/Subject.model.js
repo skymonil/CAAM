@@ -21,7 +21,7 @@ const subjectSchema = new Schema({
             message: 'maxMarks must be greater than minMarks',
         },
     },
-});
+}, {timestamps:true});
 
 const Subject = model('Subject', subjectSchema);
 

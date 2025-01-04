@@ -14,7 +14,7 @@ const scholarshipSchema = new Schema({
         type: Date,
         required: true,
     },
-});
+}, {timestamps:true});
 
 const Scholarship = model('Scholarship', scholarshipSchema);
 
