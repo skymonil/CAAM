@@ -14,7 +14,7 @@ const AdminDetails = () => {
   useEffect(() => {
     const fetchAdmins = async () => {
       try {
-        const response = await axios.get("/api/admin/credentials");
+        const response = await axios.get("http://localhost:5000/api/admin/credentials");
         console.log("Admin Data:", response.data);
         setAdmins(response.data);
       } catch (error) {
@@ -28,7 +28,7 @@ const AdminDetails = () => {
   const handlePasswordChange = async () => {
     if (newPassword && selectedAdmin) {
       try {
-        await axios.put(`/api/admin/change-password/${selectedAdmin.username}`, {
+        await axios.put(`http://localhost:5000/api/admin/change-password/${selectedAdmin.username}`, {
           newPassword,
         });
 
