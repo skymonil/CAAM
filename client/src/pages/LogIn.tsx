@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-600"
               >
-                email
+                Email
               </label>
               <input
                 type="text"

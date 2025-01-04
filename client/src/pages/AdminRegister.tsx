@@ -8,6 +8,7 @@ const AdminRegister = () => {
     email: "",
     password: "",
   });
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,7 +25,7 @@ const AdminRegister = () => {
     try {
       const response = await axios.post("http://localhost:5000/api/auth/admin-register", formData);
       console.log("Admin registered: ", response.data);
-      setIsModalOpen(true); 
+      setIsModalOpen(true);
     } catch (error: any) {
       const backendError =
         error.response?.data.errors || error.response?.data.error || "An error occurred.";
@@ -44,7 +45,7 @@ const AdminRegister = () => {
       });
       console.log("OTP Verified: ", response.data);
       setIsModalOpen(false);
-      window.location.href = "/admin-login"; 
+      window.location.href = "/admin-login";
     } catch (error: any) {
       setOtpError("Invalid OTP or OTP has expired");
     }
@@ -71,7 +72,7 @@ const AdminRegister = () => {
               <input
                 type="text"
                 name="collegeName"
-                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b]"
+                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={formData.collegeName}
                 onChange={handleChange}
                 required
@@ -82,28 +83,47 @@ const AdminRegister = () => {
               <input
                 type="email"
                 name="email"
-                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b]"
+                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={formData.email}
                 onChange={handleChange}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700">Password</label>
-              <input
-                type="password"
-                name="password"
-                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b]"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  id="password"
+                  name="password"
+                  className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                {passwordVisible ? (
+                  <i
+                    className="fa-solid fa-eye absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                ) : (
+                  <i
+                    className="fa-solid fa-eye-slash absolute top-1/2 right-3 transform -translate-y-1/2 cursor-pointer text-gray-500"
+                    onClick={() => setPasswordVisible(!passwordVisible)}
+                  ></i>
+                )}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">Confirm Password</label>
               <input
                 type="password"
-                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b]"
+                className="w-full px-4 py-2 text-gray-700 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
@@ -117,6 +137,17 @@ const AdminRegister = () => {
             </button>
           </form>
           {error && <p className="text-red-500 text-center mt-2">{error}</p>}
+          <div className="text-center">
+            <span className="text-sm text-gray-600">
+              Already have an account?{" "}
+            </span>
+            <button
+              className="text-[#9c231b] hover:underline focus:outline-none"
+              onClick={() => (window.location.href = "/admin-login")}
+            >
+              Login here
+            </button>
+          </div>
         </div>
       </div>
 
