@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 import Register from "./pages/Register";
 import AdminRegister from "./pages/AdminRegister";
+import AdminLogin from "./pages/AdminLogin";
 import LogIn from "./pages/LogIn";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
@@ -56,7 +57,7 @@ const AppContent = () => {
       <Routes>
         <Route path="/log-in" element={<LogIn />} />
         <Route
-          path="/register"
+          path="/"
           element={<Register />}
         />
         <Route
@@ -77,7 +78,7 @@ const AppContent = () => {
         <Route path="/reexam" element={<ReExam />} />
 
         <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
-        <Route path="/super-admin" element={<SuperAdmin />} />
+        <Route path="/superAdmin" element={<SuperAdmin />} />
         <Route path="/marks-admin" element={<MarksAdmin />} />
 
         <Route path="/admin-grievance" element={<GrievanceList />}/>
@@ -101,3 +102,7 @@ function App() {
 }
 
 export default App;
+
+
+// To do :
+// make api for taking admin college name in admin detail page or make it separate page and than make another api that will take college name and return all the other admin detail like username, email, password 

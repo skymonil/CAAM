@@ -121,8 +121,6 @@ export const login = async (req, res) => {
   try {
     const student = await Student.findOne({ email });
     console.log("Student:", student);
-    console.log("email:", email);
-    console.log("password:", password);
 
     if (!student) {
       return res.status(400).json({
@@ -130,7 +128,6 @@ export const login = async (req, res) => {
         error: "Username or password is incorrect",
       });
     }
-    console.log("here1");
 
     const isValidPassword = await bcrypt.compare(password, student.password);
     if (!isValidPassword) {
@@ -164,10 +161,9 @@ export const login = async (req, res) => {
 export const logout = (req, res) => {
   try {
     res.clearCookie("token");
-    console.log("Token cookie cleared.");
     res.status(200).json({ message: "Logged out successfully" });
-  } catch (error) {
-    console.error("Error in student logout controller:", error.message);
+  } catch (err) {
+    console.log("Error in logout: " + err);
     res.status(500).json({ message: "Internal server error" });
   }
 };

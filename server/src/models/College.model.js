@@ -1,12 +1,49 @@
 import { Schema, model } from "mongoose";
 
-const collegeSchema = Schema({
-  id:{
+const FeeSchema = new Schema({
+  title: {
     type: String,
     required: true,
-    unique: true
   },
-  name: {
+  amount: {
+    type: Number,
+    required: true,
+  },
+});
+
+const SubjectSchema = new Schema({
+  subjectName: {
+    type: String,
+    required: true,
+  },
+  marks: {
+    min: {
+      type: Number,
+      required: true,
+    },
+    max: {
+      type: Number,
+      required: true,
+    },
+  },
+});
+
+const CourseSchema = new Schema({
+  courseName: {
+    type: String,
+    required: true,
+  },
+  subject: [SubjectSchema],
+  fees: [FeeSchema],
+});
+
+const CollegeSchema = new Schema({
+  collegeID: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  collegeName: {
     type: String,
     required: true,
   },
@@ -14,26 +51,9 @@ const collegeSchema = Schema({
     type: String,
     required: true,
   },
-  courses: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
-    },
-  ],
-  feeStructure: [
-    {
-      title: {
-        type: String,
-        required: true,
-      },
-      amount: {
-        type: Number,
-        required: true,
-      },
-    },
-  ],
-}, {timestamps:true});
+  courses: [CourseSchema],
+});
 
-const College = model("College", collegeSchema);
+const College = model("College", CollegeSchema);
 
 export default College;

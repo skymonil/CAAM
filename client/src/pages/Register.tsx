@@ -85,7 +85,7 @@ const Register: React.FC = () => {
 
         {/* Right side with form */}
         <div className="w-full lg:w-1/2 p-6 space-y-3">
-          <h2 className="text-2xl font-semibold text-center text-gray-800">
+          <h2 className="text-2xl font-semibold underline text-center text-gray-800">
             CREATE ACCOUNT
           </h2>
           <p className="text-center text-gray-600 text-sm">
@@ -190,10 +190,11 @@ const Register: React.FC = () => {
                 required
               >
                 <option value="">Select your college</option>
-                <option value="College A">College A</option>
-                <option value="College B">College B</option>
-                <option value="College C">College C</option>
-                <option value="College D">College D</option>
+                <option value="Thakur College">Thakur College</option>
+                <option value="Mithibai College">Mithibai College</option>
+                <option value="St. Xavier’s College">St. Xavier’s College</option>
+                <option value="Narsee Monjee College">Narsee Monjee College</option>
+                <option value="Jai Hind College">Jai Hind College</option>
               </select>
             </div>
             <div className="flex justify-end">

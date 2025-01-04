@@ -1,6 +1,42 @@
 import Navbar from "./Navbar";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
+interface StudentData {
+  id: number;
+  name: string;
+  email: string;
+}
 
 const StudentDashboard = () => {
+  const [studentData, setStudentData] = useState<StudentData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/api/student/get", {
+        withCredentials: true,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setStudentData(response.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        if (axios.isAxiosError(err) && err.response?.status === 401) {
+          navigate("/log-in");
+        } else {
+          console.error("Error: ", err);
+        }
+      });
+  }, [navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navbar */}
@@ -18,8 +54,8 @@ const StudentDashboard = () => {
           <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-6 mb-6 border-b pb-4">
             <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-[#9c231b] to-[#253954] text-white font-bold rounded-full mb-4 sm:mb-0 flex items-center justify-center text-5xl">CV</div>
             <div className="text-center sm:text-left md:mt-9">
-              <h3 className="text-lg md:text-xl font-bold">Chirag Varu</h3>
-              <p className="text-gray-600">Student ID: N/A</p>
+              <h3 className="text-lg md:text-xl font-bold">{studentData?.name}</h3>
+              <p className="text-gray-600">Student ID: {studentData?.id}</p>
             </div>
           </div>
 
@@ -71,7 +107,7 @@ const StudentDashboard = () => {
                 <i className="fas fa-envelope mr-2"></i>
                 Email
               </span>
-              <div className="text-gray-600 pl-6">[Student's Email]</div>
+              <div className="text-gray-600 pl-6">{studentData?.email}</div>
             </div>
           </div>
         </div>

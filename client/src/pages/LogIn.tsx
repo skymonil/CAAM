@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   };
 
   const handleNavigation = () => {
-    navigate("/register");
+    navigate("/");
   }
 
   return (
