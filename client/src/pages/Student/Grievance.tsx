@@ -1,20 +1,34 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import axios from "axios";
+import { useStudent } from "../../context/StudentContext";
 
 const Grievance = () => {
-  const [grievanceHistory, setGrievanceHistory] = useState([
-    { date: "29-12-2024", title: "Issue with Attendance", status: "Resolved" },
-    {
-      date: "20-12-2024",
-      title: "Problem with Fee Payment",
-      status: "Pending",
-    },
-  ]);
-
+  const { studentId } = useStudent();
+  const [grievanceHistory, setGrievanceHistory] = useState<{
+    date: string;
+    title: string;
+    status: string;
+  }[]>([]);
   const [formData, setFormData] = useState({
     title: "",
     details: "",
   });
+
+  useEffect(() => {
+    const fetchGrievances = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/grievance/fetch-grievance-student/${studentId}`);
+        if (response.data.success) {
+          setGrievanceHistory(response.data.data);
+        }
+      } catch (error) {
+        console.log('Error Occurred While Fetching');
+      }
+    };
+
+    fetchGrievances();
+  }, [studentId]); // Added studentId as dependency to refetch if it changes
 
   const [showMessage, setShowMessage] = useState(false);
 
@@ -25,19 +39,29 @@ const Grievance = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newGrievance = {
-      date: new Date().toLocaleDateString("en-IN"),
-      title: formData.title,
-      status: "Pending",
-    };
+    try {
+     await axios.post('http://localhost:5000/api/grievance/add', {
+        studentId,
+        title: formData.title,
+        details: formData.details
+      });
 
-    setGrievanceHistory((prev) => [...prev, newGrievance]);
-    setFormData({ title: "", details: "" });
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000);
+      const newGrievance = {
+        date: new Date().toISOString().split('T')[0],
+        title: formData.title,
+        status: "Pending",
+      };
+
+      setGrievanceHistory((prev) => [...prev, newGrievance]);
+      setFormData({ title: "", details: "" });
+      setShowMessage(true);
+      setTimeout(() => setShowMessage(false), 3000);
+    } catch (error) {
+      console.log('Error: ' + error);
+    }
   };
 
   return (
@@ -45,14 +69,12 @@ const Grievance = () => {
       <Navbar />
       <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-          {/* Page Header */}
           <div className="border-b pb-4 mb-6">
             <h1 className="text-2xl font-bold text-center text-[#9c231b]">
               Grievance Redressal
             </h1>
           </div>
 
-          {/* Grievance Form */}
           <h2 className="text-xl font-semibold mb-4">
             Grievance Redressal Form
           </h2>
@@ -110,7 +132,6 @@ const Grievance = () => {
             </div>
           </form>
 
-          {/* Grievance History */}
           <div className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Grievance History</h2>
             <div className="overflow-x-auto">

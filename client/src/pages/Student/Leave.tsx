@@ -1,32 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import { useStudent } from "../../context/StudentContext";
+import axios from "axios";
 
+interface leave
+{
+  _id: string,
+  startDate: string,
+  endDate: string,
+  reason: string,
+  status: string
+}
 const Leave = () => {
-  const [leaveHistory, setLeaveHistory] = useState([
-    {
-      id: 1,
-      startDate: "20-12-2024",
-      endDate: "22-12-2024",
-      reason: "Family event",
-      status: "Accepted",
-      comments: "",
-    },
-    {
-      id: 2,
-      startDate: "25-12-2024",
-      endDate: "27-12-2024",
-      reason: "Medical leave",
-      status: "Rejected",
-      comments: "Insufficient documentation",
-    },
-  ]);
-
+  const {studentId} = useStudent();
+  const [leaveHistory, setLeaveHistory] = useState<leave[]>([]);
+  
   const [formData, setFormData] = useState({
     startDate: "",
     endDate: "",
     reason: "",
   });
 
+  useEffect(() => {
+    if (studentId) {  
+      const fetchLeaves = async () => {
+        try {
+          console.log(studentId);
+          const response = await axios.get(`http://localhost:5000/api/leave/fetch-leave-student/${studentId}`);
+          if (response.data) {
+            setLeaveHistory(response.data.leaves);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchLeaves();
+    }
+  }, [studentId]);  
+  
   const [showMessage, setShowMessage] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -34,23 +45,31 @@ const Leave = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async(e: React.FormEvent) => {
     e.preventDefault();
 
     // Add the new leave application to the history
-    const newLeave = {
-      id: leaveHistory.length + 1,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      reason: formData.reason,
-      status: "Pending", // Default status
-      comments: "",
-    };
+    try{
+      const response = await axios.post('http://localhost:5000/api/leave/add',{
+        studentId,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        reason: formData.reason
+      });
 
-    setLeaveHistory((prev) => [...prev, newLeave]);
-    setFormData({ startDate: "", endDate: "", reason: "" });
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000);
+      if(response.data)
+      {
+        const newLeave = response.data.leave;
+        setLeaveHistory((prev) => [...prev, newLeave]);
+        setFormData({ startDate: "", endDate: "", reason: "" });
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 3000);
+      }
+    }
+    catch(error)
+    {
+      console.log('Error')
+    }
   };
 
   return (
@@ -148,16 +167,16 @@ const Leave = () => {
                 </thead>
                 <tbody>
                   {leaveHistory.map((leave) => (
-                    <tr key={leave.id}>
+                    <tr key={leave._id}>
                       <td className="border px-2 sm:px-4 py-2">
-                        {leave.startDate} - {leave.endDate}
+                        {leave.startDate.split('T')[0]} - {leave.endDate.split('T')[0]}
                       </td>
                       <td className="border px-2 sm:px-4 py-2">
                         {leave.reason}
                       </td>
                       <td
                         className={`border px-2 sm:px-4 py-2 ${
-                          leave.status === "Accepted"
+                          leave.status === "Approved"
                             ? "text-green-600"
                             : leave.status === "Rejected"
                             ? "text-red-600"
@@ -167,7 +186,7 @@ const Leave = () => {
                         {leave.status}
                       </td>
                       <td className="border px-2 sm:px-4 py-2">
-                        {leave.comments || "N/A"}
+                        N/A
                       </td>
                     </tr>
                   ))}

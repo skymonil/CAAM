@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useStudent } from "../context/StudentContext";
 
 interface StudentData {
   name: string;
@@ -8,6 +9,7 @@ interface StudentData {
 }
 
 const Navbar = () => {
+  const {setStudentId} = useStudent()
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -20,6 +22,7 @@ const Navbar = () => {
       .then((response) => {
         console.log(response.data);
         setStudentData(response.data);
+        setStudentId(response.data.id);
         setLoading(false);
       })
       .catch((err) => {

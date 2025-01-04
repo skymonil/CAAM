@@ -1,57 +1,53 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import HOD_Navbar from "../../components/HOD/HOD_Navbar"
+import axios from "axios"
 
 interface grievance {
-  grievanceId: string,
-  studentId: string,
-  studentName: string
+  _id: string
+  createdAt: string
+  updatedAt: string
+  studentId: string
   title: string
   description: string
   status: string
 }
 function GrievanceList() {
   const [isPendingOpen,setPendingOpen] = useState<boolean>(true)
-  const [grievances, setgrievances] = useState<grievance[]>([
-    {
-      grievanceId: '501',
-      studentId: 'S058',
-      studentName: 'Chirag',
-      title: 'Attendance',
-      description: 'PLease grant me extra attendance',
-      status: 'pending'
-    },
-    {
-      grievanceId: '502',
-      studentId: 'S058',
-      studentName: 'Chirag',
-      title: 'Attendance',
-      description: 'PLease grant me extra attendance plz',
-      status: 'pending'
-    },
-    {
-      grievanceId: '503',
-      studentId: 'S058',
-      studentName: 'Chirag',
-      title: 'Attendance',
-      description: 'PLease grant me extra attendance plz',
-      status: 'pending'
-    },
-    {
-      grievanceId: '504',
-      studentId: 'S058',
-      studentName: 'Chirag',
-      title: 'Attendance',
-      description: 'PLease grant me extra attendance plz',
-      status: 'pending'
+  const [grievances, setgrievances] = useState<grievance[]>([]);
+
+  const fetchGrievances = async() =>{
+    try{
+      const response = await axios.get('http://localhost:5000/api/grievance/fetch-grievances');
+      if(response.data.success)
+      {
+        console.log(response.data.data)
+        setgrievances(response.data.data)
+      }
     }
-  ]);
-  const approveGrievance = (grievanceId: string): void => {
-    //Temporary logic to approve grievance
-    setgrievances((prevGrievances)=>
-    prevGrievances.map((grievance)=> grievance.grievanceId === grievanceId ? {...grievance,status: 'resolved'}:grievance))
+    catch(error)
+    {
+      console.log('Error')
+    }
+  }
+  useEffect(()=>{
+
+    fetchGrievances();
+  },[isPendingOpen]);
+
+  const approveGrievance = async(grievanceId: string): Promise<void> => {
+    
+    try
+    {
+      await axios.put(`http://localhost:5000/api/grievance/resolve-grievance/${grievanceId}`);
+      fetchGrievances()
+    }
+    catch(error)
+    {
+      console.log('Error');
+    }
   }
 
-  const filteredGrievances = grievances.filter((grievance)=> grievance.status === (isPendingOpen?'pending':'resolved'))
+  const filteredGrievances = grievances.filter((grievance)=> grievance.status === (isPendingOpen?'Pending':'Resolved'))
 return(
   <>
   <HOD_Navbar/>
@@ -70,11 +66,8 @@ return(
             <table border={2} className='border border-gray-200 overflow-x-auto'>
               <thead>
                 <tr className='bg-gray-100 text-gray-700 border-b border-gray-200'>
-                  <th className='py-3 px-4'>
-                    Student ID
-                  </th>
-                  <th className='py-3 px-4'>
-                    Name
+                  <th className="py-3 px-4">
+                    Date
                   </th>
                   <th className='py-3 px-4'>
                     Title
@@ -92,11 +85,8 @@ return(
                   filteredGrievances.map((grievance) => {
                     return (
                       <tr className='border-b border-gray-200'>
-                          <td className='p-4 font-semibold'>
-                            {grievance.studentId}
-                          </td>
-                          <td className='p-4 break-words font-semibold'>
-                            {grievance.studentName}
+                          <td>
+                            {grievance.status === 'Pending'? `${grievance.createdAt.split('T')[0]}`: `${grievance.updatedAt.split('T')[0]}`}
                           </td>
                           <td className='max-w-md break-words p-4 font-semibold'>
                             {grievance.title}
@@ -106,7 +96,7 @@ return(
                           </td>
                           {isPendingOpen && <td className="p-4">
                             <button className='bg-green-400 text-white px-4 py-2 rounded-lg text-base'
-                              onClick={() => approveGrievance(grievance.grievanceId)}
+                              onClick={() => approveGrievance(grievance._id)}
                             >Resolve</button>
                           </td>}
                         </tr>)
