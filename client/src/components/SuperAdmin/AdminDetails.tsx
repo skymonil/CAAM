@@ -1,29 +1,51 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface Admin {
-  id: string;
-  name: string;
+  username: string;
   password: string;
 }
 
 const AdminDetails = () => {
-  const [admins, setAdmins] = useState<Admin[]>([
-    { id: "doc123", name: "Doc Admin", password: "docpassword" },
-    { id: "marks123", name: "Marks Admin", password: "marksadmin" },
-    { id: "hod123", name: "HOD", password: "hodpassword" },
-  ]);
-
+  const [admins, setAdmins] = useState<Admin[]>([]);
   const [newPassword, setNewPassword] = useState("");
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
 
-  const handlePasswordChange = (adminId: string) => {
+  useEffect(() => {
+    const fetchAdmins = async () => {
+      try {
+        const response = await axios.get("/api/admin/credentials");
+        console.log("Admin Data:", response.data);
+        setAdmins(response.data);
+      } catch (error) {
+        console.error("Error fetching admin data", error);
+      }
+    };
+
+    fetchAdmins();
+  }, []);
+
+  const handlePasswordChange = async () => {
     if (newPassword && selectedAdmin) {
-      const updatedAdmins = admins.map((admin) =>
-        admin.id === adminId ? { ...admin, password: newPassword } : admin
-      );
-      setAdmins(updatedAdmins);
-      setNewPassword("");
-      setSelectedAdmin(null);
+      try {
+        await axios.put(`/api/admin/change-password/${selectedAdmin.username}`, {
+          newPassword,
+        });
+
+        setAdmins((prevAdmins) =>
+          prevAdmins.map((admin) =>
+            admin.username === selectedAdmin.username
+              ? { ...admin, password: newPassword }
+              : admin
+          )
+        );
+
+        setNewPassword("");
+        setSelectedAdmin(null);
+        console.log("Password updated successfully!");
+      } catch (error) {
+        console.error("Error updating password: ", error);
+      }
     }
   };
 
@@ -37,10 +59,7 @@ const AdminDetails = () => {
           <thead>
             <tr className="border-b bg-gray-100">
               <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
-                Admin Name
-              </th>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
-                Admin ID
+                Admin Username
               </th>
               <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
                 Password
@@ -52,18 +71,17 @@ const AdminDetails = () => {
           </thead>
           <tbody>
             {admins.map((admin) => (
-              <tr key={admin.id} className="border-b hover:bg-gray-50">
+              <tr key={admin.username} className="border-b hover:bg-gray-50">
                 <td className="py-2 px-4 text-sm text-gray-700">
-                  {admin.name}
+                  {admin.username}
                 </td>
-                <td className="py-2 px-4 text-sm text-gray-600">{admin.id}</td>
                 <td className="py-2 px-4 text-sm text-gray-600">
                   {admin.password}
                 </td>
                 <td className="py-2 px-4 text-center">
                   <button
                     onClick={() => setSelectedAdmin(admin)}
-                    className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200"
+                    className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
                   >
                     Change Password
                   </button>
@@ -78,7 +96,7 @@ const AdminDetails = () => {
       {selectedAdmin && (
         <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold">
-            Change Password for {selectedAdmin.name}
+            Change Password for {selectedAdmin.username}
           </h3>
           <input
             type="password"
@@ -89,8 +107,8 @@ const AdminDetails = () => {
           />
           <div className="mt-4 flex justify-end">
             <button
-              onClick={() => handlePasswordChange(selectedAdmin.id)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+              onClick={handlePasswordChange}
+              className="px-4 py-2 bg-[#9c231b] text-white rounded-md hover:bg-[#502b28] transition-colors duration-200"
             >
               Save Password
             </button>
