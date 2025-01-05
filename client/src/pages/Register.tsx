@@ -217,9 +217,9 @@ const Register: React.FC = () => {
                 onChange={(e) => setCollege(e.target.value)}
                 required
               >
-                {colleges.map((clg) => (
-                  <option key={clg._id} value={clg._id}>
-                    {clg.collegeName}
+                {colleges.map((college) => (
+                  <option key={college._id} value={college._id}>
+                    {college.collegeName}
                   </option>
                 ))}
               </select>
