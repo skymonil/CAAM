@@ -163,7 +163,7 @@ const MarksAdmin: React.FC = () => {
         <ul>
           {students.map((student) => (
             <li
-              key={student.id}
+              key={`${student.id}-${student.name}`}  // Combine id and name for uniqueness
               className="cursor-pointer flex justify-between items-center bg-gray-100 p-4 mb-4 rounded-lg shadow hover:bg-gray-200 transition duration-300"
               onClick={() => handleStudentClick(student)}
             >
