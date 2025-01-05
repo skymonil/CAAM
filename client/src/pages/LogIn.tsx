@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                 htmlFor="email"
                 className="block text-sm font-medium text-gray-600"
               >
-                Email
+                Sap Id or Email
               </label>
               <input
                 type="text"
@@ -85,6 +85,7 @@ const Login: React.FC = () => {
                 className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                 value={formData.email}
                 onChange={handleChange}
+                placeholder="Enter Sap Id or Email"
                 required
               />
             </div>
@@ -103,6 +104,7 @@ const Login: React.FC = () => {
                   className="w-full px-4 py-2 mt-2 text-gray-700 bg-gray-200 border rounded-lg focus:outline-none focus:ring focus:ring-[#9c231b] sm:text-base"
                   value={formData.password}
                   onChange={handleChange}
+                  placeholder="Enter Password"
                   required
                 />
                 {passwordVisible ? (

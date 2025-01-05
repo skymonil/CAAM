@@ -83,11 +83,11 @@ const AppContent = () => {
         <Route path="/superAdmin" element={<SuperAdmin />} />
         <Route path="/marks-admin" element={<MarksAdmin />} />
 
-        <Route path="/admin-grievance" element={<GrievanceList />}/>
-        <Route path="/admin-leave" element={<LeaveApproval/>}/>
-        <Route path="/admin-scholarship/*" element={<HODScholarship/>}/>
+        <Route path="/admin-grievance" element={<GrievanceList />} />
+        <Route path="/admin-leave" element={<LeaveApproval />} />
+        <Route path="/admin-scholarship/*" element={<HODScholarship />} />
 
-        <Route path="/accountant-admin" element={<AddMoney/>}/>
+        <Route path="/accountant-admin" element={<AddMoney />} />
 
         <Route path="/*" element={<NotFound />} />
       </Routes>
