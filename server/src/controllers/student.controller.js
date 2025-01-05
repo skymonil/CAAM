@@ -1,9 +1,18 @@
 import StudentDetails from "../models/StudentDetail.model.js";
-
+import Student from "../models/Student.model.js"
 export const fillDetails = async (req, res) => {
   try {
+    console.log('Request Body:', req.body);
+    const studentId = req.user._id;
+    const student = await Student.findById(studentId);
+
+    if (!student) {
+      return res.status(404).json({ error: "Student not found" });
+    }
+
+    const collegeId = student.collegeId;
+
     const {
-      studentId,
       fullName,
       dob,
       gender,
@@ -15,21 +24,29 @@ export const fillDetails = async (req, res) => {
       score,
       course,
       documents,
-      college,
-      scholarship,
     } = req.body;
 
-    if (!studentId || !score || !course || !documents || documents.length !== 4) {
+    if (
+      !fullName ||
+      !dob ||
+      !gender ||
+      !phone ||
+      !parentName ||
+      !parentPhone ||
+      !address ||
+      !lastInstitution ||
+      !score ||
+      !course ||
+      documents.length != 4
+    ) {
       return res.status(400).json({
-        error:
-          "Missing or invalid fields. Ensure studentId, score, course, and exactly 4 documents are provided.",
+        error: "Missing required fields. Please provide all the details.",
       });
     }
 
     const documentNames = documents.map((doc) => doc.name);
 
     const studentDetails = new StudentDetails({
-      studentId,
       fullName,
       dob,
       gender,
@@ -38,11 +55,9 @@ export const fillDetails = async (req, res) => {
       parentPhone,
       address,
       lastInstitution,
+      course,
       score: parseFloat(score),
-      courseId: course,
-      documents: documentNames,
-      college: college || "Unknown College", // Default value if college is missing
-      scholarship: scholarship || null,
+      college: collegeId,
     });
 
     // Save to database
@@ -50,6 +65,6 @@ export const fillDetails = async (req, res) => {
 
     res.status(201).json({ message: "Student details saved successfully!" });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ message: "Internal Server Error" });
   }
 };
