@@ -1,137 +1,167 @@
 import Navbar from "./Navbar";
 import React, { useState } from "react";
-import Task from "../../components/WalletTask";
 
 function WalletPage(): React.ReactElement {
-  const [isPendingExpOpen, setPendingExpOpen] = useState<boolean>(false);
-  interface pendingTask {
-    date: string;
-    amount: string;
-    particulars: string;
-  }
-  interface completedTask {
-    date: string;
-    amount: string;
-    particulars: string;
-    status: boolean;
-  }
-  const [pendingTasks, _setPendingTasks] = useState<pendingTask[]>([
-    {
-      date: "23/12/2024",
-      amount: "500",
-      particulars: "Journal",
-    },
-    {
-      date: "23/12/2024",
-      amount: "600",
-      particulars: "Ledger",
-    },
+  const [isPendingExpOpen, setPendingExpOpen] = useState<boolean>(true);
+  const [selectedTask, setSelectedTask] = useState<null | { date: string; amount: string; particulars: string }>(null);
+  const [walletBalance, setWalletBalance] = useState<number>(5000);
+  const [pendingTasks, setPendingTasks] = useState<{ date: string; amount: string; particulars: string }[]>([
+    { date: "01/01/2025", amount: "1200", particulars: "Journal Fees" },
+    { date: "02/01/2025", amount: "1500", particulars: "Ledger Fees" },
+    { date: "03/01/2025", amount: "5000", particulars: "Tuition Fees" },
+    { date: "04/01/2025", amount: "700", particulars: "Library Fees" },
+    { date: "05/01/2025", amount: "2500", particulars: "Exam Fees" },
   ]);
-  const [completedTasks, _setCompletedTasks] = useState<completedTask[]>([
-    {
-      date: "24/12/2024",
-      amount: "62500",
-      particulars: "Fees",
-      status: true,
-    },
+  
+  const [completedTasks, setCompletedTasks] = useState<{ date: string; amount: string; particulars: string; status: boolean }[]>([
+    { date: "24/12/2024", amount: "62500", particulars: "Fees", status: true },
   ]);
+
+  const handlePay = (task: { date: string; amount: string; particulars: string }) => {
+    const amount = parseFloat(task.amount);
+    if (walletBalance >= amount) {
+      setWalletBalance(walletBalance - amount);
+      setCompletedTasks([...completedTasks, { ...task, status: true }]);
+    } else {
+      setCompletedTasks([...completedTasks, { ...task, status: false }]);
+    }
+    setPendingTasks(pendingTasks.filter((t) => t !== task));
+    setSelectedTask(null); // Close the modal after processing payment
+    setPendingExpOpen(false); // Switch to Payment History view
+  };
+
   return (
     <div>
       <Navbar />
-      <div className="p-6 bg-gray-50 min-h-screen">
-        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-          {/* Heading */}
-          <div className="my-3 text-4xl font-semibold mb-6 text-[#9c231b]">
-            <span>Your Wallet</span>
-          </div>
+      <div className="p-6 bg-gray-100 min-h-screen">
+        <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8">
+          <div className="mb-6 text-4xl font-bold text-red-600">Your Wallet</div>
 
-          {/* Wallet Balance Container */}
-          <div className="min-w-screen shadow-lg flex flex-col lg:flex-row md:flex-row  justify-between gap-5 bg-red-400/30 p-5">
-            <div className="flex flex-col lg:flex-row md:flex-row text-3xl gap-2 items-center">
-              <i className="fas fa-wallet text-[#9c231b]"></i>
-              <span className="text-gray-800 text-lg lg:text-3xl">
-                Current Balance:{" "}
-              </span>
-              <span className="flex items-center font-semibold text-2xl lg:text-3xl text-[#9c231b]">
-                <i className="fas fa-indian-rupee-sign mr-2"></i>
-                <span>5,000</span>
+          <div className="flex flex-col lg:flex-row items-center justify-between bg-red-100 p-5 rounded-lg shadow-lg">
+            <div className="flex items-center text-3xl gap-3">
+              <i className="fas fa-wallet text-red-600"></i>
+              <span className="text-gray-800">Current Balance:</span>
+              <span className="font-semibold text-red-600">
+                <i className="fas fa-indian-rupee-sign mr-1"></i>{walletBalance.toLocaleString()}
               </span>
             </div>
 
-            {/* Add Funds Button */}
-            <div className="flex justify-center lg:justify-end px-3">
-              <button className="bg-[#9c231b] text-white px-3 py-3 rounded-lg hover:bg-[#502b28] text-lg">
-                <span className="flex items-center gap-1">
-                  <i className="fas fa-plus mr-1"></i>
-                  <span>Add Funds</span>
-                </span>
-              </button>
-            </div>
+            <button className="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 shadow-md transition-all duration-300">
+              <i className="fas fa-plus mr-2"></i>Add Funds
+            </button>
           </div>
-          <div className="py-5 flex justify-evenly px-2 text-xl md:text-base font-semibold cursor-pointer">
+
+          <div className="flex justify-center gap-10 text-lg font-semibold mt-8">
             <div
-              className={`${
-                isPendingExpOpen && "text-red-500 border-b-4 border-red-500"
-              } text-md lg:text-xl py-2`}
+              className={`cursor-pointer py-2 px-6 rounded-lg transition-all duration-300 ${isPendingExpOpen ? "bg-red-600 text-white" : "bg-gray-200 hover:bg-red-600 hover:text-white"}`}
               onClick={() => setPendingExpOpen(true)}
             >
               Pending Expenses
             </div>
             <div
-              className={`${
-                !isPendingExpOpen &&
-                "text-green-500 border-b-4 border-green-500"
-              } lg:text-xl py-2`}
+              className={`cursor-pointer py-2 px-6 rounded-lg transition-all duration-300 ${!isPendingExpOpen ? "bg-green-600 text-white" : "bg-gray-200 hover:bg-green-600 hover:text-white"}`}
               onClick={() => setPendingExpOpen(false)}
             >
               Payment History
             </div>
           </div>
-          <div>
-            {isPendingExpOpen &&
-              pendingTasks &&
-              pendingTasks.map((task) => {
-                return (
-                  <Task
-                    date={task.date}
-                    amount={task.amount}
-                    particulars={task.particulars}
-                    childComponent={
-                      <div>
-                        <button className="bg-green-400 hover:bg-green-600 px-6 py-2 text-2xl text-white rounded-lg">
-                          Pay
-                        </button>
-                      </div>
-                    }
-                  />
-                );
-              })}
-          </div>
-          <div>
-            {!isPendingExpOpen &&
-              completedTasks &&
-              completedTasks.map((task) => {
-                return (
-                  <Task
-                    date={task.date}
-                    amount={task.amount}
-                    particulars={task.particulars}
-                    childComponent={
-                      <div
-                        className={`px-3 py-1 font-semibold ${
-                          task.status
-                            ? "bg-green-200 text-green-500"
-                            : "bg-red-200 text-red-500"
-                        } rounded-lg`}
+
+          <div className="mt-8">
+            {isPendingExpOpen ? (
+              pendingTasks.length > 0 ? (
+                <table className="min-w-full bg-white shadow-md rounded-lg border-separate border-spacing-0">
+                  <thead className="bg-gray-200 text-gray-600">
+                    <tr>
+                      <th className="py-3 px-6 text-left">Date</th>
+                      <th className="py-3 px-6 text-left">Amount</th>
+                      <th className="py-3 px-6 text-left">Particulars</th>
+                      <th className="py-3 px-6 text-left">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {pendingTasks.map((task, index) => (
+                      <tr
+                        key={index}
+                        className={`border-b hover:bg-gray-50 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
                       >
-                        <span>{task.status ? "SUCCESS" : "FAILURE"}</span>
-                      </div>
-                    }
-                  />
-                );
-              })}
+                        <td className="py-4 px-6">{task.date}</td>
+                        <td className="py-4 px-6">{task.amount}</td>
+                        <td className="py-4 px-6">{task.particulars}</td>
+                        <td className="py-4 px-6">
+                          <button
+                            className="bg-green-500 hover:bg-green-600 px-4 py-2 text-white rounded-lg shadow-md transition-all duration-300"
+                            onClick={() => setSelectedTask(task)}
+                          >
+                            Pay
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="text-center text-gray-500 py-6">No Pending Expenses</div>
+              )
+            ) : completedTasks.length > 0 ? (
+              <table className="min-w-full bg-white shadow-md rounded-lg border-separate border-spacing-0">
+                <thead className="bg-gray-200 text-gray-600">
+                  <tr>
+                    <th className="py-3 px-6 text-left">Date</th>
+                    <th className="py-3 px-6 text-left">Amount</th>
+                    <th className="py-3 px-6 text-left">Particulars</th>
+                    <th className="py-3 px-6 text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {completedTasks.map((task, index) => (
+                    <tr
+                      key={index}
+                      className={`border-b hover:bg-gray-50 ${index % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
+                    >
+                      <td className="py-4 px-6">{task.date}</td>
+                      <td className="py-4 px-6">{task.amount}</td>
+                      <td className="py-4 px-6">{task.particulars}</td>
+                      <td className="py-4 px-6">
+                        <div
+                          className={`px-3 py-1 font-semibold rounded-lg shadow-md ${task.status ? "bg-green-200 text-green-500" : "bg-red-200 text-red-500"}`}
+                        >
+                          {task.status ? "SUCCESS" : "FAILURE"}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="text-center text-gray-500 py-6">No Payment History</div>
+            )}
           </div>
         </div>
+
+        {selectedTask && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg shadow-lg p-6 w-80">
+              <h3 className="text-lg font-semibold mb-4">Confirm Payment</h3>
+              <p className="text-gray-700 mb-4">
+                The amount of <strong>{selectedTask.amount}</strong> for <strong>{selectedTask.particulars}</strong> will be deducted from your wallet.
+              </p>
+              <div className="flex justify-end gap-4">
+                <button
+                  className="bg-gray-300 text-gray-800 py-1 px-4 rounded hover:bg-gray-400"
+                  onClick={() => setSelectedTask(null)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="bg-red-600 text-white py-1 px-4 rounded hover:bg-red-700"
+                  onClick={() => handlePay(selectedTask)}
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
