@@ -1,5 +1,5 @@
 import express from 'express';
-import { addScholarship, fetchAllParticipatedStudents, participateScholarship, scholarshipsWithoutParticipation, scholarshipsWithParticipation, fetchAllScholarships, approveStudents } from '../controllers/scholarship.controller.js';
+import { addScholarship, fetchAllParticipatedStudents, participateScholarship, scholarshipsWithoutParticipation, scholarshipsWithParticipation, fetchAllScholarships, approveStudents,payStudents } from '../controllers/scholarship.controller.js';
 
 const router = express.Router()
 
@@ -16,5 +16,7 @@ router.get('/fetch-all',fetchAllScholarships);
 router.get('/fetch-students/:scholarshipId',fetchAllParticipatedStudents);
 
 router.post('/approve-students',approveStudents);
+
+router.post('/pay-students',payStudents);
 
 export default router;

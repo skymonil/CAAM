@@ -13,9 +13,11 @@ interface Scholarship {
 
 function ApproveScholarship() {
   const [students, setStudents] = useState<Student[]>([]);
-  const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set()); // Only store IDs
+  const [selectedStudents, setSelectedStudents] = useState<Set<string>>(new Set());
   const [scholarships, setScholarships] = useState<Scholarship[]>([]);
   const [selectedScholarshipId, setSelectedScholarshipId] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const fetchScholarships = async () => {
     try {
@@ -24,28 +26,27 @@ function ApproveScholarship() {
         setScholarships(response.data.scholarships);
       }
     } catch (error) {
-      console.log('Error fetching scholarships');
+      setErrorMessage('Error fetching scholarships.');
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
-  useEffect(() => {
 
+  useEffect(() => {
     fetchScholarships();
   }, []);
 
-  // Handle checkbox selection
   const handleCheck = (studentId: string, isChecked: boolean) => {
     setSelectedStudents((prevSelected) => {
       const updatedSelection = new Set(prevSelected);
       if (isChecked) {
-        updatedSelection.add(studentId); // Add ID to Set
+        updatedSelection.add(studentId);
       } else {
-        updatedSelection.delete(studentId); // Remove ID from Set
+        updatedSelection.delete(studentId);
       }
       return updatedSelection;
     });
   };
 
-  // Handle scholarship selection
   const handleScholarshipSelect = async (event: React.ChangeEvent<HTMLSelectElement>) => {
     const scholarshipId = event.target.value;
     setSelectedScholarshipId(scholarshipId);
@@ -54,80 +55,90 @@ function ApproveScholarship() {
       try {
         const response = await axios.get(`http://localhost:5000/api/scholarship/fetch-students/${scholarshipId}`);
         if (response.data) {
-          setStudents(response.data.studentsParticipated); // Fetch and set students
+          setStudents(response.data.studentsParticipated);
         }
       } catch (error) {
-        console.log(error);
+        setErrorMessage('Error fetching students for the selected scholarship.');
+        setTimeout(() => setErrorMessage(''), 3000);
       }
     }
   };
 
-  // Handle the approve button click
-  const handleApproveClick = async() => {
-    // Convert Set of student IDs to an array and log it
+  const handleApproveClick = async () => {
     const selectedStudentIds = Array.from(selectedStudents);
-    try{
-        await axios.post('http://localhost:5000/api/scholarship/approve-students',{
-            studentIds: selectedStudentIds,
-            scholarshipId: selectedScholarshipId
-        });
-        fetchScholarships()
-    }
-    catch(error)
-    {
-        console.log('error')
+    try {
+      await axios.post('http://localhost:5000/api/scholarship/approve-students', {
+        studentIds: selectedStudentIds,
+        scholarshipId: selectedScholarshipId
+      });
+      setSuccessMessage('Students approved successfully.');
+      setSelectedScholarshipId(null);
+      setStudents([]);
+      setScholarships((prev) => prev.filter((scholarship) => scholarship._id !== selectedScholarshipId));
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setErrorMessage('Error approving students.');
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
   return (
-    <div className="flex flex-col space-y-4">
-      <h1 className="text-2xl font-semibold">Approve Scholarship</h1>
+    <div className="flex flex-col space-y-8 p-8">
+      <h1 className="text-3xl font-bold text-gray-800">Approve Scholarship</h1>
 
-      {/* Scholarship selection dropdown */}
+      {errorMessage && (
+        <div className="mb-4 text-red-500 text-lg">{errorMessage}</div>
+      )}
+      {successMessage && (
+        <div className="mb-4 text-green-500 text-lg">{successMessage}</div>
+      )}
+
       <div>
-        <label htmlFor="scholarship" className="text-xl">Select Scholarship</label>
+        <label htmlFor="scholarship" className="text-lg font-medium text-gray-700">Select Scholarship</label>
         <select
           id="scholarship"
-          className="border border-gray-300 p-2 rounded-lg text-lg block my-2"
+          className="border border-gray-300 p-3 rounded-lg text-lg block mt-2 px-5 py-3 bg-white focus:outline-none focus:ring-2 focus:ring-[#9c231b]"
           onChange={handleScholarshipSelect}
         >
           <option value="">-- Select a Scholarship --</option>
           {scholarships.map((scholarship) => (
-            <option key={scholarship._id} value={scholarship._id}>
+            <option key={scholarship._id} value={scholarship._id} className="text-lg">
               {scholarship.name}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Student list and checkbox */}
       <div>
-        {students.map((student) => (
-          <div
-            key={student._id}
-            className="flex justify-between border border-gray-300 p-5 mb-3 rounded-lg shadow-lg text-xl text-gray-700"
-          >
-            <div>{student._id}</div>
-            <div>{student.name}</div>
-            <div>
+        {students.length > 0 ? (
+          students.map((student) => (
+            <div
+              key={student._id}
+              className="flex justify-between items-center border border-gray-300 p-4 mb-3 rounded-lg shadow-md bg-white hover:shadow-lg transition duration-300 text-lg text-gray-700"
+            >
+              <div className="flex-1">{student.name}</div>
               <input
                 type="checkbox"
+                className="h-5 w-5 text-[#9c231b] rounded focus:ring-[#9c231b] focus:ring-2"
                 onChange={(e) => handleCheck(student._id, e.target.checked)}
               />
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-gray-500">No students available for this scholarship.</p>
+        )}
       </div>
 
-      {/* Approve button */}
-      <div>
-        <button
-          className="bg-green-500 px-4 py-2 rounded-lg text-white text-lg hover:bg-green-700"
-          onClick={()=>handleApproveClick()}
-        >
-          Approve Selected Students
-        </button>
-      </div>
+      {selectedScholarshipId && (
+        <div className="flex justify-end">
+          <button
+            className="bg-green-500 px-6 py-3 rounded-lg text-white text-lg font-semibold hover:bg-green-700 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+            onClick={handleApproveClick}
+          >
+            Approve Selected Students
+          </button>
+        </div>
+      )}
     </div>
   );
 }

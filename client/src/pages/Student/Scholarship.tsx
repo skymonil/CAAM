@@ -27,7 +27,6 @@ import { useStudent } from "../../context/StudentContext";
         const response = await axios.get(`http://localhost:5000/api/scholarship/fetch-non-participated/${studentId}`);
         if(response.data.success)
         {
-          setActiveScholarships([]);
           setActiveScholarships(response.data.scholarships);
         }
       }
@@ -36,14 +35,13 @@ import { useStudent } from "../../context/StudentContext";
         console.log('Error')
       }
     }
+
     const fetchAppliedScholarships = async()=>{
       try
       {
         const response = await axios.get(`http://localhost:5000/api/scholarship/fetch-participated/${studentId}`);
         if(response.data.success)
         {
-          console.log(response.data.scholarships)
-          setAppliedScholarships([]);
           setAppliedScholarships(response.data.scholarships);
         }
       }
@@ -52,42 +50,48 @@ import { useStudent } from "../../context/StudentContext";
         console.log('Error');
       }
     }
+
     useEffect(()=>{
 
       fetchActiveScholarShips()
       fetchAppliedScholarships()
     },[studentId])
 
-    const handleApply = async(scholarshipId: string)=>{
-      try
-      {
-        const response = await axios.post('http://localhost:5000/api/scholarship/participate',{
+    const handleApply = async (scholarshipId: string) => {
+      try {
+        const response = await axios.post('http://localhost:5000/api/scholarship/participate', {
           studentId,
           scholarshipId
         });
-        if(response.data)
-        {
+        if (response.data) {
           setConfirmationMessage(response.data.message);
-          setActiveScholarships((prevActiveScholarships) => {
-            const scholarshipToMove = prevActiveScholarships.find(s => s._id === scholarshipId);
-            if (scholarshipToMove) {
-              setAppliedScholarships((prevAppliedScholarships) => [...prevAppliedScholarships, scholarshipToMove]);
-              return prevActiveScholarships.filter(s => s._id !== scholarshipId);
+          
+          // First, update active scholarships
+          setActiveScholarships((prevActiveScholarships) =>
+            prevActiveScholarships.filter((s) => s._id !== scholarshipId)
+          );
+    
+          // Then, update applied scholarships
+          setAppliedScholarships((prevAppliedScholarships) => {
+            const scholarshipToAdd = activeScholarships.find(
+              (scholarship) => scholarship._id === scholarshipId
+            );
+            if (scholarshipToAdd) {
+              return [...prevAppliedScholarships, scholarshipToAdd];
             }
-            return prevActiveScholarships;
+            return prevAppliedScholarships;
           });
-
+    
+          // Reset the selected scholarship
           setSelectedScholarship(null);
           setTimeout(() => {
             setConfirmationMessage('');
           }, 3000);
         }
+      } catch (error) {
+        console.log('error');
       }
-      catch(error)
-      {
-        console.log('error')
-      }
-    }
+    };
     
     return (
       <div>

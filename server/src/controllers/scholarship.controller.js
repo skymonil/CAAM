@@ -1,5 +1,7 @@
 import Scholarship from '../models/Scholarship.model.js';
+import StudentDetails from '../models/StudentDetail.model.js';
 
+//Add new Scholarship by HOD
 export const addScholarship = async(req,res)=>{
     const {name, date, amount} = req.body;
 
@@ -25,6 +27,7 @@ export const addScholarship = async(req,res)=>{
     }
 }
 
+//Participate in Scholarship by student
 export const participateScholarship = async(req,res)=>{
     const {studentId, scholarshipId} = req.body;
 
@@ -48,6 +51,7 @@ export const participateScholarship = async(req,res)=>{
     }
 }
 
+//Fetch all scholarships where student has participated
 export const scholarshipsWithParticipation = async(req,res) =>{
     const {studentId} = req.params;
 
@@ -73,6 +77,7 @@ export const scholarshipsWithParticipation = async(req,res) =>{
     }
 }
 
+//Fetch all Students where Student has not participated
 export const scholarshipsWithoutParticipation = async(req,res) =>{
     const {studentId} = req.params;
 
@@ -98,6 +103,7 @@ export const scholarshipsWithoutParticipation = async(req,res) =>{
     }
 }
 
+//Fetch all Students of a Scholarship who have participated
 export const fetchAllParticipatedStudents = async(req,res)=>{
     const {scholarshipId} = req.params;
 
@@ -121,6 +127,7 @@ export const fetchAllParticipatedStudents = async(req,res)=>{
     }
 }
 
+//Fetch the list of scholarships which are 'Pending'
 export const fetchAllScholarships = async (req, res) => {
     try{
         const scholarships = await Scholarship.find({status: 'Pending'});
@@ -135,6 +142,7 @@ export const fetchAllScholarships = async (req, res) => {
     }
 };
 
+//Approve the students by HOD
 export const approveStudents = async (req, res) => {
     const { scholarshipId, studentIds } = req.body;
   
@@ -156,7 +164,7 @@ export const approveStudents = async (req, res) => {
       }
   
       scholarship.approvedStudents.push(...studentIds);
-
+      scholarship.status = 'Approved';
       await scholarship.save();
   
       res.status(200).json({ message: 'Students approved successfully!', scholarship });
@@ -164,4 +172,39 @@ export const approveStudents = async (req, res) => {
       res.status(500).json({ message: 'Internal Server Error Occurred' });
     }
   };
+
+//Payment of Student by Super Admin
+export const payStudents = async(req,res)=>{
+    const {studentIds, scholarshipId} = req.body;
+    if(!studentIds)
+    {
+        return res.status(404).json({message: 'Provide Proper Student Ids'});
+    }
+    try
+    {
+        const scholarship = await Scholarship.findById(scholarshipId);
+        if(!scholarship)
+        {
+            return res.status(404).json({message: 'No Scholarship Found'});
+        }
+        
+        for(const studentId of studentIds)
+        {
+            const student = await StudentDetails.findOne({studentId});
+            if(student)
+            {
+                student.walletBalance += scholarship.amount;
+                await student.save();
+            }
+            else{
+                console.log(`Student with ${studentId} not Found`);
+            }
+        }
+    }
+    catch(error)
+    {
+        console.log('Error Occured While Paying Students: '+error);
+        res.status(500).json({message: 'Internal Server Error Occurred'})
+    }
+}
   

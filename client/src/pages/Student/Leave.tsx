@@ -31,6 +31,7 @@ const Leave = () => {
           console.log(studentId);
           const response = await axios.get(`http://localhost:5000/api/leave/fetch-leave-student/${studentId}`);
           if (response.data) {
+            console.log(response.data.leaves)
             setLeaveHistory(response.data.leaves);
           }
         } catch (error) {
@@ -48,7 +49,7 @@ const Leave = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(""); // Reset error message before submitting
+    setErrorMessage(""); 
 
     try {
       const response = await axios.post('http://localhost:5000/api/leave/add', {
@@ -154,7 +155,7 @@ const Leave = () => {
               Leave History
             </h2>
             <div className="overflow-x-auto">
-              {leaveHistory.length > 0 ? (
+              {leaveHistory && leaveHistory.length > 0 ? (
                 <table className="w-full border-collapse border border-gray-200">
                   <thead>
                     <tr className="bg-gray-100">

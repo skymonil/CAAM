@@ -8,11 +8,7 @@ interface Form {
 }
 
 function AddScholarship() {
-  const [formData, setFormData] = useState<Form>({
-    name: '',
-    date: '',
-    amount: ''
-  });
+  const [formData, setFormData] = useState<Form>({ name: '', date: '', amount: '' });
   const [activeScholarships, setActiveScholarships] = useState<{ name: string; examDate: string; amount: string }[]>([]);
   const [isFormOpen, setFormOpen] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
@@ -27,22 +23,18 @@ function AddScholarship() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleAdd = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/scholarship/add', {
-        ...formData
-      });
+      const response = await axios.post('http://localhost:5000/api/scholarship/add', { ...formData });
 
       if (response.data) {
         setSuccessMessage('Scholarship added successfully!');
         setFormData({ name: '', date: '', amount: '' });
-        fetchScholarships(); // Refresh the list after adding a scholarship
+        fetchScholarships();
+        setTimeout(() => setSuccessMessage(''), 3000);
         closeForm();
       }
     } catch (error) {
@@ -70,7 +62,7 @@ function AddScholarship() {
       <div className="p-6">
         <button
           onClick={openForm}
-          className="bg-[#9c231b] text-white text-xl rounded-lg px-6 py-3 font-semibold hover:bg-[#7c1d16] transition duration-300"
+          className="bg-red-600 text-white text-xl rounded-lg px-6 py-3 font-semibold hover:bg-red-700 transition duration-300"
         >
           Add Scholarship
         </button>
@@ -78,9 +70,12 @@ function AddScholarship() {
         <div className="mt-6">
           <h2 className="text-2xl font-semibold mb-4">Active Scholarships</h2>
           {activeScholarships.length > 0 ? (
-            <ul>
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {activeScholarships.map((scholarship, index) => (
-                <li key={index} className="border p-4 rounded-lg mb-4 shadow-md hover:shadow-lg transition duration-300">
+                <li
+                  key={index}
+                  className="border p-4 rounded-lg mb-4 shadow-md hover:shadow-lg transition duration-300 bg-white"
+                >
                   <h3 className="text-xl font-bold">{scholarship.name}</h3>
                   <p className="text-sm text-gray-500">Date: {scholarship.examDate.split('T')[0]}</p>
                   <p className="text-sm text-gray-500">Amount: {scholarship.amount}</p>
@@ -92,16 +87,17 @@ function AddScholarship() {
           )}
         </div>
 
-        {/* Modal */}
         {isFormOpen && (
-          <div className="flex fixed inset-0 justify-center items-center bg-gray-500 bg-opacity-50 z-50">
-            <div className="w-96 rounded-lg p-6 bg-white shadow-lg">
+          <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-50">
+            <div className="w-full max-w-md rounded-lg p-6 bg-white shadow-lg transform transition-all duration-300 scale-100">
               <h2 className="text-2xl font-semibold mb-4">Add Scholarship Details</h2>
               {successMessage && (
                 <div className="mb-4 text-green-500 text-lg">{successMessage}</div>
               )}
               {errorMessage && (
-                <div className="mb-4 text-red-500 text-lg">{errorMessage}</div>
+                <div className="mb-4 text-red-500 text-lg bg-red-100 p-3 rounded-lg">
+                  {errorMessage}
+                </div>
               )}
               <form>
                 <div className="mb-6">
@@ -112,7 +108,7 @@ function AddScholarship() {
                     placeholder="Enter Scholarship Name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9c231b] focus:border-transparent"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
                   />
                 </div>
                 <div className="mb-6">
@@ -122,7 +118,7 @@ function AddScholarship() {
                     name="date"
                     value={formData.date}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9c231b] focus:border-transparent"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
                   />
                 </div>
                 <div className="mb-6">
@@ -133,7 +129,7 @@ function AddScholarship() {
                     placeholder="Enter Amount"
                     value={formData.amount}
                     onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#9c231b] focus:border-transparent"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
                   />
                 </div>
                 <div className="flex space-x-4">
