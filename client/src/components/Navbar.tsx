@@ -53,7 +53,7 @@ const Navbar = () => {
 
 
   return (
-    <div className="flex justify-between items-center bg-[#053f64] text-white p-4">
+    <div className="flex justify-between w-full items-center bg-[#053f64] text-white p-4">
       <div className="flex items-center">
       <i className="fas fa-user"></i>
         <div className="ml-2 text-lg font-semibold">{studentData?.name}</div> {/* Name */}

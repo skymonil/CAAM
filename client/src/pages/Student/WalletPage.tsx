@@ -1,5 +1,14 @@
 import Navbar from "./Navbar";
 import React, { useState } from "react";
+// import logo from "../../assets/logo.jpeg";
+
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
+export { };
 
 function WalletPage(): React.ReactElement {
   const [isPendingExpOpen, setPendingExpOpen] = useState<boolean>(true);
@@ -12,10 +21,65 @@ function WalletPage(): React.ReactElement {
     { date: "04/01/2025", amount: "700", particulars: "Library Fees" },
     { date: "05/01/2025", amount: "2500", particulars: "Exam Fees" },
   ]);
-  
+
   const [completedTasks, setCompletedTasks] = useState<{ date: string; amount: string; particulars: string; status: boolean }[]>([
     { date: "24/12/2024", amount: "62500", particulars: "Fees", status: true },
   ]);
+
+  // const [amount, setAmount] = useState<number>(5000); // Example initial wallet balance
+
+  // const handleAddFunds = () => {
+  //   const options = {
+  //     key: "rzp_test_1Hx7smB3aOIDYu", // Your Razorpay key
+  //     amount: amount * 100, // Amount in paisa (1 INR = 100 paisa)
+  //     currency: "INR",
+  //     name: "CAAM",
+  //     description: "Add funds to your wallet",
+  //     image: logo, 
+  //     handler: function (response: any) {
+  //       // Handle payment success
+  //       alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+
+  //       // Verify payment on the server side
+  //       verifyPaymentOnServer(response.razorpay_payment_id, response.razorpay_order_id, response.razorpay_signature);
+  //     },
+  //     prefill: {
+  //       name: "Student Name", // Optional: Prefill user details
+  //       email: "student@example.com", // Optional
+  //       contact: "1234567890", // Optional
+  //     },
+  //     notes: {
+  //       address: "Your address", // Optional: Address or other notes
+  //     },
+  //     theme: {
+  //       color: "#F37254", // Customize button color
+  //     },
+  //   };
+
+  //   const rzp1 = new window.Razorpay(options);
+  //   rzp1.open();
+  // };
+
+
+  // const verifyPaymentOnServer = async (razorpay_payment_id, razorpay_order_id, razorpay_signature) => {
+  //   try {
+  //     const response = await axios.post("http://localhost:5000/api/razopay/verify-payment", {
+  //       razorpay_payment_id,
+  //       razorpay_order_id,
+  //       razorpay_signature,
+  //     });
+
+  //     if (response.status === 200) {
+  //       alert("Payment Verified Successfully");
+  //     } else {
+  //       alert("Payment Verification Failed");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error during payment verification", error);
+  //     alert("An error occurred while verifying the payment");
+  //   }
+  // };
+
 
   const handlePay = (task: { date: string; amount: string; particulars: string }) => {
     const amount = parseFloat(task.amount);
@@ -46,7 +110,9 @@ function WalletPage(): React.ReactElement {
               </span>
             </div>
 
-            <button className="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 shadow-md transition-all duration-300">
+            <button
+              // onClick={handleAddFunds} 
+              className="bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 shadow-md transition-all duration-300">
               <i className="fas fa-plus mr-2"></i>Add Funds
             </button>
           </div>

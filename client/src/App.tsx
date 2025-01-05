@@ -55,45 +55,37 @@ const AppContent = () => {
 
   return (
     <>
-    <StudentProvider>
-      {shouldHaveNavbar && <Navbar />}
-      <Routes>
-        <Route path="/log-in" element={<LogIn />} />
-        <Route
-          path="/"
-          element={<Register />}
-          />
-        <Route
-          path="/admin-register"
-          element={<AdminRegister />}
-          />
-        <Route
-          path="/admin-login"
-          element={<AdminLogin />}
-          />
-        <Route path="/student-detail" element={<Dashboard />} />
-        <Route path="/fee-status" element={<FeeStatus />} />
-        <Route path="/admission/*" element={<Admission />} />
-        <Route path="/leave" element={<Leave />} />
-        <Route path="/grievance" element={<Grievance />} />
-        <Route path="/wallet" element={<WalletPage />} />
-        <Route path="/scholarship" element={<Scholarship />} />
-        <Route path="/reexam" element={<ReExam />} />
-        <Route path="/result" element={<Result />} />
+      <StudentProvider>
+        {shouldHaveNavbar && <Navbar />}
+        <Routes>
+          <Route path="/" element={<Register />} />
+          <Route path="/log-in" element={<LogIn />} />
 
-        <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
-        <Route path="/superAdmin" element={<SuperAdmin />} />
-        <Route path="/marks-admin" element={<MarksAdmin />} />
+          <Route path="/admin-register" element={<AdminRegister />} />
+          <Route path="/admin-login" element={<AdminLogin />} />
 
-        <Route path="/admin-grievance" element={<GrievanceList />} />
-        <Route path="/admin-leave" element={<LeaveApproval />} />
-        <Route path="/admin-scholarship/*" element={<HODScholarship />} />
+          <Route path="/student-detail" element={<Dashboard />} />
+          <Route path="/admission/*" element={<Admission />} />
+          <Route path="/fee-status" element={<FeeStatus />} />
+          <Route path="/reexam" element={<ReExam />} />
+          <Route path="/result" element={<Result />} />
+          <Route path="/scholarship" element={<Scholarship />} />
+          <Route path="/grievance" element={<Grievance />} />
+          <Route path="/leave" element={<Leave />} />
+          <Route path="/wallet" element={<WalletPage />} />
 
-        <Route path="/accountant-admin" element={<AddMoney />} />
+          <Route path="/superAdmin" element={<SuperAdmin />} />
+          <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
+          <Route path="/marks-admin" element={<MarksAdmin />} />
+          <Route path="/accountant-admin" element={<AddMoney />} />
 
-        <Route path="/*" element={<NotFound />} />
-      </Routes>
-    </StudentProvider>
+          <Route path="/admin-grievance" element={<GrievanceList />} />
+          <Route path="/admin-leave" element={<LeaveApproval />} />
+          <Route path="/admin-scholarship/*" element={<HODScholarship />} />
+
+          <Route path="/*" element={<NotFound />} />
+        </Routes>
+      </StudentProvider>
     </>
   );
 };
@@ -108,6 +100,3 @@ function App() {
 
 export default App;
 
-
-// To do :
-// make api for taking admin college name in admin detail page or make it separate page and than make another api that will take college name and return all the other admin detail like username, email, password 
