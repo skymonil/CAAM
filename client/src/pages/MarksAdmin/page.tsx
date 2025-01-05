@@ -185,5 +185,4 @@ const MarksAdmin: React.FC = () => {
   );
 };
 
-
 export default MarksAdmin;
