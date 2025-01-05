@@ -11,7 +11,7 @@ import leaveRoute from "./routes/leave.route.js";
 import collegeRoute from "./routes/college.routes.js";
 import studentRoute from "./routes/student.route.js";
 import adminRoute from "./routes/admin.route.js";
-
+import scholarshipRoute from './routes/scholarship.route.js'
 const app = express();
 const PORT = 5000;
 
@@ -42,6 +42,9 @@ app.use("/api/grievance", grievanceRoute);
 
 //Endpoint to Add Leave from Student side and Approve or Reject Leave from HOD side
 app.use("/api/leave", leaveRoute);
+
+//Endpoint to Add Scholarship from HOD side 
+app.use('/api/scholarship',scholarshipRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on : ${PORT}`);

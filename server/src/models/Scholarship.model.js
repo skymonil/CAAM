@@ -4,6 +4,7 @@ const scholarshipSchema = new Schema({
     name: {
         type: String,
         required: true,
+        unique: true
     },
     amount: {
         type: Number,
@@ -21,7 +22,12 @@ const scholarshipSchema = new Schema({
     approvedStudents: [{
         type: Schema.Types.ObjectId,
         ref: 'Student'
-    }]
+    }],
+    status: {
+        type: String,
+        enum: ['Pending','Approved','Paid'],
+        default: 'Pending'
+    }
 }, {timestamps:true});
 
 const Scholarship = model('Scholarship', scholarshipSchema);
