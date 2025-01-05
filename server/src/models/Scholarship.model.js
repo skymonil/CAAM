@@ -14,6 +14,14 @@ const scholarshipSchema = new Schema({
         type: Date,
         required: true,
     },
+    participatedStudents: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Student'
+    }],
+    approvedStudents: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Student'
+    }]
 }, {timestamps:true});
 
 const Scholarship = model('Scholarship', scholarshipSchema);
