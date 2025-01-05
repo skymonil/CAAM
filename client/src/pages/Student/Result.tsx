@@ -50,7 +50,7 @@ const Result = () => {
     if (resultRef.current) {
       const printContent = resultRef.current.innerHTML;
       const printWindow = window.open("", "_blank");
-  
+
       if (printWindow) {
         printWindow.document.write(`
           <html>
@@ -71,6 +71,13 @@ const Result = () => {
                   border-radius: 8px;
                   padding: 20px;
                   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+  
+                /* Heading Styles */
+                h1, h2, h3 {
+                  text-align: center;
+                  margin: 0 0 20px 0;
+                  color: #111827;
                 }
   
                 /* Header Section */
@@ -161,7 +168,7 @@ const Result = () => {
             </body>
           </html>
         `);
-  
+
         printWindow.document.close();
         printWindow.print();
       } else {
@@ -171,9 +178,7 @@ const Result = () => {
       alert("Result section is not available for printing.");
     }
   };
-  
-  
-  
+
 
   return (
     <>
@@ -182,42 +187,41 @@ const Result = () => {
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
           {/* Header */}
           <div className="" ref={resultRef}>
-          <div className="flex w-full justify-between items-center mb-6">
-            <p className="text-gray-600 font-medium">
-              Student ID: {studentInfo.studentId}
-            </p>
-            <p className="text-gray-600">Course: {studentInfo.course}</p>
-          </div>
+            <div className="flex w-full justify-between items-center mb-6">
+              <p className="text-gray-600 font-medium">
+                Student ID: {studentInfo.studentId}
+              </p>
+              <p className="text-gray-600">Course: {studentInfo.course}</p>
+            </div>
 
-          {/* Performance Summary */}
-          <div className="grid grid-cols-3 gap-4 text-center mb-6">
-            <div>
-              <p className="text-gray-600">Total Marks</p>
-              <h4 className="text-xl font-bold">
-                {studentInfo.totalMarks}/{studentInfo.maxMarks}
-              </h4>
-            </div>
-            <div>
-              <p className="text-gray-600">Percentage & Grade</p>
-              <h4 className="text-xl font-bold">
-                {studentInfo.percentage}% ({studentInfo.grade})
-              </h4>
-            </div>
-            <div>
+            {/* Performance Summary */}
+            <div className="grid grid-cols-3 gap-4 text-center mb-6">
+              <div>
+                <p className="text-gray-600">Total Marks</p>
+                <h4 className="text-xl font-bold">
+                  {studentInfo.totalMarks}/{studentInfo.maxMarks}
+                </h4>
+              </div>
+              <div>
+                <p className="text-gray-600">Percentage & Grade</p>
+                <h4 className="text-xl font-bold">
+                  {studentInfo.percentage}% ({studentInfo.grade})
+                </h4>
+              </div>
+              <div>
                 <p className="text-gray-600">Status</p>
-              <h4
-                className={`text-xl font-bold ${
-                  studentInfo.status === "PASS"
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
-              >
-                {studentInfo.status}
-              </h4>
+                <h4
+                  className={`text-xl font-bold ${studentInfo.status === "PASS"
+                      ? "text-green-500"
+                      : "text-red-500"
+                    }`}
+                >
+                  {studentInfo.status}
+                </h4>
+              </div>
             </div>
-          </div>
 
-          {/* Subject-wise Performance */}
+            {/* Subject-wise Performance */}
 
             <table className="w-full border-collapse mb-6 text-center">
               <thead>
