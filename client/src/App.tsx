@@ -72,17 +72,17 @@ const AppContent = () => {
           element={<AdminLogin />}
           />
         <Route path="/student-detail" element={<Dashboard />} />
-        <Route path="/fee-status" element={<FeeStatus />} />
         <Route path="/admission/*" element={<Admission />} />
-        <Route path="/leave" element={<Leave />} />
-        <Route path="/grievance" element={<Grievance />} />
-        <Route path="/wallet" element={<WalletPage />} />
-        <Route path="/scholarship" element={<Scholarship />} />
+        <Route path="/fee-status" element={<FeeStatus />} />
         <Route path="/reexam" element={<ReExam />} />
         <Route path="/result" element={<Result />} />
+        <Route path="/scholarship" element={<Scholarship />} />
+        <Route path="/grievance" element={<Grievance />} />
+        <Route path="/leave" element={<Leave />} />
+        <Route path="/wallet" element={<WalletPage />} />
 
-        <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
         <Route path="/superAdmin" element={<SuperAdmin />} />
+        <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
         <Route path="/marks-admin" element={<MarksAdmin />} />
 
         <Route path="/admin-grievance" element={<GrievanceList />} />
@@ -108,6 +108,3 @@ function App() {
 
 export default App;
 
-
-// To do :
-// make api for taking admin college name in admin detail page or make it separate page and than make another api that will take college name and return all the other admin detail like username, email, password 

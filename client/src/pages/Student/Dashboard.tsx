@@ -20,7 +20,6 @@ const StudentDashboard = () => {
         withCredentials: true,
       })
       .then((response) => {
-        console.log(response.data);
         setStudentData(response.data);
         setLoading(false);
       })
@@ -46,15 +45,17 @@ const StudentDashboard = () => {
       <div className="p-4 sm:p-6 md:p-8 flex flex-col">
         {/* Profile Section */}
         <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-          <h2 className="text-xl md:text-2xl font-semibold mb-4 text-center border-b pb-2 text-[#9c231b]">
+          <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-center border-b pb-2 text-[#9c231b]">
             Student Profile
           </h2>
 
           {/* User Info */}
           <div className="flex flex-col sm:flex-row items-center sm:items-start space-x-0 sm:space-x-6 mb-6 border-b pb-4">
-            <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-[#9c231b] to-[#253954] text-white font-bold rounded-full mb-4 sm:mb-0 flex items-center justify-center text-5xl">CV</div>
+            <div className="w-24 h-24 md:w-32 md:h-32 bg-gradient-to-br from-[#9c231b] to-[#253954] text-white font-bold rounded-full mb-4 sm:mb-0 flex items-center justify-center text-5xl">
+              CV
+            </div>
             <div className="text-center sm:text-left md:mt-9">
-              <h3 className="text-lg md:text-xl font-bold">{studentData?.name}</h3>
+              <h3 className="text-lg sm:text-xl font-bold">{studentData?.name}</h3>
               <p className="text-gray-600">Student ID: {studentData?.id}</p>
             </div>
           </div>
