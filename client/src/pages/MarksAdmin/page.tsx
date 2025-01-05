@@ -130,6 +130,7 @@ const MarksAdmin: React.FC = () => {
       })
       .then((response) => {
         setStudents(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.error("Error fetching students:", error);

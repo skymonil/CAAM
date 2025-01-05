@@ -17,9 +17,7 @@ export const getStudent = async (req, res) => {
 };
 
 export const getAllStudent = async (req, res) => {
-    try {
-        console.log("Hello");
-        
+    try {        
         const students = await Student.find();
 
         if (!students || students.length === 0) {

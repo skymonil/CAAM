@@ -77,12 +77,11 @@ const AppContent = () => {
           <Route path="/superAdmin" element={<SuperAdmin />} />
           <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
           <Route path="/marks-admin" element={<MarksAdmin />} />
+          <Route path="/accountant-admin" element={<AddMoney />} />
 
           <Route path="/admin-grievance" element={<GrievanceList />} />
           <Route path="/admin-leave" element={<LeaveApproval />} />
           <Route path="/admin-scholarship/*" element={<HODScholarship />} />
-
-          <Route path="/accountant-admin" element={<AddMoney />} />
 
           <Route path="/*" element={<NotFound />} />
         </Routes>
