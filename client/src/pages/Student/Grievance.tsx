@@ -14,6 +14,8 @@ const Grievance = () => {
     title: "",
     details: "",
   });
+  const [showMessage, setShowMessage] = useState(false);
+  const [showErrorMessage, setShowErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchGrievances = async () => {
@@ -23,14 +25,13 @@ const Grievance = () => {
           setGrievanceHistory(response.data.data);
         }
       } catch (error) {
-        console.log('Error Occurred While Fetching');
+        console.log('Error Occured While Fetching Grievance '+error)
       }
     };
-
-    fetchGrievances();
-  }, [studentId]); // Added studentId as dependency to refetch if it changes
-
-  const [showMessage, setShowMessage] = useState(false);
+    if (studentId) {
+      fetchGrievances();
+    }
+  }, [studentId]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -43,7 +44,7 @@ const Grievance = () => {
     e.preventDefault();
 
     try {
-     await axios.post('http://localhost:5000/api/grievance/add', {
+      await axios.post('http://localhost:5000/api/grievance/add', {
         studentId,
         title: formData.title,
         details: formData.details
@@ -58,9 +59,10 @@ const Grievance = () => {
       setGrievanceHistory((prev) => [...prev, newGrievance]);
       setFormData({ title: "", details: "" });
       setShowMessage(true);
+      setShowErrorMessage(null); 
       setTimeout(() => setShowMessage(false), 3000);
     } catch (error) {
-      console.log('Error: ' + error);
+      setShowErrorMessage("Error occurred while submitting the grievance.");
     }
   };
 
@@ -82,6 +84,11 @@ const Grievance = () => {
             {showMessage && (
               <div className="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">
                 Grievance submitted successfully!
+              </div>
+            )}
+            {showErrorMessage && (
+              <div className="mb-4 p-4 bg-red-100 text-red-800 rounded-lg">
+                {showErrorMessage}
               </div>
             )}
             <div className="mb-4">
@@ -134,34 +141,40 @@ const Grievance = () => {
 
           <div className="mt-8">
             <h2 className="text-xl font-semibold mb-4">Grievance History</h2>
-            <div className="overflow-x-auto">
-              <table className="min-w-full border border-gray-200 bg-white rounded-lg">
-                <thead>
-                  <tr className="bg-gray-100 text-gray-700">
-                    <th className="py-2 px-4 text-left border-b">Date</th>
-                    <th className="py-2 px-4 text-left border-b">Title</th>
-                    <th className="py-2 px-4 text-left border-b">Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {grievanceHistory.map((grievance, index) => (
-                    <tr key={index} className="hover:bg-gray-50">
-                      <td className="py-2 px-4 border-b">{grievance.date}</td>
-                      <td className="py-2 px-4 border-b">{grievance.title}</td>
-                      <td
-                        className={`py-2 px-4 border-b ${
-                          grievance.status === "Resolved"
-                            ? "text-green-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {grievance.status}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+            {
+              grievanceHistory.length === 0 ? (
+                <div className="flex text-gray-600 justify-center text-lg">No Grievance History Found</div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="min-w-full border border-gray-200 bg-white rounded-lg">
+                    <thead>
+                      <tr className="bg-gray-100 text-gray-700">
+                        <th className="py-2 px-4 text-left border-b">Date</th>
+                        <th className="py-2 px-4 text-left border-b">Title</th>
+                        <th className="py-2 px-4 text-left border-b">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {grievanceHistory.map((grievance, index) => (
+                        <tr key={index} className="hover:bg-gray-50">
+                          <td className="py-2 px-4 border-b">{grievance.date}</td>
+                          <td className="py-2 px-4 border-b">{grievance.title}</td>
+                          <td
+                            className={`py-2 px-4 border-b ${
+                              grievance.status === "Resolved"
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {grievance.status}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
