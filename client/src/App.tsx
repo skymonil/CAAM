@@ -27,6 +27,7 @@ import ReExam from "./pages/Student/ReExam";
 import HODScholarship from "./pages/HOD/HODScholarship";
 import AddMoney from "./pages/AccountantAdmin/AddMoney";
 import Result from "./pages/Student/Result";
+import { StudentProvider } from "./context/StudentContext";
 
 const AppContent = () => {
   const location = useLocation();
@@ -54,21 +55,22 @@ const AppContent = () => {
 
   return (
     <>
+    <StudentProvider>
       {shouldHaveNavbar && <Navbar />}
       <Routes>
         <Route path="/log-in" element={<LogIn />} />
         <Route
           path="/"
           element={<Register />}
-        />
+          />
         <Route
           path="/admin-register"
           element={<AdminRegister />}
-        />
+          />
         <Route
           path="/admin-login"
           element={<AdminLogin />}
-        />
+          />
         <Route path="/student-detail" element={<Dashboard />} />
         <Route path="/fee-status" element={<FeeStatus />} />
         <Route path="/admission/*" element={<Admission />} />
@@ -91,6 +93,7 @@ const AppContent = () => {
 
         <Route path="/*" element={<NotFound />} />
       </Routes>
+    </StudentProvider>
     </>
   );
 };

@@ -1,86 +1,136 @@
-import { useState } from "react"
-import HOD_Navbar from "../../components/HOD/HOD_Navbar"
+import { useEffect, useState } from "react";
+import HOD_Navbar from "../../components/HOD/HOD_Navbar";
+import axios from "axios";
 
 interface Leave {
-    leaveId: string,
-    startDate: string,
-    endDate: string,
-    description: string,
-    status: string
-}
-function LeaveApproval() {
-    const [leave, _setLeave] = useState<Leave[]>([
-        {
-            leaveId: '00998',
-            startDate: '12/12/24',
-            endDate: '24/12/24',
-            description: 'Welding Ceremony',
-            status: 'approved'
-        },
-        {
-            leaveId: '00998',
-            startDate: '12/12/24',
-            endDate: '24/12/24',
-            description: 'Wedding Ceremony',
-            status: 'pending'
-        },
-        {
-            leaveId: '00998',
-            startDate: '12/12/24',
-            endDate: '24/12/24',
-            description: 'Wedding Ceremony',
-            status: 'pending'
-        }
-    ])
-    const [selected,setSelected] = useState<string>('pending')
-    return (
-        <>
-            <HOD_Navbar />
-            <div className="max-w-5xl min-h-96 shadow-xl m-auto p-4 ">
-                <div>
-                    <h1 className="text-3xl font-semibold">Leave Approval</h1>
-                </div>
-                <div className="flex justify-evenly text-xl py-3">
-                    <div onClick={()=>setSelected('pending')} className={`${selected === 'pending'?'text-blue-500 border-b-2 border-blue-600':''} cursor-pointer`}>Pending</div>
-                    <div onClick={()=>setSelected('rejected')} className={`${selected === 'rejected'?'text-red-500 border-b-2 border-red-600':''} cursor-pointer`}>Rejected</div>
-                    <div onClick={()=>setSelected('approved')} className={`${selected === 'approved'?'text-green-500 border-b-2 border-green-600':''} cursor-pointer`}>Approved</div>
-                </div>
-                {
-                    leave.filter((leave)=>leave.status === selected).map((leave)=><LeaveTemplate leave={leave}/>)
-                }
-            </div>
-        </>
-    )
+  _id: string;
+  startDate: string;
+  endDate: string;
+  reason: string;
+  status: string;
 }
 
-const LeaveTemplate = ({leave}:{leave:Leave})=>{
-    return(
-        <div className="p-2 border-t border-b border-gray-300 rounded-lg space-y-2 my-4">
-                            <div>
-                                <span className="font-semibold">Leave ID: </span>
-                                <span>{leave.leaveId}</span>
-                            </div>
-                            <div>
-                                <span className="font-semibold">Starting From</span>
-                                <span>{leave.startDate}</span>
-                            </div>
-                            <div>
-                                <span className="font-semibold">Till: </span>
-                                <span>{leave.endDate}</span>
-                            </div>
-                            <div>
-                                <span className="font-semibold">Description: </span>
-                                <span>{leave.description}</span>
-                            </div>
-                            <div className={`space-x-5 font-semibold py-2 ${(leave.status === 'pending')?'flex':'hidden'}`}>
-                                <button className="bg-green-500 text-white px-4 py-2 rounded-lg">
-                                    Approve Leave
-                                </button>
-                                <button className="bg-red-950 text-white px-4 py-2 rounded-lg">
-                                    Reject Leave
-                                </button>
-                            </div>
-                        </div>
-    )
+function LeaveApproval() {
+  const [leave, setLeave] = useState<Leave[]>([]);
+  const [selected, setSelected] = useState<string>("Pending");
+
+  const fetchLeaves = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/api/leave/fetch-leaves");
+      if (response.data.success) {
+        setLeave(response.data.leaves);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchLeaves();
+  }, []);
+
+  return (
+    <>
+      <HOD_Navbar />
+      <div className="max-w-5xl min-h-96 shadow-xl m-auto p-6 bg-white rounded-lg">
+        <div>
+          <h1 className="text-3xl font-semibold text-gray-800">Leave Approval</h1>
+        </div>
+        <div className="flex justify-evenly text-xl py-4">
+          <div
+            onClick={() => setSelected("Pending")}
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
+              selected === "Pending"
+                ? "text-blue-600 bg-blue-100 border-b-4 border-blue-600"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Pending
+          </div>
+          <div
+            onClick={() => setSelected("Rejected")}
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
+              selected === "Rejected"
+                ? "text-red-600 bg-red-100 border-b-4 border-red-600"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Rejected
+          </div>
+          <div
+            onClick={() => setSelected("Approved")}
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
+              selected === "Approved"
+                ? "text-green-600 bg-green-100 border-b-4 border-green-600"
+                : "text-gray-700 hover:bg-gray-100"
+            }`}
+          >
+            Approved
+          </div>
+        </div>
+        {leave
+          .filter((leave) => leave.status === selected)
+          .map((leave) => (
+            <LeaveTemplate key={leave._id} leave={leave} fetchLeaves={fetchLeaves} />
+          ))}
+      </div>
+    </>
+  );
 }
-export default LeaveApproval
+
+const LeaveTemplate = ({ leave, fetchLeaves }: { leave: Leave; fetchLeaves: () => void }) => {
+  const handleApproval = async (leaveId: string) => {
+    try {
+      await axios.put(`http://localhost:5000/api/leave/approve-leave/${leaveId}`);
+      fetchLeaves();
+    } catch (error) {
+      console.log("Error");
+    }
+  };
+
+  const handleRejection = async (leaveId: string) => {
+    try {
+      await axios.put(`http://localhost:5000/api/leave/reject-leave/${leaveId}`);
+      fetchLeaves();
+    } catch (error) {
+      console.log("Error");
+    }
+  };
+
+  return (
+    <div className="p-4 border-t border-b border-gray-300 rounded-lg space-y-4 my-6 bg-gray-50 shadow-sm hover:shadow-md transition-shadow">
+      <div>
+        <span className="font-semibold">Leave ID: </span>
+        <span>{leave._id}</span>
+      </div>
+      <div>
+        <span className="font-semibold">Starting From: </span>
+        <span>{leave.startDate.split("T")[0]}</span>
+      </div>
+      <div>
+        <span className="font-semibold">Till: </span>
+        <span>{leave.endDate.split("T")[0]}</span>
+      </div>
+      <div>
+        <span className="font-semibold">Description: </span>
+        <span>{leave.reason}</span>
+      </div>
+      <div className={`space-x-5 font-semibold py-3 ${(leave.status === "Pending") ? "flex" : "hidden"}`}>
+        <button
+          className="bg-green-500 text-white px-6 py-3 rounded-lg hover:bg-green-600 transition-colors"
+          onClick={() => handleApproval(leave._id)}
+        >
+          Approve Leave
+        </button>
+        <button
+          className="bg-red-500 text-white px-6 py-3 rounded-lg hover:bg-red-600 transition-colors"
+          onClick={() => handleRejection(leave._id)}
+        >
+          Reject Leave
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default LeaveApproval;

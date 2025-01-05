@@ -122,3 +122,30 @@ export const rejectLeave = async(req,res)=>{
         res.status(500).json({message: 'Internal Server Error Occurred!'});
     }
 }
+
+export const fetchLeaveByStudent = async (req, res) => {
+    const { studentId } = req.params; 
+
+    if (!studentId) {
+        return res.status(400).json({ message: 'Student ID is required!' });
+    }
+
+    try {
+        const leaves = await Leave.find({ studentId });
+
+        if (leaves.length === 0) {
+            return res.status(200).json({
+                success: false,
+                message: 'No leave requests found for this student'
+            });
+        }
+
+        res.status(200).json({
+            success: true,
+            leaves
+        });
+    } catch (error) {
+        console.log('Error occurred while fetching leave by student:', error);
+        res.status(500).json({ message: 'Internal Server Error Occurred!' });
+    }
+}

@@ -1,25 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import { useStudent } from "../../context/StudentContext";
+import axios from "axios";
+
+interface leave {
+  _id: string,
+  startDate: string,
+  endDate: string,
+  reason: string,
+  status: string
+}
 
 const Leave = () => {
-  const [leaveHistory, setLeaveHistory] = useState([
-    {
-      id: 1,
-      startDate: "20-12-2024",
-      endDate: "22-12-2024",
-      reason: "Family event",
-      status: "Accepted",
-      comments: "",
-    },
-    {
-      id: 2,
-      startDate: "25-12-2024",
-      endDate: "27-12-2024",
-      reason: "Medical leave",
-      status: "Rejected",
-      comments: "Insufficient documentation",
-    },
-  ]);
+  const { studentId } = useStudent();
+  const [leaveHistory, setLeaveHistory] = useState<leave[]>([]);
 
   const [formData, setFormData] = useState({
     startDate: "",
@@ -28,29 +22,55 @@ const Leave = () => {
   });
 
   const [showMessage, setShowMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); 
+
+  useEffect(() => {
+    if (studentId) {
+      const fetchLeaves = async () => {
+        try {
+          console.log(studentId);
+          const response = await axios.get(`http://localhost:5000/api/leave/fetch-leave-student/${studentId}`);
+          if (response.data) {
+            setLeaveHistory(response.data.leaves);
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+      fetchLeaves();
+    }
+  }, [studentId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(""); // Reset error message before submitting
 
-    // Add the new leave application to the history
-    const newLeave = {
-      id: leaveHistory.length + 1,
-      startDate: formData.startDate,
-      endDate: formData.endDate,
-      reason: formData.reason,
-      status: "Pending", // Default status
-      comments: "",
-    };
+    try {
+      const response = await axios.post('http://localhost:5000/api/leave/add', {
+        studentId,
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+        reason: formData.reason
+      });
 
-    setLeaveHistory((prev) => [...prev, newLeave]);
-    setFormData({ startDate: "", endDate: "", reason: "" });
-    setShowMessage(true);
-    setTimeout(() => setShowMessage(false), 3000);
+      if (response.data) {
+        const newLeave = response.data.leave;
+        setLeaveHistory((prev) => [...prev, newLeave]);
+        setFormData({ startDate: "", endDate: "", reason: "" });
+        setShowMessage(true);
+        setTimeout(() => setShowMessage(false), 3000);
+      }
+    } catch (error:any) {
+      setErrorMessage("Unknown Error Occured Please Try Again");
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 3000); // Set error message
+    }
   };
 
   return (
@@ -73,6 +93,11 @@ const Leave = () => {
             {showMessage && (
               <div className="mb-4 p-4 bg-green-100 text-green-800 rounded-lg">
                 Leave application submitted successfully!
+              </div>
+            )}
+            {errorMessage && (
+              <div className="mb-4 p-4 bg-red-100 text-red-800 rounded-lg">
+                {errorMessage}
               </div>
             )}
             <div className="mb-4">
@@ -129,50 +154,53 @@ const Leave = () => {
               Leave History
             </h2>
             <div className="overflow-x-auto">
-              <table className="w-full border-collapse border border-gray-200">
-                <thead>
-                  <tr className="bg-gray-100">
-                    <th className="border px-2 sm:px-4 py-2 text-left">
-                      Date
-                    </th>
-                    <th className="border px-2 sm:px-4 py-2 text-left">
-                      Reason
-                    </th>
-                    <th className="border px-2 sm:px-4 py-2 text-left">
-                      Status
-                    </th>
-                    <th className="border px-2 sm:px-4 py-2 text-left">
-                      Comments
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {leaveHistory.map((leave) => (
-                    <tr key={leave.id}>
-                      <td className="border px-2 sm:px-4 py-2">
-                        {leave.startDate} - {leave.endDate}
-                      </td>
-                      <td className="border px-2 sm:px-4 py-2">
-                        {leave.reason}
-                      </td>
-                      <td
-                        className={`border px-2 sm:px-4 py-2 ${
-                          leave.status === "Accepted"
-                            ? "text-green-600"
-                            : leave.status === "Rejected"
-                            ? "text-red-600"
-                            : "text-gray-600"
-                        }`}
-                      >
-                        {leave.status}
-                      </td>
-                      <td className="border px-2 sm:px-4 py-2">
-                        {leave.comments || "N/A"}
-                      </td>
+              {leaveHistory.length > 0 ? (
+                <table className="w-full border-collapse border border-gray-200">
+                  <thead>
+                    <tr className="bg-gray-100">
+                      <th className="border px-2 sm:px-4 py-2 text-left">
+                        Date
+                      </th>
+                      <th className="border px-2 sm:px-4 py-2 text-left">
+                        Reason
+                      </th>
+                      <th className="border px-2 sm:px-4 py-2 text-left">
+                        Status
+                      </th>
+                      <th className="border px-2 sm:px-4 py-2 text-left">
+                        Comments
+                      </th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {leaveHistory.map((leave) => (
+                      <tr key={leave._id}>
+                        <td className="border px-2 sm:px-4 py-2">
+                          {leave.startDate.split('T')[0]} - {leave.endDate.split('T')[0]}
+                        </td>
+                        <td className="border px-2 sm:px-4 py-2">
+                          {leave.reason}
+                        </td>
+                        <td
+                          className={`border px-2 sm:px-4 py-2 ${leave.status === "Approved"
+                              ? "text-green-600"
+                              : leave.status === "Rejected"
+                                ? "text-red-600"
+                                : "text-gray-600"
+                            }`}
+                        >
+                          {leave.status}
+                        </td>
+                        <td className="border px-2 sm:px-4 py-2">
+                          N/A
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="text-gray-500 text-lg text-center">No Leave Request History Exists</div>
+              )}
             </div>
           </div>
         </div>

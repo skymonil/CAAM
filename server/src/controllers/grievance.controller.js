@@ -4,9 +4,9 @@ import Student from "../models/Student.model.js";
 //Addition of new Grievance by Student
 export const addGrievance = async(req,res) =>{
 
-    const { studentId, grievanceTitle, grievanceDesc } = req.body;
+    const { studentId, title, details } = req.body;
 
-    if(!studentId || !grievanceDesc|| !grievanceTitle)
+    if(!studentId || !details|| !title)
     {
         return res.status(400).json({message: 'All Fields are Required!'});
     }
@@ -22,8 +22,8 @@ export const addGrievance = async(req,res) =>{
     
         const grievance = new Grievance({
             studentId,
-            title: grievanceTitle,
-            description: grievanceDesc,
+            title,
+            description: details,
             status: 'Pending'
         });
     
@@ -68,6 +68,45 @@ export const fetchGrievances = async(req,res)=>{
         res.status(500).json({message: 'Internal Server Error Occured!'})
     }
 }
+
+//Fetching Grievances by Student
+export const fetchGrievancesByStudent = async(req, res) => {
+    const { studentId } = req.params;  // Assuming the studentId is passed in the URL params
+
+    if (!studentId) {
+        return res.status(400).json({ message: 'Student ID is Required!' });
+    }
+
+    try {
+        // Fetch grievances by studentId
+        const grievances = await Grievance.find({ studentId });
+
+        if (grievances.length === 0) {
+            return res.status(200).json({
+                success: false,
+                message: 'No Grievances Found for this Student',
+            });
+        }
+
+        // Map grievances to only return title, formatted date (in HTML format), and status
+        const grievancesResponse = grievances.map((grievance) => {
+            return {
+                date: new Date(grievance.createdAt).toISOString().split('T')[0],  // Date in HTML format (YYYY-MM-DD)
+                title: grievance.title,
+                status: grievance.status,
+            };
+        });
+
+        res.status(200).json({
+            success: true,
+            data: grievancesResponse,
+        });
+    } catch (error) {
+        console.log('Error While Fetching Grievances: ' + error);
+        res.status(500).json({ message: 'Internal Server Error Occurred!' });
+    }
+};
+
 
 //Approval of Grievance by HOD based on Grievance ID
 export const resolveGrievance = async(req,res)=>{
