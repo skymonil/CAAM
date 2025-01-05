@@ -3,6 +3,8 @@ import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStudent } from "../../context/StudentContext";
+import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable"; // Import jsPDF AutoTable plugin
 
 interface Subject {
     name: string;
@@ -56,12 +58,11 @@ const Result = () => {
     const [totalMarks, setTotalMarks] = useState<number>(0);
     const [percentage, setPercentage] = useState<number>(0);
     const [grade, setGrade] = useState<string>("A+");
-    const [status, setStatus] = useState<string>("PASS"); // Added status state
+    const [status, setStatus] = useState<string>("PASS");
     const navigate = useNavigate();
     const resultRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        // Fetch the student data once when the component mounts
         axios
             .get("http://localhost:5000/api/student/get", { withCredentials: true })
             .then((response) => {
@@ -76,13 +77,13 @@ const Result = () => {
                     console.error("Error: ", err);
                 }
             });
-    }, [navigate, setStudentId]); // Only run this on mount (empty dependency array)
+    }, [navigate, setStudentId]);
 
     useEffect(() => {
         if (studentData) {
-            calculateSummary(); // Only run when studentData is fetched
+            calculateSummary();
         }
-    }, [studentData]); // Only run when studentData changes
+    }, [studentData]);
 
     const calculateSummary = () => {
         let total = 0;
@@ -94,7 +95,6 @@ const Result = () => {
             total += subject.obtainedMarks;
             max += subject.maxMarks;
 
-            // Check if any subject is F (fail)
             if (grade === "F") isFail = true;
 
             return { ...subject, grade };
@@ -117,8 +117,8 @@ const Result = () => {
         if (percentage >= 80) return "A";
         if (percentage >= 70) return "B";
         if (percentage >= 60) return "C";
-        if (percentage >= 40) return "D"; // Fail below 40%
-        return "F"; // Explicit failure if below 40%
+        if (percentage >= 40) return "D";
+        return "F";
     };
 
     const getOverallGrade = (perc: number): string => {
@@ -129,74 +129,53 @@ const Result = () => {
         return "D";
     };
 
-    const handlePrint = () => {
+    const handleDownloadPDF = () => {
         if (resultRef.current) {
-            const printContent = resultRef.current.innerHTML;
-            const printWindow = window.open('', '_blank');
+            const doc = new jsPDF();
 
-            if (printWindow) {
-                printWindow.document.write(`
-          <html>
-            <head>
-              <title>Result</title>
-              <style>
-                body {
-                  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-                  background-color: #f7fafc;
-                }
-                .container {
-                  max-width: 800px;
-                  margin: auto;
-                  background-color: #ffffff;
-                  border-radius: 10px;
-                  padding: 30px;
-                  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                }
-                .summary {
-                  display: flex;
-                  justify-content: space-between;
-                  margin-bottom: 30px;
-                  padding: 15px;
-                  background-color: #edf2f7;
-                  border-radius: 8px;
-                  border: 1px solid #e2e8f0;
-                }
-                table {
-                  width: 100%;
-                  border-collapse: collapse;
-                  margin-top: 20px;
-                }
-                th, td {
-                  padding: 12px;
-                  border: 1px solid #e2e8f0;
-                  text-align: center;
-                }
-                th {
-                  background-color: #f7fafc;
-                }
-                .notes {
-                  background-color: #fff7f0;
-                  padding: 20px;
-                  border-radius: 8px;
-                  color: #dd6b20;
-                  font-size: 14px;
-                  margin-top: 30px;
-                }
-              </style>
-            </head>
-            <body>
-              <div class="container">
-                ${printContent}
-              </div>
-            </body>
-          </html>
-        `);
+            // Adding header information
+            doc.setFontSize(18);
+            doc.text("Student Result", 14, 20);
+            doc.setFontSize(12);
+            doc.text(`Student Name: ${studentData?.name}`, 14, 30);
+            doc.text(`Student ID: ${studentData?.id}`, 14, 35);
+            doc.text(`Course: B.Sc. Information Technology`, 14, 40);
 
-                printWindow.document.close();
-                printWindow.print();
-            } else {
-                alert('Failed to open print window. Please try again.');
-            }
+            // Summary
+            doc.text(`Total Marks: ${totalMarks}/${subjects.reduce((acc, subject) => acc + subject.maxMarks, 0)}`, 14, 50);
+            doc.text(`Percentage: ${percentage.toFixed(2)}%`, 14, 55);
+            doc.text(`Grade: ${grade}`, 14, 60);
+            doc.text(`Status: ${status}`, 14, 65);
+
+            // Table for subjects
+            const tableData = subjects.map((subject) => [
+                subject.name,
+                subject.maxMarks.toString(),
+                subject.obtainedMarks.toString(),
+                subject.grade || "N/A",
+            ]);
+
+            autoTable(doc, {
+                startY: 70,
+                head: [["Subject", "Max Marks", "Marks Obtained", "Grade"]],
+                body: tableData,
+            });
+
+            // Notes
+            const finalY = (doc as any).lastAutoTable?.finalY || 70;
+            doc.text("Important Notes:", 14, finalY + 10);
+            const notes = [
+                "For re-evaluation, apply within 15 days of the result date.",
+                "Original mark sheet will be provided in 30 working days.",
+                "For any queries, contact the examination department.",
+            ];
+
+            notes.forEach((note, index) => {
+                doc.text(`- ${note}`, 14, finalY + 15 + index * 5);
+            });
+
+            // Download the PDF
+            doc.save("result.pdf");
         }
     };
 
@@ -210,7 +189,7 @@ const Result = () => {
             <div className="p-6 bg-gray-50 min-h-screen">
                 <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
                     <div ref={resultRef}>
-                        <div className="flex justify-between items-center mb-6">
+                        <div className="flex justify-between flex-col md:flex-row items-center mb-6">
                             <p className="text-gray-600 font-medium">
                                 Student Name: {studentData?.name}
                                 <br />
@@ -218,7 +197,7 @@ const Result = () => {
                             </p>
                             <p className="text-gray-600">Course: B.Sc. Information Technology</p>
                         </div>
-                        <div className="flex justify-around gap-4 text-center mb-6">
+                        <div className="flex flex-col md:flex-row justify-around gap-4 text-center mb-6">
                             <div>
                                 <p className="text-gray-600">Total Marks</p>
                                 <h4 className="text-xl font-bold">
@@ -263,10 +242,10 @@ const Result = () => {
                     </div>
                     <div className="flex justify-end gap-4 mb-4">
                         <button
-                            onClick={handlePrint}
+                            onClick={handleDownloadPDF}
                             className="px-4 py-2 bg-red-600 text-white rounded shadow hover:bg-red-700"
                         >
-                            Print Result
+                            Download Result
                         </button>
                     </div>
                     <div className="bg-red-100 p-4 rounded text-sm text-gray-700">
@@ -280,7 +259,6 @@ const Result = () => {
                         </ul>
                     </div>
                 </div>
-
             </div>
         </>
     );
