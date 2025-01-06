@@ -6,27 +6,30 @@ import {
   matchPath,
 } from "react-router-dom";
 import Register from "./pages/Register";
+import LogIn from "./pages/LogIn";
 import AdminRegister from "./pages/AdminRegister";
 import AdminLogin from "./pages/AdminLogin";
-import LogIn from "./pages/LogIn";
+
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
-import FeeStatus from "./pages/Student/FeeStatus";
-import WalletPage from "./pages/Student/WalletPage";
-import Leave from "./pages/Student/Leave";
-import Grievance from "./pages/Student/Grievance";
 import Admission from "./pages/Student/Admission";
-import GrievanceList from "./pages/HOD/GrievanceList";
-import NotFound from "./pages/NotFound";
-import LeaveApproval from "./pages/HOD/LeaveApproval";
-import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
+import FeeStatus from "./pages/Student/FeeStatus";
+import ReExam from "./pages/Student/ReExam";
+import Result from "./pages/Student/Result";
+import Scholarship from "./pages/Student/Scholarship";
+import Grievance from "./pages/Student/Grievance";
+import Leave from "./pages/Student/Leave";
+import WalletPage from "./pages/Student/WalletPage";
+
 import SuperAdmin from "./pages/SuperAdmin/page";
 import MarksAdmin from "./pages/MarksAdmin/page";
-import Scholarship from "./pages/Student/Scholarship";
-import ReExam from "./pages/Student/ReExam";
-import HODScholarship from "./pages/HOD/HODScholarship";
+import DocumentVerificationAdmin from "./pages/DocAdmin/DocumentVerificationAdmin";
 import AddMoney from "./pages/AccountantAdmin/AddMoney";
-import Result from "./pages/Student/Result";
+import GrievanceList from "./pages/HOD/GrievanceList";
+import LeaveApproval from "./pages/HOD/LeaveApproval";
+import HODScholarship from "./pages/HOD/HODScholarship";
+
+import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
 
 const AppContent = () => {

@@ -3,28 +3,26 @@ import Navbar from "./Nabar";
 import axios from "axios";
 
 interface Marks {
-  math: string;
-  science: string;
-  english: string;
+  [subject: string]: string;
 }
 
 interface Student {
   id: number;
   name: string;
+  collegeId: string; // Adding collegeId
 }
 
 interface ModalProps {
   student: Student;
+  subjects: string[]; // Add subjects to props
   onClose: () => void;
   onDone: (studentId: number) => void;
 }
 
-const Modal: React.FC<ModalProps> = ({ student, onClose, onDone }) => {
-  const [marks, setMarks] = useState<Marks>({
-    math: "",
-    science: "",
-    english: "",
-  });
+const Modal: React.FC<ModalProps> = ({ student, subjects, onClose, onDone }) => {
+  const [marks, setMarks] = useState<Marks>(
+    subjects.reduce((acc, subject) => ({ ...acc, [subject]: "" }), {})
+  );
 
   const handleMarksChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMarks({
@@ -34,8 +32,7 @@ const Modal: React.FC<ModalProps> = ({ student, onClose, onDone }) => {
   };
 
   const validateMarks = (marks: Marks) => {
-    const markValues = [marks.math, marks.science, marks.english];
-    for (let mark of markValues) {
+    for (let mark of Object.values(marks)) {
       const markNumber = Number(mark);
       if (markNumber < 0 || markNumber > 100) {
         return false; // Invalid mark found
@@ -62,42 +59,20 @@ const Modal: React.FC<ModalProps> = ({ student, onClose, onDone }) => {
           Enter Marks for {student.name}
         </h2>
 
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Math:
-          </label>
-          <input
-            type="number"
-            name="math"
-            value={marks.math}
-            onChange={handleMarksChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Science:
-          </label>
-          <input
-            type="number"
-            name="science"
-            value={marks.science}
-            onChange={handleMarksChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            English:
-          </label>
-          <input
-            type="number"
-            name="english"
-            value={marks.english}
-            onChange={handleMarksChange}
-            className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-        </div>
+        {subjects.map((subject) => (
+          <div className="mb-4" key={subject}>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              {subject}:
+            </label>
+            <input
+              type="number"
+              name={subject}
+              value={marks[subject]}
+              onChange={handleMarksChange}
+              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        ))}
 
         <div className="flex justify-end gap-3 mt-4">
           <button
@@ -118,10 +93,10 @@ const Modal: React.FC<ModalProps> = ({ student, onClose, onDone }) => {
   );
 };
 
-
 const MarksAdmin: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const [subjects, setSubjects] = useState<string[]>([]);
 
   useEffect(() => {
     axios
@@ -139,6 +114,18 @@ const MarksAdmin: React.FC = () => {
 
   const handleStudentClick = (student: Student) => {
     setSelectedStudent(student);
+    axios
+      .get(`http://localhost:5000/api/college/${student.collegeId}`, {
+        withCredentials: true,
+      })
+      .then((response) => {
+        setSubjects(response.data.courses.flatMap((course: any) => course.subject.map((sub: any) => sub.subjectName)));
+        const subjects = response.data.courses.flatMap((course: any) => course.subject.map((sub: any) => sub.subjectName));
+        console.log("Subjects:", subjects);
+      })
+      .catch((error) => {
+        console.error("Error fetching subjects:", error);
+      });
   };
 
   const handleCloseModal = () => {
@@ -164,7 +151,7 @@ const MarksAdmin: React.FC = () => {
         <ul>
           {students.map((student) => (
             <li
-              key={`${student.id}-${student.name}`}  // Combine id and name for uniqueness
+              key={`${student.id}-${student.name}`} // Combine id and name for uniqueness
               className="cursor-pointer flex justify-between items-center bg-gray-100 p-4 mb-4 rounded-lg shadow hover:bg-gray-200 transition duration-300"
               onClick={() => handleStudentClick(student)}
             >
@@ -175,9 +162,10 @@ const MarksAdmin: React.FC = () => {
         </ul>
       </div>
 
-      {selectedStudent && (
+      {selectedStudent && subjects.length > 0 && (
         <Modal
           student={selectedStudent}
+          subjects={subjects}
           onClose={handleCloseModal}
           onDone={handleDone}
         />
