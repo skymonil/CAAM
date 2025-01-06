@@ -31,7 +31,7 @@ const AdminLogin: React.FC = () => {
         { withCredentials: true }
       );
       console.log("Admin Login Successful:", response.data);
-      const {role} = response.data;
+      const { role } = response.data;
       switch (role) {
         case "superAdmin":
           navigate("/super-admin");

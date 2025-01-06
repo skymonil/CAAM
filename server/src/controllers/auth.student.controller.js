@@ -131,7 +131,7 @@ export const login = async (req, res) => {
         error: "Username or password is incorrect",
       });
     }
-    console.log("here1");
+    // console.log("here1");
 
     const isValidPassword = await bcrypt.compare(password, student.password);
     if (!isValidPassword) {
