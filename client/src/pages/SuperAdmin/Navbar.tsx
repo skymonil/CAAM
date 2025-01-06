@@ -34,9 +34,10 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/admin-logout"
+        "http://localhost:5000/api/auth/admin-logout",
+        {},
+        { withCredentials: true }
       );
-      localStorage.removeItem("token");
       console.log("User logged out: ", response.data);
     } catch (error: any) {
       console.error("Error in logging out: ", error);

@@ -37,7 +37,9 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/logout"
+        "http://localhost:5000/api/auth/logout",
+        {},
+        { withCredentials: true }
       );
       localStorage.removeItem("token");
       console.log("User logged out: ", response.data);
