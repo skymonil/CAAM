@@ -16,16 +16,15 @@ const verifyToken = (token) => {
 export const authenticateStudent = async (req, res, next) => {
   try {
     const token = req.cookies?.token;
-    console.log("here: " + token);
     
     if (!token) {
       return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }
-    console.log("here2");
 
-    const decodedToken = verifyToken(token);
+    const decodedToken = verifyToken(token);    
 
-    const student = await Student.findById(decodedToken._id).select("-password");
+    const student = await Student.findById(decodedToken.userID).select("-password");
+
     if (!student) {
       return res.status(401).json({ message: "Unauthorized - Student Not Found" });
     }

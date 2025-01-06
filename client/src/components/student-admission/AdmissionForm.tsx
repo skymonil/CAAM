@@ -41,7 +41,7 @@ const AdmissionForm = () => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name } = e.target;
     const files = Array.from(e.target.files || []);
-  
+
     setFormData((prevData) => ({
       ...prevData,
       documents: [
@@ -50,18 +50,25 @@ const AdmissionForm = () => {
       ],
     }));
   };
-  
+
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         "http://localhost:5000/api/student/fill-details",
-        formData
+        formData,
+        { withCredentials: true }
       );
       console.log("Form submitted successfully:", response.data);
     } catch (error: any) {
-      console.error("Error submitting form:", error);
+      if (error.response) {
+        console.error("Error submitting form:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received:", error.request);
+      } else {
+        console.error("Error setting up request:", error.message);
+      }
     }
   };
   return (
