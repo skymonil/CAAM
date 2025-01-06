@@ -85,7 +85,6 @@ export const verifyOTP = async (req, res) => {
     }
 
     const { otp: storedOTP, expiresAt, hashedPassword, username, collegeId } = otpStore[email];
-
     if (Date.now() > expiresAt) {
       delete otpStore[email]; 
       return res.status(400).json({ message: "OTP has expired" });

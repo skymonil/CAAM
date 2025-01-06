@@ -16,6 +16,10 @@ const studentSchema = new Schema({
     required: true,
     minlength: 6,
   },
+  collegeId: {
+    type: Schema.Types.ObjectId,
+    ref: 'College',
+  }
 }, {timestamps:true});
 
 const Student = model("Student", studentSchema);
