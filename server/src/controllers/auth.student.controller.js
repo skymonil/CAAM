@@ -38,7 +38,7 @@ export const sendOTP = async (email) => {
 };
 
 export const register = async (req, res) => {
-  const { username, email, password } = req.body;
+  const { username, email, password, collegeId } = req.body;
   console.log("User model:", Student);
   console.log("Request body:", req.body);
 
@@ -64,7 +64,7 @@ export const register = async (req, res) => {
 
     const otp = await sendOTP(email);
 
-    otpStore[email] = { otp, hashedPassword, username };
+    otpStore[email] = { otp, hashedPassword, username, collegeId  };
 
     res.status(201).json({
       message:
@@ -84,7 +84,7 @@ export const verifyOTP = async (req, res) => {
       return res.status(400).json({ message: "OTP has expired or is invalid" });
     }
 
-    const { otp: storedOTP, expiresAt, hashedPassword, username } = otpStore[email];
+    const { otp: storedOTP, expiresAt, hashedPassword, username, collegeId } = otpStore[email];
 
     if (Date.now() > expiresAt) {
       delete otpStore[email]; 
@@ -101,6 +101,7 @@ export const verifyOTP = async (req, res) => {
       name: username,
       email,
       password: hashedPassword,
+      collegeId,
     });
 
     await newStudent.save();
