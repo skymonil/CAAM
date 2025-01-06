@@ -28,14 +28,17 @@ const SubjectSchema = new Schema({
   },
 });
 
-const CourseSchema = new Schema({
-  courseName: {
-    type: String,
-    required: true,
+const CourseSchema = new Schema(
+  {
+    courseName: {
+      type: String,
+      required: true,
+    },
+    subject: [SubjectSchema],
+    fees: [FeeSchema],
   },
-  subject: [SubjectSchema],
-  fees: [FeeSchema],
-});
+  { _id: true }
+);
 
 const CollegeSchema = new Schema({
   collegeID: {
