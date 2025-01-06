@@ -77,7 +77,7 @@ const AppContent = () => {
           <Route path="/leave" element={<Leave />} />
           <Route path="/wallet" element={<WalletPage />} />
 
-          <Route path="/superAdmin" element={<SuperAdmin />} />
+          <Route path="/super-admin" element={<SuperAdmin />} />
           <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
           <Route path="/marks-admin" element={<MarksAdmin />} />
           <Route path="/accountant-admin" element={<AddMoney />} />

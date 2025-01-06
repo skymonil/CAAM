@@ -139,32 +139,37 @@ export const adminVerifyOTP = async (req, res) => {
     );
 
     await Admin.insertMany(
-      hashedAdminPasswords.map(({role, username, password}) => ({
+      hashedAdminPasswords.map(({ role, username, password }) => ({
         collegeName,
         email: `${username}@${collegeIdentifier}.com`,
         password,
         role,
         username,
-      })
-    )
-  );
+      }))
+    );
 
-  const transporter = nodemailer.createTransport({
-    service: "Gmail",
-    auth: {
-      user: process.env.EMAIL_ID,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-  });
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: process.env.EMAIL_ID,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+    });
 
-  const credentialsMail = {
-    from: "CAAM - Admin Registration Bot",
-    to: email,
-    subject: "CAAM - Super Admin Credentials",
-    text: `Dear Super Admin,\n\nYour account has been successfully registered.\n\nUsername: ${collegeIdentifier}_superadmin\nPassword: Your chosen password\n\nPlease keep this information secure.\n\nBest regards,\nTeam CAAM`,
-  };
+    const adminCredentials = admins
+      .map(
+        (admin) =>
+          `Role: ${admin.role}\nUsername: ${admin.username}\nPassword: ${admin.password}\nEmail: ${admin.username}@${collegeIdentifier}.com `
+      )
+      .join("\n\n");
+    const credentialsMail = {
+      from: "CAAM - Admin Registration Bot",
+      to: email,
+      subject: "CAAM - Super Admin and Admin Credentials",
+      text: `Dear Super Admin,\n\nYour account has been successfully registered.\n\nSuper Admin Credentials:\Email: Your registered email\nPassword: Your chosen password\n\nOther Admin Credentials:\n\n${adminCredentials}\n\nPlease note that the passwords provided to the sub-admins are temporary and can be changed through the Super Admin Dashboard.\n\nPlease keep this information secure.\n\nBest regards,\nTeam CAAM`,
+    };
 
-  await transporter.sendMail(credentialsMail);
+    await transporter.sendMail(credentialsMail);
 
     delete otpStore[email];
 

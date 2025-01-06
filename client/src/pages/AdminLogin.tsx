@@ -33,7 +33,28 @@ const AdminLogin: React.FC = () => {
             console.log("Admin Login:", response.data);
             console.log("Admin Role:", response.data.admin.role);
             
-            navigate(`/${response.data.admin.role}`);
+            const role = response.data.admin.role;
+
+            switch (role) {
+              case "superAdmin":
+                navigate("/super-admin");
+                break;
+              case "docAdmin":
+                navigate("/doc-admin");
+                break;
+              case "marksAdmin":
+                navigate("/marks-admin");
+                break;
+              case "accountantAdmin":
+                navigate("/accountant-admin");
+                break;
+              case "hod":
+                navigate("/admin-grievance");
+                break;
+              default:
+                setError("Invalid role or unauthorized access."); // Handle unexpected roles
+                break;
+            }
         } catch (error: any) {
             if (error.response && error.response.data) {
                 const backendErrors = error.response.data.errors || error.response.data.error;
