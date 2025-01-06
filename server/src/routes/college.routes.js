@@ -3,7 +3,7 @@ import express from "express";
 import {
   addCollege,
   getCollege,
-  getCollegeById,
+  getColleges
 } from "../controllers/college.controllers.js";
 
 const router = express.Router();
@@ -12,7 +12,8 @@ router.post("/add", addCollege);
 
 router.get("/get", getCollege);
 
-router.get("/:id", getCollegeById);
+router.get('/get-colleges',getColleges);
+
 
 // Update a college
 // router.put("/:id", async (req, res) => {

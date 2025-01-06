@@ -1,4 +1,4 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
 
@@ -8,29 +8,57 @@ interface FormData {
   password: string;
 }
 
+interface College {
+  _id: string;
+  collegeName: string;
+}
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     password: "",
   });
+
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [college, setCollege] = useState("");
+  const [college, setCollege] = useState<string>("");
+  const [colleges, setColleges] = useState<College[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [otp, setOtp] = useState("");
   const [otpError, setOtpError] = useState("");
 
+  useEffect(() => {
+    const fetchColleges = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/college/get-colleges"
+        );
+        setColleges(response.data);
+      } catch (error) {
+        setError("Failed to fetch colleges");
+      }
+    };
+
+    fetchColleges();
+  }, []);
+
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
+    console.log("Selected College ID:", college); 
+    const registerData = {
+      ...formData,
+      collegeId: college,
+    };
     try {
+      console.log("registerData: ", registerData);
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
-        formData
+        registerData
       );
       console.log("User registered: ", response.data);
-      setIsModalOpen(true); 
+      setIsModalOpen(true);
     } catch (error: any) {
       if (error.response?.data) {
         const backendErrors =
@@ -85,7 +113,7 @@ const Register: React.FC = () => {
 
         {/* Right side with form */}
         <div className="w-full lg:w-1/2 p-6 space-y-3">
-          <h2 className="text-2xl font-semibold underline text-center text-gray-800">
+          <h2 className="text-2xl font-semibold text-center text-gray-800">
             CREATE ACCOUNT
           </h2>
           <p className="text-center text-gray-600 text-sm">
@@ -189,12 +217,11 @@ const Register: React.FC = () => {
                 onChange={(e) => setCollege(e.target.value)}
                 required
               >
-                <option value="">Select your college</option>
-                <option value="Thakur College">Thakur College</option>
-                <option value="Mithibai College">Mithibai College</option>
-                <option value="St. Xavier’s College">St. Xavier’s College</option>
-                <option value="Narsee Monjee College">Narsee Monjee College</option>
-                <option value="Jai Hind College">Jai Hind College</option>
+                {colleges.map((clg) => (
+                  <option key={clg._id} value={clg._id}>
+                    {clg.collegeName}
+                  </option>
+                ))}
               </select>
             </div>
             <div className="flex justify-end">
@@ -234,7 +261,9 @@ const Register: React.FC = () => {
               onChange={(e) => setOtp(e.target.value)}
             />
             {otpError && (
-              <p className="text-red-500 text-center text-sm pb-4">{otpError}</p>
+              <p className="text-red-500 text-center text-sm pb-4">
+                {otpError}
+              </p>
             )}
             <div className="flex justify-between">
               <button
