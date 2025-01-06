@@ -39,7 +39,6 @@ export const sendOTP = async (email) => {
 
 export const register = async (req, res) => {
   const { username, email, password, collegeId } = req.body;
-  const { username, email, password, collegeId } = req.body;
   console.log("User model:", Student);
   console.log("Request body:", req.body);
 
