@@ -153,7 +153,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(student._id, res);
 
-    console.log("Student Login Successful:", student.email);
+    console.log("Student Login Successful:", student.token);
 
     res.status(200).json({ message: "Login Successful", token });
   } catch (error) {

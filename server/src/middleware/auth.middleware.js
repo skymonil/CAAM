@@ -27,7 +27,7 @@ export const authenticateStudent = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized - Student Not Found" });
     }
 
-    req.student = student;
+    req.user = student;
     next();
   } catch (err) {
     console.error("Error in authenticateStudent middleware:", err.message);

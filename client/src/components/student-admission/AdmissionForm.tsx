@@ -36,7 +36,6 @@ const AdmissionForm = () => {
   const handleChange = (e: any) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log(formData);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -57,12 +56,12 @@ const AdmissionForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/students/fill-details",
+        "http://localhost:5000/api/student/fill-details",
         formData
       );
       console.log("Form submitted successfully:", response.data);
     } catch (error: any) {
-      console.error("Error submitting form:", error.response.data);
+      console.error("Error submitting form:", error);
     }
   };
   return (
@@ -97,7 +96,6 @@ const AdmissionForm = () => {
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
             onChange={handleChange}
           >
-            <option value="">Select Gender</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
             <option value="other">Other</option>
@@ -173,7 +171,7 @@ const AdmissionForm = () => {
           <label className="block font-medium mb-1">Previous Score (%)</label>
           <input
             type="text"
-            name="previousScore"
+            name="score"
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-300"
             placeholder="Enter your previous score"
             pattern="^(100(\.0{1,})?|[1-9]?[0-9](\.[0-9]{1})?)$"
@@ -212,12 +210,12 @@ const AdmissionForm = () => {
               <input
                 type="file"
                 name="passportPhoto"
-                accept="image/*"
+                accept=".png, .jpg, .jpeg"
                 className="hidden"
                 onChange={handleFileChange}
               />
               <p>Click to upload a file</p>
-              <p className="text-sm text-gray-500">Image file accepted</p>
+              <p className="text-sm text-gray-500">PNG, JPG and JPEG files accepted</p>
             </label>
           </div>
         </div>

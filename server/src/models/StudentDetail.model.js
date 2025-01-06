@@ -3,8 +3,7 @@ import { Schema, model } from 'mongoose';
 const studentDetailsSchema = new Schema({
     studentId: {
         type:String,
-        required: true,
-        unique: true,
+        default:null,
     },
     fullName: {
         type: String,
@@ -57,11 +56,15 @@ const studentDetailsSchema = new Schema({
         min: 0,
         max: 100, // Assuming a score is a percentage
     },
-    courseId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Course', // Reference to Course model
-        required: true,
+    course: {
+        type: String,
+        required: true
     },
+    //TO DO: Make courseId a reference to the Course model
+    // courseId: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Course', // Reference to Course model
+    // },
     documents: {
         type: [String], // Array of strings containing document names or URLs
         validate: {
@@ -70,14 +73,6 @@ const studentDetailsSchema = new Schema({
             },
             message: 'Exactly 4 documents are required: Photo, Marksheet, Leaving Certificate, Aadhar.',
         },
-    },
-    college: {
-        type: String,
-        required: true,
-    },
-    scholarship: {
-        type: Schema.Types.ObjectId,
-        ref: 'Scholarship', // Reference to Scholarship model
     },
     walletBalance: {
         type: Number,

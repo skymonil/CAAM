@@ -25,7 +25,7 @@ app.use(express.json());
 app.use('/api/auth', authRoute);
 app.use('/api/acc',accountantRoute);
 app.use('/api/admin',adminRoute);
-app.use('/api/students',studentRoute);
+app.use('/api/student',studentRoute);
 app.use('/api/college',collegeRoute);
 
 app.listen(PORT, () => {
