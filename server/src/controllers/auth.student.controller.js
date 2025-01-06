@@ -39,6 +39,7 @@ export const sendOTP = async (email) => {
 
 export const register = async (req, res) => {
   const { username, email, password, collegeId } = req.body;
+  const { username, email, password, collegeId } = req.body;
   console.log("User model:", Student);
   console.log("Request body:", req.body);
 
@@ -64,6 +65,7 @@ export const register = async (req, res) => {
 
     const otp = await sendOTP(email);
 
+    otpStore[email] = { otp, hashedPassword, username, collegeId  };
     otpStore[email] = { otp, hashedPassword, username, collegeId  };
 
     res.status(201).json({
@@ -100,6 +102,7 @@ export const verifyOTP = async (req, res) => {
       name: username,
       email,
       password: hashedPassword,
+      collegeId,
       collegeId,
     });
 
@@ -151,6 +154,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(student._id, res);
 
+    console.log("Student Login Successful:", student.token);
     console.log("Student Login Successful:", student.token);
 
     res.status(200).json({ message: "Login Successful", token });

@@ -2,10 +2,8 @@ import { Schema, model } from 'mongoose';
 
 const studentDetailsSchema = new Schema({
     studentId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Student', // Reference to Student model
-        required: true,
-        unique: true,
+        type:String,
+        default:null,
     },
     fullName: {
         type: String,
@@ -17,7 +15,7 @@ const studentDetailsSchema = new Schema({
     },
     gender: {
         type: String,
-        enum: ['Male', 'Female', 'Other'],
+        enum: ['Male', 'male', 'Female', 'female', 'Other', 'other'],
         required: true,
     },
     phone: {
@@ -58,32 +56,33 @@ const studentDetailsSchema = new Schema({
         min: 0,
         max: 100, // Assuming a score is a percentage
     },
-    courseId: {
+    collegeId: {
         type: Schema.Types.ObjectId,
-        ref: 'Course', // Reference to Course model
+        ref: 'College', // Reference to Student model
         required: true,
     },
-    documents: {
-        type: [String], // Array of strings containing document names or URLs
-        validate: {
-            validator: function (arr) {
-                return arr.length === 4; // Ensure exactly 4 documents are provided
-            },
-            message: 'Exactly 4 documents are required: Photo, Marksheet, Leaving Certificate, Aadhar.',
-        },
-    },
-    college: {
+    course: {
         type: String,
         required: true,
     },
-    scholarship: {
-        type: Schema.Types.ObjectId,
-        ref: 'Scholarship', // Reference to Scholarship model
+    //TO DO: Make courseId a reference to the Course model
+    // courseId: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'Course', // Reference to Course model
+    // },
+    documents: {
+        type: [String], // Array of strings containing document names or URLs
+        // validate: {
+        //     validator: function (arr) {
+        //         return arr.length === 4; // Ensure exactly 4 documents are provided
+        //     },
+        //     message: 'Exactly 4 documents are required: Photo, Marksheet, Leaving Certificate, Aadhar.',
+        // },
     },
     walletBalance: {
         type: Number,
-        default: 0, // Default balance is 0
-        min: 0, // Wallet balance cannot be negative
+        default: 0, 
+        min: 0, 
     },
     status: {
         type: String,

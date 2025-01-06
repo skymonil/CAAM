@@ -1,4 +1,5 @@
 import { useState, FormEvent, ChangeEvent, useEffect } from "react";
+import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
 
@@ -13,6 +14,11 @@ interface College {
   collegeName: string;
 }
 
+interface College {
+  _id: string;
+  collegeName: string;
+}
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     username: "",
@@ -20,7 +26,10 @@ const Register: React.FC = () => {
     password: "",
   });
 
+
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [college, setCollege] = useState<string>("");
+  const [colleges, setColleges] = useState<College[]>([]);
   const [college, setCollege] = useState<string>("");
   const [colleges, setColleges] = useState<College[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -44,6 +53,21 @@ const Register: React.FC = () => {
     fetchColleges();
   }, []);
 
+  useEffect(() => {
+    const fetchColleges = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:5000/api/college/get-colleges"
+        );
+        setColleges(response.data);
+      } catch (error) {
+        setError("Failed to fetch colleges");
+      }
+    };
+
+    fetchColleges();
+  }, []);
+
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
     console.log("Selected College ID:", college); 
@@ -51,13 +75,21 @@ const Register: React.FC = () => {
       ...formData,
       collegeId: college,
     };
+    console.log("Selected College ID:", college); 
+    const registerData = {
+      ...formData,
+      collegeId: college,
+    };
     try {
+      console.log("registerData: ", registerData);
       console.log("registerData: ", registerData);
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
         registerData
+        registerData
       );
       console.log("User registered: ", response.data);
+      setIsModalOpen(true);
       setIsModalOpen(true);
     } catch (error: any) {
       if (error.response?.data) {
@@ -261,6 +293,9 @@ const Register: React.FC = () => {
               onChange={(e) => setOtp(e.target.value)}
             />
             {otpError && (
+              <p className="text-red-500 text-center text-sm pb-4">
+                {otpError}
+              </p>
               <p className="text-red-500 text-center text-sm pb-4">
                 {otpError}
               </p>

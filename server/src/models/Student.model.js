@@ -18,7 +18,8 @@ const studentSchema = new Schema({
   },
   collegeId: {
     type: Schema.Types.ObjectId,
-    ref: 'College',
+    ref: "College",
+    required:true
   }
 }, {timestamps:true});
 

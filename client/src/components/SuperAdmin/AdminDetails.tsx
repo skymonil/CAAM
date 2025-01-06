@@ -92,6 +92,7 @@ const AdminDetails = () => {
                   <button
                     onClick={() => setSelectedAdmin(admin)}
                     className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
+                    className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
                   >
                     Change Password
                   </button>
@@ -106,6 +107,7 @@ const AdminDetails = () => {
       {selectedAdmin && (
         <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
           <h3 className="text-lg font-semibold">
+            Change Password for {selectedAdmin.username}
             Change Password for {selectedAdmin.username}
           </h3>
           <input

@@ -198,7 +198,7 @@ export const adminLogin = async (req, res) => {
     const isValidPassword = await bcrypt.compare(password, admin.password);
     if (!isValidPassword) {
       return res.status(400).json({
-        message: "Username or password is incorrect",
+        message: "Username or password is incorrect!",
         error: "Username or password is incorrect",
       });
     }
