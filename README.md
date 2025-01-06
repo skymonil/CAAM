@@ -1,4 +1,4 @@
-# College Asministration And Management: E-Governance Solution for College Admission and Management
+# College Administration And Management: E-Governance Solution for College Admission and Management
 
 ## Overview
 
