@@ -13,6 +13,7 @@ const AdminDetails = () => {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // Fetch admins on component load
@@ -46,7 +47,8 @@ const AdminDetails = () => {
       );
 
       console.log(response.data.message);
-      alert("Password updated successfully");
+      setMessage("Password updated successfully");
+      setTimeout(() => setMessage(null), 3000);
 
       // Update local state to reflect the change
       setAdminData((prevAdmins) =>
@@ -58,7 +60,8 @@ const AdminDetails = () => {
       setSelectedAdmin(null);
     } catch (error) {
       console.error("Error updating password:", error);
-      alert("Failed to update password. Please try again.");
+      setMessage("Failed to update password. Please try again.");
+      setTimeout(() => setMessage(null), 3000);
     }
   };
 
@@ -75,19 +78,33 @@ const AdminDetails = () => {
         <table className="min-w-full table-auto bg-white shadow-md rounded-lg ">
           <thead>
             <tr className="border-b bg-gray-100">
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Admin Name</th>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Role</th>
-              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">Password</th>
-              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">Action</th>
+              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
+                Admin Name
+              </th>
+              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
+                Role
+              </th>
+              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">
+                Password
+              </th>
+              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {adminData.map((admin) => (
               <tr key={admin._id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4 text-sm text-gray-700">{admin.username}</td>
-                <td className="py-2 px-4 text-sm text-gray-600">{admin.role}</td>
-                <td className="py-2 px-4 text-sm text-gray-600 text-center">*******</td>
-                
+                <td className="py-2 px-4 text-sm text-gray-700">
+                  {admin.username}
+                </td>
+                <td className="py-2 px-4 text-sm text-gray-600">
+                  {admin.role}
+                </td>
+                <td className="py-2 px-4 text-sm text-gray-600 text-center">
+                  *******
+                </td>
+
                 <td className="py-2 px-4 text-center">
                   <button
                     onClick={() => setSelectedAdmin(admin)}
@@ -124,6 +141,11 @@ const AdminDetails = () => {
               Save Password
             </button>
           </div>
+        </div>
+      )}
+      {message && (
+        <div className="mt-4 bg-green-100 text-green-800 p-2 rounded text-center">
+          {message}
         </div>
       )}
     </div>
