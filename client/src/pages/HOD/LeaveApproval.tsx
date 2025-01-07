@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import HOD_Navbar from "../../components/HOD/HOD_Navbar";
 import axios from "axios";
+import Navbar from "../MarksAdmin/Navbar";
 
 interface Leave {
   _id: string;
@@ -31,6 +32,7 @@ function LeaveApproval() {
 
   return (
     <>
+      <Navbar />
       <HOD_Navbar />
       <div className="max-w-5xl min-h-96 shadow-xl m-auto p-6 bg-white rounded-lg">
         <div>
@@ -39,31 +41,28 @@ function LeaveApproval() {
         <div className="flex justify-evenly text-xl py-4">
           <div
             onClick={() => setSelected("Pending")}
-            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
-              selected === "Pending"
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${selected === "Pending"
                 ? "text-blue-600 bg-blue-100 border-b-4 border-blue-600"
                 : "text-gray-700 hover:bg-gray-100"
-            }`}
+              }`}
           >
             Pending
           </div>
           <div
             onClick={() => setSelected("Rejected")}
-            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
-              selected === "Rejected"
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${selected === "Rejected"
                 ? "text-red-600 bg-red-100 border-b-4 border-red-600"
                 : "text-gray-700 hover:bg-gray-100"
-            }`}
+              }`}
           >
             Rejected
           </div>
           <div
             onClick={() => setSelected("Approved")}
-            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${
-              selected === "Approved"
+            className={`cursor-pointer px-6 py-2 rounded-lg transition-all ${selected === "Approved"
                 ? "text-green-600 bg-green-100 border-b-4 border-green-600"
                 : "text-gray-700 hover:bg-gray-100"
-            }`}
+              }`}
           >
             Approved
           </div>
