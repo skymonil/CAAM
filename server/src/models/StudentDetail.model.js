@@ -86,8 +86,8 @@ const studentDetailsSchema = new Schema({
     },
     status: {
         type: String,
-        enum: ['Active', 'Inactive', 'Graduated'],
-        default: 'Active', // Default status is Active
+        enum: ['Registered', 'Form Submitted', 'Documents Verified', 'Admitted', 'Graduated'],
+        default: 'Registered',
     },
 }, {timestamps:true});
 
