@@ -40,13 +40,9 @@ const AppContent = () => {
     "/student-detail",
     "/wallet",
     "/grievance",
-    "admin-grievance",
-    "admin-leave",
-    "admin-scholarship/*",
     "/admission/*",
     "/reexam",
     "scholarship",
-    "accountant-admin",
     "/result"
   ]; // List of paths where the navbar should appear
 

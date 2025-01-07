@@ -125,3 +125,18 @@ export const getAllStudent = async (req, res) => {
     res.status(500).json({ message: "Internal Server error", error });
   }
 };
+
+export const getStudentsDetails = async (req, res) => {
+  try {
+    const students = await StudentDetails.find();
+
+    if (!students || students.length === 0) {
+      return res.status(404).json({ message: "No students found" });
+    }
+
+    res.json(students);
+  } catch (error) {
+    console.error("Error in getting students details: ", error);
+    res.status(500).json({ message: "Internal Server error", error });
+  }
+};

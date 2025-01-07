@@ -9,7 +9,7 @@ interface Marks {
 interface Student {
   id: number;
   name: string;
-  collegeId: string; // Adding collegeId
+  collegeId: string;
 }
 
 interface ModalProps {
