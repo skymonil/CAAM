@@ -43,7 +43,6 @@ const AppContent = () => {
     "admin-grievance",
     "admin-leave",
     "admin-scholarship/*",
-    "doc-admin",
     "/admission/*",
     "/reexam",
     "scholarship",

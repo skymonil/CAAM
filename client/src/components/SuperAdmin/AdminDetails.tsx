@@ -92,7 +92,6 @@ const AdminDetails = () => {
                   <button
                     onClick={() => setSelectedAdmin(admin)}
                     className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
-                    className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
                   >
                     Change Password
                   </button>

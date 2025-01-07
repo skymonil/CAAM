@@ -40,8 +40,6 @@ app.use("/api/grievance", grievanceRoute); //Endpoint to Add Grievance from Stud
 app.use("/api/leave", leaveRoute); //Endpoint to Add Leave from Student side and Approve or Reject Leave from HOD side
 app.use("/api/razopay", razopayRoute); //Endpoint to Add Money to Student Wallet from Student Side using Razorpay
 app.use("/api/course", courseRoute);
-
-//Endpoint to Add Scholarship from HOD side 
 app.use('/api/scholarship',scholarshipRoute);
 
 app.listen(PORT, () => {

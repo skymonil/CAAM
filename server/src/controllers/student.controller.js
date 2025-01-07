@@ -97,7 +97,7 @@ export const fillDetails = async (req, res) => {
 
 export const getStudent = async (req, res) => {
   try {
-    const StudentEmail = req.student.email;
+    const StudentEmail = req.user.email;
     const student = await Student.findOne({ email: StudentEmail });
 
     if (!student) {

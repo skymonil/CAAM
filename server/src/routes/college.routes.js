@@ -14,7 +14,6 @@ router.get("/get", getCollege);
 
 router.get('/get-colleges',getColleges);
 
-
 // Update a college
 // router.put("/:id", async (req, res) => {
 //   const { collegeName, address, courses } = req.body;

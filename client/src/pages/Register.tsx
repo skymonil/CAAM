@@ -1,5 +1,4 @@
 import { useState, FormEvent, ChangeEvent, useEffect } from "react";
-import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
 
@@ -28,8 +27,6 @@ const Register: React.FC = () => {
 
 
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [college, setCollege] = useState<string>("");
-  const [colleges, setColleges] = useState<College[]>([]);
   const [college, setCollege] = useState<string>("");
   const [colleges, setColleges] = useState<College[]>([]);
   const [error, setError] = useState<string | null>(null);
@@ -75,17 +72,11 @@ const Register: React.FC = () => {
       ...formData,
       collegeId: college,
     };
-    console.log("Selected College ID:", college); 
-    const registerData = {
-      ...formData,
-      collegeId: college,
-    };
     try {
       console.log("registerData: ", registerData);
       console.log("registerData: ", registerData);
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
-        registerData
         registerData
       );
       console.log("User registered: ", response.data);
@@ -293,9 +284,6 @@ const Register: React.FC = () => {
               onChange={(e) => setOtp(e.target.value)}
             />
             {otpError && (
-              <p className="text-red-500 text-center text-sm pb-4">
-                {otpError}
-              </p>
               <p className="text-red-500 text-center text-sm pb-4">
                 {otpError}
               </p>
