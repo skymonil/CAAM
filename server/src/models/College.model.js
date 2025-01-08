@@ -34,12 +34,15 @@ const CourseSchema = new Schema(
       type: String,
       required: true,
     },
+    baseFee: {
+      type: Number,
+      required: true,
+    },
     subject: [SubjectSchema],
-    fees: [FeeSchema],
     eligibility: {
       type: String,
-      required:true
-    }
+      required: true,
+    },
   },
   { _id: true }
 );
@@ -58,7 +61,8 @@ const CollegeSchema = new Schema({
     type: String,
     required: true,
   },
-  courses: [CourseSchema],
+  globalFees: [FeeSchema],
+  courses: [CourseSchema], 
 });
 
 const College = model("College", CollegeSchema);
