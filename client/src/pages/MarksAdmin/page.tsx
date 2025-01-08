@@ -114,8 +114,9 @@ const MarksAdmin: React.FC = () => {
 
   const handleStudentClick = (student: Student) => {
     setSelectedStudent(student);
+    console.log("Id: ", student);
     axios
-      .get(`http://localhost:5000/api/college/${student.collegeId}`, {
+      .get(`http://localhost:5000/api/college/getCollegeById/${student.collegeId}`, {
         withCredentials: true,
       })
       .then((response) => {
