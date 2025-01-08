@@ -59,13 +59,11 @@ const Register: React.FC = () => {
     };
     try {
       console.log("registerData: ", registerData);
-      console.log("registerData: ", registerData);
       const response = await axios.post(
         "http://localhost:5000/api/auth/register",
         registerData
       );
       console.log("User registered: ", response.data);
-      setIsModalOpen(true);
       setIsModalOpen(true);
     } catch (error: any) {
       if (error.response?.data) {
