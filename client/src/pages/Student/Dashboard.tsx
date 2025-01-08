@@ -2,6 +2,7 @@ import Navbar from "./Navbar";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 interface StudentData {
   id: number;
@@ -33,7 +34,11 @@ const StudentDashboard = () => {
   }, [navigate]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 />
+      </div>
+    );
   }
 
   return (
@@ -55,7 +60,9 @@ const StudentDashboard = () => {
               CV
             </div>
             <div className="text-center sm:text-left md:mt-9">
-              <h3 className="text-lg sm:text-xl font-bold">{studentData?.name}</h3>
+              <h3 className="text-lg sm:text-xl font-bold">
+                {studentData?.name}
+              </h3>
               <p className="text-gray-600">Student ID: {studentData?.id}</p>
             </div>
           </div>

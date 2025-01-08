@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStudent } from "../context/StudentContext";
+import { Loader2 } from "lucide-react";
 
 interface StudentData {
   name: string;
@@ -9,7 +10,7 @@ interface StudentData {
 }
 
 const Navbar = () => {
-  const {setStudentId} = useStudent()
+  const { setStudentId } = useStudent();
   const [studentData, setStudentData] = useState<StudentData | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
@@ -47,25 +48,34 @@ const Navbar = () => {
       console.error("Error in logging out: ", error);
     }
     navigate("/log-in");
-  }
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 />
+      </div>
+    );
   }
-
 
   return (
     <div className="flex justify-between w-full items-center bg-[#053f64] text-white p-4">
       <div className="flex items-center">
-      <i className="fas fa-user"></i>
-        <div className="ml-2 text-lg font-semibold">{studentData?.name}</div> {/* Name */}
+        <i className="fas fa-user"></i>
+        <div className="ml-2 text-lg font-semibold">
+          {studentData?.name}
+        </div>{" "}
+        {/* Name */}
       </div>
-      <button className="flex items-center cursor-pointer hover:bg-gray-700 p-2 rounded" onClick={handleLogout}>
-      <i className="fas fa-right-from-bracket"></i> 
+      <button
+        className="flex items-center cursor-pointer hover:bg-gray-700 p-2 rounded"
+        onClick={handleLogout}
+      >
+        <i className="fas fa-right-from-bracket"></i>
         <span className="ml-2">Logout</span>
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

@@ -2,12 +2,19 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
 
+interface Subject {
+  subjectName: string;
+  minMarks: number;
+  maxMarks: number;
+}
+
 interface Course {
   id: string;
   name: string;
   duration: string;
-  fees: string;
-  subjects: string;
+  baseFee: string;
+  subjects: Subject[];
+  eligibility: string;
 }
 
 const Courses = () => {
@@ -57,19 +64,28 @@ const Courses = () => {
             <div className="text-gray-600 mb-2">
               <i className="fas fa-clock mr-2"></i>
               <strong>Duration:</strong> <br />
-              {course.duration}
+              {course.duration || "3 Years"}
             </div>
 
             <div className="text-gray-600 mb-2">
               <i className="fas fa-indian-rupee-sign mr-2"></i>
               <strong>Fees:</strong> <br />
-              {course.fees}
+              {course.baseFee}
+            </div>
+            <div className="text-gray-600 mb-2">
+              <i className="fas fa-graduation-cap mr-2"></i>
+              <strong>Eligibility:</strong> <br />
+              {course.eligibility}
             </div>
 
             <div className="text-gray-600">
               <i className="fas fa-book mr-2"></i>
               <strong>Subjects:</strong> <br />
-              {course.subjects}
+              <ul>
+                {course.subjects.map((subject, index) => (
+                  <li key={index}>{subject.subjectName}</li>
+                ))}
+              </ul>
             </div>
           </div>
         ))}

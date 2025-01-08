@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 interface Admin {
   _id: string;
@@ -66,7 +67,11 @@ const AdminDetails = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 />
+      </div>
+    );
   }
 
   return (

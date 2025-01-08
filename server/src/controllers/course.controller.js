@@ -21,9 +21,13 @@ export const getCourses = async (req, res) => {
       courses: college.courses.map((course) => ({
         id: course._id,
         name: course.courseName,
-        duration: "3 Years", 
-        fees: course.fees.map((fee) => `${fee.title}: ₹${fee.amount}`).join(", "),
-        subjects: course.subject.map((sub) => sub.subjectName).join(", "),
+        baseFee: `₹${course.baseFee}`,
+        subjects: course.subject.map((sub) => ({
+          subjectName: sub.subjectName,
+          minMarks: sub.marks.min,
+          maxMarks: sub.marks.max,
+        })),
+        eligibility: course.eligibility,
       })),
     });
   } catch (error) {
