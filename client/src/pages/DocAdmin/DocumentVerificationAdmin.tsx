@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../MarksAdmin/Nabar";
+import Navbar from "../MarksAdmin/Navbar";
 import axios from "axios";
 
 type Student = {
