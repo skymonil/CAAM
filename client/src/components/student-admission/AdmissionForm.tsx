@@ -1,7 +1,9 @@
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AdmissionForm = () => {
+  const navigate = useNavigate();
   interface Document {
     name: string;
     file: File;
@@ -61,6 +63,7 @@ const AdmissionForm = () => {
         { withCredentials: true }
       );
       console.log("Form submitted successfully:", response.data);
+      navigate("/fee-status");
     } catch (error: any) {
       if (error.response) {
         console.error("Error submitting form:", error.response.data);
