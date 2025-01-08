@@ -50,24 +50,9 @@ const Register: React.FC = () => {
     fetchColleges();
   }, []);
 
-  useEffect(() => {
-    const fetchColleges = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/college/get-colleges"
-        );
-        setColleges(response.data);
-      } catch (error) {
-        setError("Failed to fetch colleges");
-      }
-    };
-
-    fetchColleges();
-  }, []);
-
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Selected College ID:", college); 
+    console.log("Selected College ID:", college);
     const registerData = {
       ...formData,
       collegeId: college,
