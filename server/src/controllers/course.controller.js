@@ -3,7 +3,7 @@ import College from "../models/College.model.js";
 
 export const getCourses = async (req, res) => {
   try {
-    const { email } = req.student; 
+    const { email } = req.user; 
     const student = await Student.findOne({ email }).populate("collegeId");
 
     if (!student || !student.collegeId) {
