@@ -14,9 +14,9 @@ interface FeeStructure {
 }
 
 const CollegeDetails = () => {
-  const [collegeID, setCollegeID] = useState("C123");
-  const [collegeName, setCollegeName] = useState("Sample College");
-  const [collegeAddress, setCollegeAddress] = useState("123 College St, City");
+  const [collegeID, setCollegeID] = useState("");
+  const [collegeName, setCollegeName] = useState("");
+  const [collegeAddress, setCollegeAddress] = useState("");
   const [feeStructure, setFeeStructure] = useState<FeeStructure>({});
   const [globalFees, setGlobalFees] = useState<{ [key: string]: number }>({});
   const [newCourse, setNewCourse] = useState("");
