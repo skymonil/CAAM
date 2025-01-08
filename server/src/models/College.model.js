@@ -36,6 +36,10 @@ const CourseSchema = new Schema(
     },
     subject: [SubjectSchema],
     fees: [FeeSchema],
+    eligibility: {
+      type: String,
+      required:true
+    }
   },
   { _id: true }
 );
