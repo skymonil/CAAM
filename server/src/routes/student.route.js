@@ -18,11 +18,7 @@ router.get("/getStudents", authenticateAdmin, getAllStudent);
 
 router.get("/getStudentsDetails", authenticateAdmin, getStudentsDetails);
 
-router.get(
-  "/getStudentsDetailById/:id",
-  authenticateAdmin,
-  getStudentsDetailById
-);
+router.get("/getStudentsDetailById/:id", getStudentsDetailById);
 
 router.post("/fill-details", authenticateStudent, fillDetails);
 
