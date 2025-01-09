@@ -4,7 +4,8 @@ import {
   addCollege,
   getCollege,
   getColleges,
-  getCollegeById
+  getCollegeById,
+  getAllCourses
 } from "../controllers/college.controllers.js";
 
 const router = express.Router();
@@ -12,6 +13,8 @@ const router = express.Router();
 router.post("/add", addCollege);
 
 router.get("/get", getCollege);
+
+router.get("/getAllCourses", getAllCourses);
 
 router.get('/get-colleges',getColleges);
 

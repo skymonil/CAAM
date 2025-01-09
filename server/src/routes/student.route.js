@@ -1,17 +1,29 @@
 import express from "express";
-import { getStudent, getAllStudent, fillDetails, getStudentsDetails } from "../controllers/student.controller.js";
+import {
+  getStudent,
+  getAllStudent,
+  fillDetails,
+  getStudentsDetails,
+  getStudentsDetailById,
+} from "../controllers/student.controller.js";
 import { authenticateStudent } from "../middleware/auth.middleware.js";
 import { authenticateAdmin } from "../middleware/authAdmin.middleware.js";
 import upload from "../lib/cloudinary.js";
 
 const router = express.Router();
 
-router.get('/get', authenticateStudent, getStudent);
+router.get("/get", authenticateStudent, getStudent);
 
-router.get('/getStudents', authenticateAdmin, getAllStudent);
+router.get("/getStudents", authenticateAdmin, getAllStudent);
 
-router.get('/getStudentsDetails', authenticateAdmin, getStudentsDetails);
+router.get("/getStudentsDetails", authenticateAdmin, getStudentsDetails);
 
-router.post('/fill-details',authenticateStudent, fillDetails);
+router.get(
+  "/getStudentsDetailById/:id",
+  authenticateAdmin,
+  getStudentsDetailById
+);
+
+router.post("/fill-details", authenticateStudent, fillDetails);
 
 export default router;
