@@ -85,10 +85,10 @@ const studentDetailsSchema = new Schema({
         default: 0, // Default balance is 0
         min: 0, // Wallet balance cannot be negative
     },
-    status: {
+    status: { 
         type: String,
-        enum: ['Active', 'Inactive', 'Graduated'],
-        default: 'Active', // Default status is Active
+        enum: ['Registered', 'Form Submitted', 'Selected', 'Admitted','Active'],
+        default: 'Registered', // Default status is Registered
     },
 }, {timestamps:true});
 

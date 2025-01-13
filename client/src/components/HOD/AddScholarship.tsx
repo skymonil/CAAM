@@ -44,12 +44,12 @@ function AddScholarship() {
 
   const fetchScholarships = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/scholarship/fetch-all');
+      const response = await axios.get('http://localhost:5000/api/scholarship/fetch-all/Pending');
       if (response.data.success) {
         setActiveScholarships(response.data.scholarships);
       }
     } catch (error) {
-      console.log('Error fetching scholarships');
+      console.log('Error fetching scholarships'+error);
     }
   };
 
