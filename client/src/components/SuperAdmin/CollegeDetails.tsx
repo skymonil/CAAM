@@ -1,92 +1,160 @@
 import { useState } from "react";
 import axios from "axios";
 
-interface SubjectMarks {
-  [key: string]: { min: number; max: number };
+interface FeeStructure {
+  [course: string]: {
+    baseFee: number;
+    eligibility: string;
+    subjects: {
+      name: string;
+      minMarks: number;
+      maxMarks: number;
+    }[];
+  };
 }
 
 const CollegeDetails = () => {
-  const [collegeID, setCollegeID] = useState("C123");
-  const [collegeName, setCollegeName] = useState("Sample College");
-  const [collegeAddress, setCollegeAddress] = useState("123 College St, City");
-  const [subjectList, setSubjectList] = useState(["Mathematics"]);
-  const [newSubject, setNewSubject] = useState("");
-  const [feeStructure, setFeeStructure] = useState<{ [key: string]: { [key: string]: number } }>({});
+  const [collegeID, setCollegeID] = useState("");
+  const [collegeName, setCollegeName] = useState("");
+  const [collegeAddress, setCollegeAddress] = useState("");
+  const [feeStructure, setFeeStructure] = useState<FeeStructure>({});
   const [newCourse, setNewCourse] = useState("");
-  const [newAmount, setNewAmount] = useState("");
-  const [newFeeName, setNewFeeName] = useState("");
-  const [subjectMarks, setSubjectMarks] = useState<SubjectMarks>({
-    Mathematics: { min: 35, max: 100 },
-    Physics: { min: 30, max: 100 },
-    Chemistry: { min: 40, max: 100 },
-  });
+  const [baseFee, setBaseFee] = useState("");
+  const [eligibility, setEligibility] = useState("");
+  const [newSubject, setNewSubject] = useState("");
+  const [minMarks, setMinMarks] = useState("");
+  const [maxMarks, setMaxMarks] = useState("");
+  const [_message, setMessage] = useState("");
+  const [_messageType, setMessageType] = useState("");
+  const [newGlobalFeeName, setNewGlobalFeeName] = useState("");
+  const [newGlobalFeeAmount, setNewGlobalFeeAmount] = useState("");
+  const [globalFees, setGlobalFees] = useState<{ [key: string]: number }>({});
 
-  const handleAddFee = () => {
-    if (newCourse.trim() && newFeeName.trim() && newAmount.trim() && !isNaN(Number(newAmount))) {
+  const handleAddCourse = () => {
+    if (
+      newCourse.trim() &&
+      baseFee.trim() &&
+      !isNaN(Number(baseFee)) &&
+      eligibility.trim()
+    ) {
       setFeeStructure((prev) => ({
         ...prev,
         [newCourse]: {
-          ...(prev[newCourse] || {}),
-          [newFeeName]: parseInt(newAmount),
+          baseFee: parseInt(baseFee),
+          eligibility,
+          subjects: [],
         },
       }));
-      setNewFeeName("");
-      setNewAmount("");
+      setNewCourse("");
+      setBaseFee("");
+      setEligibility("");
     } else {
-      alert("Please enter valid course name, fee name, and amount.");
+      setMessageType("error");
+      setMessage("Please enter valid course name, base fee, and eligibility.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
-  const handleSubjectMarksChange = (
-    subject: string,
-    type: "min" | "max",
-    value: number
-  ) => {
-    const updatedMarks = { ...subjectMarks };
-    updatedMarks[subject] = updatedMarks[subject] || { min: 0, max: 0 }; // Ensure subject exists
-    updatedMarks[subject][type] = value;
-    setSubjectMarks(updatedMarks);
+  const handleAddSubjectToCourse = (course: string) => {
+    if (
+      newSubject.trim() &&
+      minMarks.trim() &&
+      maxMarks.trim() &&
+      !isNaN(Number(minMarks)) &&
+      !isNaN(Number(maxMarks))
+    ) {
+      setFeeStructure((prev) => {
+        const updatedCourse = { ...prev[course] };
+
+        // Avoid duplicate subject entries
+        if (
+          updatedCourse.subjects.some((subject) => subject.name === newSubject)
+        ) {
+          setMessageType("error");
+          setMessage("This subject already exists for the course.");
+          setTimeout(() => setMessage(""), 3000);
+          return prev;
+        }
+
+        updatedCourse.subjects = [
+          ...updatedCourse.subjects,
+          {
+            name: newSubject,
+            minMarks: parseInt(minMarks),
+            maxMarks: parseInt(maxMarks),
+          },
+        ];
+        setMessageType("success");
+        setMessage("Subject added successfully!");
+        setTimeout(() => setMessage(""), 3000);
+        return { ...prev, [course]: updatedCourse };
+      });
+
+      setNewSubject("");
+      setMinMarks("");
+      setMaxMarks("");
+    } else {
+      setMessageType("error");
+      setMessage(
+        "Please enter valid subject name, minimum marks, and maximum marks."
+      );
+      setTimeout(() => setMessage(""), 3000);
+    }
   };
 
-  const handleAddSubject = () => {
-    if (newSubject && !subjectMarks[newSubject]) {
-      setSubjectMarks({
-        ...subjectMarks,
-        [newSubject]: { min: 0, max: 100 }, // Set default marks for new subject
-      });
-      setSubjectList([...subjectList, newSubject]);
-      setNewSubject(""); // Clear the new subject input
+  const handleAddGlobalFee = () => {
+    if (
+      newGlobalFeeName.trim() &&
+      newGlobalFeeAmount.trim() &&
+      !isNaN(Number(newGlobalFeeAmount))
+    ) {
+      setGlobalFees((prev) => ({
+        ...prev,
+        [newGlobalFeeName]: parseInt(newGlobalFeeAmount),
+      }));
+      setNewGlobalFeeName("");
+      setNewGlobalFeeAmount("");
+    } else {
+      setMessageType("error");
+      setMessage("Please enter valid fee amount.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
   const handleSaveCollege = async (e: any) => {
     e.preventDefault();
 
-    const subjects = Object.entries(subjectMarks).map(([subjectName, marks]) => ({
-      subjectName,
-      marks: { min: marks.min, max: marks.max },
-    }));
-
-    const courses = Object.entries(feeStructure).map(([courseName, fees]) => ({
-      courseName,
-      subject: subjects,
-      fees: Object.entries(fees).map(([title, amount]) => ({ title, amount })),
-    }));
+    const courses = Object.entries(feeStructure).map(
+      ([courseName, details]) => ({
+        courseName,
+        baseFee: details.baseFee,
+        eligibility: details.eligibility,
+        subjects: details.subjects,
+      })
+    );
 
     const collegeData = {
       collegeID,
       collegeName,
       address: collegeAddress,
+      globalFees: Object.entries(globalFees).map(([title, amount]) => ({
+        title,
+        amount,
+      })),
       courses,
     };
 
     try {
-      const response = await axios.post("http://localhost:5000/api/college/add", collegeData);
-      console.log("College added successfully:", response.data);
-      // alert("College saved successfully!");
+      const response = await axios.post(
+        "http://localhost:5000/api/college/add",
+        collegeData
+      );
+      console.log("College added successfully: ", response.data);
     } catch (error: any) {
       console.error("Error saving college details:", error);
-      alert("Error saving college details. Please try again.");
+      setMessageType("error");
+      setMessage("Error saving college details. Please try again.");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
@@ -94,7 +162,7 @@ const CollegeDetails = () => {
     <div className="p-6 max-w-4xl mx-auto bg-white shadow-lg rounded-lg">
       <h2 className="text-2xl font-bold text-gray-800 mb-6">College Details</h2>
 
-      {/* College ID */}
+      {/* College Info */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
           College ID:
@@ -103,11 +171,10 @@ const CollegeDetails = () => {
           type="text"
           value={collegeID}
           onChange={(e) => setCollegeID(e.target.value)}
-          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#9c231b] w-full"
         />
       </div>
 
-      {/* College Name */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
           College Name:
@@ -116,11 +183,10 @@ const CollegeDetails = () => {
           type="text"
           value={collegeName}
           onChange={(e) => setCollegeName(e.target.value)}
-          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#9c231b] w-full"
         />
       </div>
 
-      {/* College Address */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
           College Address:
@@ -129,173 +195,145 @@ const CollegeDetails = () => {
           type="text"
           value={collegeAddress}
           onChange={(e) => setCollegeAddress(e.target.value)}
-          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+          className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#9c231b] w-full"
         />
       </div>
-
-      {/* Add New Subject */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
-          Add New Subject:
+          Global Fees:
         </label>
-        <div className="flex space-x-4">
+        <div className="flex gap-4 items-center">
           <input
             type="text"
-            value={newSubject}
-            onChange={(e) => setNewSubject(e.target.value)}
-            className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            placeholder="Enter new subject"
+            placeholder="Fee Name"
+            value={newGlobalFeeName}
+            onChange={(e) => setNewGlobalFeeName(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#9c231b] w-full"
+          />
+          <input
+            type="number"
+            placeholder="Amount"
+            value={newGlobalFeeAmount}
+            onChange={(e) => setNewGlobalFeeAmount(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-[#9c231b] w-full"
           />
           <button
-            onClick={handleAddSubject}
-            className="mt-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            onClick={handleAddGlobalFee}
+            className="p-3 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28] w-2/5"
           >
-            Add
+            Add Fee
           </button>
         </div>
       </div>
+      
+      {Object.keys(globalFees).length > 0 && (
+        <div className="mt-6 border border-gray-300 p-4 rounded-lg">
+          <h3 className="text-xl font-bold text-gray-700 mb-4">Global Fees</h3>
+          <ul className="list-disc list-inside">
+            {Object.entries(globalFees).map(([feeName, amount]) => (
+              <li key={feeName} className="text-gray-700">
+                {feeName}: ₹{amount}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
-      {/* Subject Marks (Min and Max) */}
+      {/* Add Course */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">
-          Subject Marks (Min/Max):
+          Add Course:
         </label>
-        {subjectList.map((subject) => (
-          <div key={subject} className="mt-4">
-            <label className="block text-gray-700">{subject} Min Marks:</label>
-            <input
-              type="number"
-              value={subjectMarks[subject].min}
-              onChange={(e) =>
-                handleSubjectMarksChange(
-                  subject,
-                  "min",
-                  parseInt(e.target.value)
-                )
-              }
-              className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            />
-            <label className="block text-gray-700 mt-4">
-              {subject} Max Marks:
-            </label>
-            <input
-              type="number"
-              value={subjectMarks[subject].max}
-              onChange={(e) =>
-                handleSubjectMarksChange(
-                  subject,
-                  "max",
-                  parseInt(e.target.value)
-                )
-              }
-              className="mt-2 p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-            />
-          </div>
-        ))}
-      </div>
-
-      {/* Fee Structure */}
-      <div className="mt-6">
-        <label className="block text-gray-700 font-medium mb-2">
-          Fee Structure (Add Fees):
-        </label>
-
-        <div className="mt-4 flex gap-4 items-center">
+        <div className="flex gap-4 items-center">
           <input
             type="text"
             placeholder="Course Name"
             value={newCourse}
             onChange={(e) => setNewCourse(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-          />
-          <input
-            type="text"
-            placeholder="Fee Name"
-            value={newFeeName}
-            onChange={(e) => setNewFeeName(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
           />
           <input
             type="number"
-            placeholder="Amount"
-            value={newAmount}
-            onChange={(e) => setNewAmount(e.target.value)}
-            className="p-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
+            placeholder="Base Fee"
+            value={baseFee}
+            onChange={(e) => setBaseFee(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
+          />
+          <input
+            type="text"
+            placeholder="Eligibility"
+            value={eligibility}
+            onChange={(e) => setEligibility(e.target.value)}
+            className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
           />
           <button
-            onClick={handleAddFee}
-            className="p-3 bg-blue-500 text-white font-medium rounded-lg shadow-sm hover:bg-blue-600"
+            onClick={handleAddCourse}
+            className="p-3 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28] w-3/5"
           >
-            Add
+            Add Course
           </button>
         </div>
-
-        <div className="mt-6">
-          {Object.keys(feeStructure).length > 0 ? (
-            Object.entries(feeStructure).map(([course, fees]) => (
-              <div key={course} className="mt-4">
-                <h3 className="text-xl font-medium text-gray-700 mb-2">{course}</h3>
-                <table className="table-auto w-full border-collapse border border-gray-300">
-                  <thead>
-                    <tr>
-                      <th className="border border-gray-300 px-4 py-2 text-left">Fee Name</th>
-                      <th className="border border-gray-300 px-4 py-2 text-left">Amount</th>
-                      <th className="border border-gray-300 px-4 py-2 text-left">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {Object.entries(fees).map(([feeName, amount]) => (
-                      <tr key={feeName}>
-                        <td className="border border-gray-300 px-4 py-2">{feeName}</td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          <input
-                            type="number"
-                            value={amount}
-                            onChange={(e) =>
-                              setFeeStructure((prev) => ({
-                                ...prev,
-                                [course]: {
-                                  ...prev[course],
-                                  [feeName]: parseInt(e.target.value),
-                                },
-                              }))
-                            }
-                            className="p-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 w-full"
-                          />
-                        </td>
-                        <td className="border border-gray-300 px-4 py-2">
-                          <button
-                            onClick={() =>
-                              setFeeStructure((prev) => {
-                                const newStructure = { ...prev };
-                                delete newStructure[course][feeName];
-                                if (Object.keys(newStructure[course]).length === 0) {
-                                  delete newStructure[course];
-                                }
-                                return newStructure;
-                              })
-                            }
-                            className="p-2 bg-red-500 text-white font-medium rounded-lg shadow-sm hover:bg-red-600"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No courses or fees added yet.</p>
-          )}
-        </div>
       </div>
+
+      {/* List Courses and Add Subjects */}
+      {Object.entries(feeStructure).map(([course, details]) => (
+        <div
+          key={course}
+          className="mt-6 border border-gray-300 p-4 rounded-lg"
+        >
+          <h3 className="text-xl font-bold text-gray-700 mb-4">{course}</h3>
+          <p className="text-gray-700">Base Fee: ₹{details.baseFee}</p>
+          <p className="text-gray-700">Eligibility: {details.eligibility}</p>
+          <div className="mt-4">
+            <label className="block text-gray-700 font-medium mb-2">
+              Add Subject to {course}:
+            </label>
+            <div className="flex gap-4 items-center">
+              <input
+                type="text"
+                placeholder="Subject Name"
+                value={newSubject}
+                onChange={(e) => setNewSubject(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
+              />
+              <input
+                type="number"
+                placeholder="Passing Marks"
+                value={minMarks}
+                onChange={(e) => setMinMarks(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
+              />
+              <input
+                type="number"
+                placeholder="Max Marks"
+                value={maxMarks}
+                onChange={(e) => setMaxMarks(e.target.value)}
+                className="p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c231b] w-full"
+              />
+              <button
+                onClick={() => handleAddSubjectToCourse(course)}
+                className="p-3 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28] w-3/5"
+              >
+                Add Subject
+              </button>
+            </div>
+            <ul className="mt-4">
+              {details.subjects.map((subject, index) => (
+                <li key={index} className="text-gray-700">
+                  - {subject.name} (Passing: {subject.minMarks}, Max:{" "}
+                  {subject.maxMarks})
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      ))}
+
       {/* Save College Button */}
       <div className="mt-8">
         <button
           onClick={handleSaveCollege}
-          className="px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+          className="px-6 py-3 bg-[#9c231b] text-white rounded-lg hover:bg-[#502b28] transition-colors w-full"
         >
           Save College
         </button>

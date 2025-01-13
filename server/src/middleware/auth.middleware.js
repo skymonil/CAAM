@@ -1,40 +1,67 @@
 import jwt from "jsonwebtoken";
-import Student from "../models/Student.model.js";
+import Student from "../models/Student.model.js"; 
+import Admin from "../models/Admin.model.js";
 
-export const authenticate = async (req, res, next) => {
+const verifyToken = (token) => {
   try {
-    const jwt_token = req.cookies?.token;
+    return jwt.verify(token, process.env.SECRET_KEY);
+  } catch (err) {
+    if (err.name === "TokenExpiredError") {
+      throw new Error("TokenExpired");
+    }
+    throw new Error("InvalidToken");
+  }
+};
 
-    if (!jwt_token) {
-      return res
-        .status(401)
-        .json({ message: "Unauthorized - NO Token Provided" });
+export const authenticateStudent = async (req, res, next) => {
+  try {
+    const token = req.cookies?.token;
+    
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }
 
-    const decoded_token = jwt.verify(jwt_token, process.env.SECRET_KEY);
+    const decodedToken = verifyToken(token);    
 
-    // console.log(decoded_token);
-    
-
-    if (!decoded_token) {
-      return res.status(401).json({ message: "Unauthorized - Invalid Token" });
-    }
-
-    const student = await Student.findById(decoded_token.userID).select(
-      "-password"
-    );
-
-    // console.log(student);
-    
+    const student = await Student.findById(decodedToken.userID).select("-password");
 
     if (!student) {
       return res.status(401).json({ message: "Unauthorized - Student Not Found" });
     }
 
-    req.student = student;
+    req.user = student;
     next();
   } catch (err) {
-    console.log("Error in authentication middleware: " + err);
-    res.status(500).json({ message: "Internal server error" });
+    console.error("Error in authenticateStudent middleware:", err.message);
+    const errorMessage = err.message === "TokenExpired" ? "Unauthorized - Token Expired" : "Internal server error";
+    res.status(500).json({ message: errorMessage });
+  }
+};
+
+export const authenticateAdmin = async (req, res, next) => {
+  try {
+    const token = req.cookies?.token;
+    if (!token) {
+      return res.status(401).json({ message: "Unauthorized - No Token Provided" });
+    }
+
+    const decodedToken = verifyToken(token);
+
+    const admin = await Admin.findById(decodedToken._id).select("-password");
+    if (!admin) {
+      return res.status(401).json({ message: "Unauthorized - Admin Not Found" });
+    }
+
+    const allowedAdminRoles = ["superAdmin", "docAdmin", "marksAdmin", "hod", "accountantAdmin"];
+    if (!allowedAdminRoles.includes(admin.role)) {
+      return res.status(403).json({ message: "Forbidden - Not an Admin" });
+    }
+
+    req.user = admin;
+    next();
+  } catch (err) {
+    console.error("Error in authenticateAdmin middleware:", err.message);
+    const errorMessage = err.message === "TokenExpired" ? "Unauthorized - Token Expired" : "Internal server error";
+    res.status(500).json({ message: errorMessage });
   }
 };

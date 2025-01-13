@@ -1,59 +1,11 @@
 import { Link } from "react-router-dom";
 
 const AdmissionGuidelines = () => {
-  const courseQualifications = [
-    {
-      courseName: "Bachelor of Science in Information Technology",
-      qualification: "Minimum 60% in HSC & 75 Marks in Mathematics",
-    },
-    {
-      courseName: "Bachelor of Management Studies",
-      qualification: "Minimum 55% in HSC (Commerce stream)",
-    },
-    {
-      courseName: "Bachelor of Arts in Psychology",
-      qualification: "Minimum 50% in HSC (Arts stream)",
-    },
-  ];
-
   return (
       <div className="max-w-5xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8 min-h-screen">
         <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-[#9c231b] text-center">
           Admission Guidelines
         </h2>
-
-        {/* Minimum Academic Qualification */}
-        <section className="mb-4 sm:mb-6">
-          <h3 className="text-base sm:text-xl font-semibold mb-2 sm:mb-4">
-            Minimum Academic Qualification
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="table-auto w-full border-collapse border border-gray-300">
-              <thead className="bg-gray-200">
-                <tr>
-                  <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left">
-                    Course Name
-                  </th>
-                  <th className="border border-gray-300 px-2 sm:px-4 py-2 text-left">
-                    Minimum Qualification
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {courseQualifications.map((course, index) => (
-                  <tr key={index} className="odd:bg-white even:bg-gray-100">
-                    <td className="border border-gray-300 px-2 sm:px-4 py-2">
-                      {course.courseName}
-                    </td>
-                    <td className="border border-gray-300 px-2 sm:px-4 py-2">
-                      {course.qualification}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
 
         {/* Required Documents */}
         <section className="mb-4 sm:mb-6">
@@ -105,7 +57,7 @@ const AdmissionGuidelines = () => {
             <li>Fee payment is available after document verification.</li>
             <li>
               Visit the{" "}
-              <Link to="admission/help" className="underline inline-flex">
+              <Link to="/admission/help" className="underline inline-flex">
                 Help & Support
                 <svg
                   aria-hidden="true"

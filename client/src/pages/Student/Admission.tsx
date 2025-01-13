@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import AdmissionTabs from "../../components/student-admission/AdmissionTabs";
 import Navbar from "./Navbar";
-import AdmissionGuidelines from "../../components/student-admission/AdmissionGuidelines";
 import AdmissionForm from "../../components/student-admission/AdmissionForm";
 import Courses from "../../components/student-admission/Courses";
+import AdmissionGuidelines from "../../components/student-admission/AdmissionGuidelines";
 import AdmissionHelp from "../../components/student-admission/AdmissionHelp";
 
 const Admission = () => {

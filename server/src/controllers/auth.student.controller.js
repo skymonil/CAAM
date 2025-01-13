@@ -101,6 +101,7 @@ export const verifyOTP = async (req, res) => {
       email,
       password: hashedPassword,
       collegeId,
+      collegeId,
     });
 
     await newStudent.save();
@@ -120,9 +121,6 @@ export const login = async (req, res) => {
 
   try {
     const student = await Student.findOne({ email });
-    console.log("Student:", student);
-    console.log("email:", email);
-    console.log("password:", password);
 
     if (!student) {
       return res.status(400).json({
@@ -151,7 +149,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(student._id, res);
 
-    console.log("Student Login Successful:", student.token);
+    console.log("Student Login Successful!");
 
     res.status(200).json({ message: "Login Successful", token });
   } catch (error) {
@@ -162,7 +160,11 @@ export const login = async (req, res) => {
 
 export const logout = (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: process.env.NODE_ENV === "production",
+    });
     console.log("Token cookie cleared.");
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {

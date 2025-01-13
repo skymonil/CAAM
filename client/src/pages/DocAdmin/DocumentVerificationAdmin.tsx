@@ -1,28 +1,29 @@
 import React, { useState, useEffect } from "react";
-// import "font-awesome/css/font-awesome.min.css";
-// import { Description } from "@mui/icons-material";
+import Navbar from "../MarksAdmin/Navbar";
+import axios from "axios";
 
 type Student = {
-  id: string;
-  profilePhoto: string;
+  address: string;
+  collegeId: string;
+  course: string;
+  createdAt: string;
+  dob: string;
+  documents: string[];
   fullName: string;
-  admissionForm: {
-    gender: string;
-    parentName: string;
-    address: string;
-    contactNumber: string;
-    parentNumber: string;
-    dob: string;
-    lastInstitution: string;
-    percentage: string;
-    documents: {
-      photo: string;
-      marksheet: string;
-      leaveCertificate: string;
-      adharCard: string;
-    };
-  };
+  gender: string;
+  lastInstitution: string;
+  parentName: string;
+  parentPhone: string;
+  phone: string;
+  score: number;
+  status: string;
+  studentId: string;
+  updatedAt: string;
+  walletBalance: number;
+  __v: number;
+  _id: string;
 };
+
 
 const DocumentVerificationAdmin: React.FC = () => {
   const [students, setStudents] = useState<Student[]>([]);
@@ -31,132 +32,52 @@ const DocumentVerificationAdmin: React.FC = () => {
   // Fetch students data from an API (mocked here for demonstration)
   useEffect(() => {
     const fetchData = async () => {
-      const data: Student[] = [
-        {
-          id: "1",
-          profilePhoto: "https://via.placeholder.com/150",
-          fullName: "Chirag Varu",
-          admissionForm: {
-            gender: "Male",
-            parentName: "Parent Name",
-            address: "123 Main St, City, Country",
-            contactNumber: "1234567890",
-            parentNumber: "0987654321",
-            dob: "2005-12-09",
-            lastInstitution: "ABC High School",
-            percentage: "85%",
-            documents: {
-              photo: "https://via.placeholder.com/150",
-              marksheet: "https://via.placeholder.com/150",
-              leaveCertificate: "https://via.placeholder.com/150",
-              adharCard: "https://via.placeholder.com/150",
-            },
-          },
-        },
-        {
-          id: "2",
-          profilePhoto: "https://via.placeholder.com/150",
-          fullName: "Aditya Pai",
-          admissionForm: {
-            gender: "Male",
-            parentName: "parentName",
-            address: "123 Main St, City, Country",
-            contactNumber: "1234567890",
-            parentNumber: "0987654321",
-            dob: "2005-12-09",
-            lastInstitution: "ABC High School",
-            percentage: "85%",
-            documents: {
-              photo: "https://via.placeholder.com/150",
-              marksheet: "https://via.placeholder.com/150",
-              leaveCertificate: "https://via.placeholder.com/150",
-              adharCard: "https://via.placeholder.com/150",
-            },
-          },
-        },
-        {
-          id: "3",
-          profilePhoto: "https://via.placeholder.com/150",
-          fullName: "Akshat Gohil",
-          admissionForm: {
-            gender: "Male",
-            parentName: "parentName",
-            address: "123 Main St, City, Country",
-            contactNumber: "1234567890",
-            parentNumber: "0987654321",
-            dob: "2005-12-09",
-            lastInstitution: "ABC High School",
-            percentage: "85%",
-            documents: {
-              photo: "https://via.placeholder.com/150",
-              marksheet: "https://via.placeholder.com/150",
-              leaveCertificate: "https://via.placeholder.com/150",
-              adharCard: "https://via.placeholder.com/150",
-            },
-          },
-        },
-        {
-          id: "4",
-          profilePhoto: "https://via.placeholder.com/150",
-          fullName: "Monil Parikh",
-          admissionForm: {
-            gender: "Male",
-            parentName: "parentName",
-            address: "123 Main St, City, Country",
-            contactNumber: "1234567890",
-            parentNumber: "0987654321",
-            dob: "2005-12-09",
-            lastInstitution: "ABC High School",
-            percentage: "85%",
-            documents: {
-              photo: "https://via.placeholder.com/150",
-              marksheet: "https://via.placeholder.com/150",
-              leaveCertificate: "https://via.placeholder.com/150",
-              adharCard: "https://via.placeholder.com/150",
-            },
-          },
-        },
-      ];
-      setStudents(data);
+      axios
+        .get("http://localhost:5000/api/student/getStudentsDetails", {
+          withCredentials: true,
+        })
+        .then((response) => {
+          setStudents(response.data);
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.error("Error fetching students:", error);
+        });
     };
 
     fetchData();
   }, []);
 
   const handleApprove = (id: string) => {
-    setStudents((prev) => prev.filter((student) => student.id !== id));
+    setStudents((prev) => prev.filter((student) => student._id !== id));
     setSelectedStudent(null);
   };
 
   const handleReject = (id: string) => {
-    setStudents((prev) => prev.filter((student) => student.id !== id));
+    setStudents((prev) => prev.filter((student) => student._id !== id));
     setSelectedStudent(null);
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold mb-4">Document Verification</h1>
+    <div>
+      <Navbar />
+      <h1 className="text-2xl font-bold mt-4 p-4">Document Verification</h1>
 
       {/* Student List */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 p-4">
         {students.map((student) => (
           <div
-            key={student.id}
+            key={student._id}
             className="border p-4 rounded shadow hover:bg-gray-100 cursor-pointer"
             onClick={() => setSelectedStudent(student)}
           >
-            <img
-              src={student.profilePhoto}
-              alt={student.fullName}
-              className="w-16 h-16 rounded-full mb-2"
-            />
             <h2 className="text-lg font-semibold">{student.fullName}</h2>
             <div className="mt-2">
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded mr-2"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleApprove(student.id);
+                  handleApprove(student._id);
                 }}
               >
                 Approve
@@ -165,7 +86,7 @@ const DocumentVerificationAdmin: React.FC = () => {
                 className="bg-red-500 text-white px-4 py-2 rounded"
                 onClick={(e) => {
                   e.stopPropagation();
-                  handleReject(student.id);
+                  handleReject(student._id);
                 }}
               >
                 Reject
@@ -190,93 +111,51 @@ const DocumentVerificationAdmin: React.FC = () => {
               <strong>Full Name:</strong> {selectedStudent.fullName}
             </p>
             <p>
-              <strong>Gender:</strong> {selectedStudent.admissionForm.gender}
+              <strong>Gender:</strong> {selectedStudent.gender}
             </p>
             <p>
-              <strong>Parent Name:</strong>{" "}
-              {selectedStudent.admissionForm.parentName}
+              <strong>Parent Name:</strong> {selectedStudent.parentName}
             </p>
             <p>
-              <strong>Address:</strong> {selectedStudent.admissionForm.address}
+              <strong>Address:</strong> {selectedStudent.address}
             </p>
             <p>
-              <strong>Contact Number:</strong>{" "}
-              {selectedStudent.admissionForm.contactNumber}
+              <strong>Contact Number:</strong> {selectedStudent.phone}
             </p>
             <p>
-              <strong>Parent Number:</strong>{" "}
-              {selectedStudent.admissionForm.parentNumber}
+              <strong>Parent Number:</strong> {selectedStudent.parentPhone}
             </p>
             <p>
-              <strong>Date of Birth:</strong>{" "}
-              {selectedStudent.admissionForm.dob}
+              <strong>Date of Birth:</strong> {selectedStudent.dob}
             </p>
             <p>
-              <strong>Last Institution:</strong>{" "}
-              {selectedStudent.admissionForm.lastInstitution}
+              <strong>Last Institution:</strong> {selectedStudent.lastInstitution}
             </p>
             <p>
-              <strong>Percentage:</strong>{" "}
-              {selectedStudent.admissionForm.percentage}
+              <strong>Percentage:</strong> {selectedStudent.score}%
             </p>
 
             <h3 className="text-lg font-semibold mt-4">Documents</h3>
             <ul className="list-disc pl-4">
-              <li>
-                <a
-                  href={selectedStudent.admissionForm.documents.photo}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Passport Size Photo{" "}
-                  {/* <span className="ml-2 text-red-500">
-                    <i className="fas fa-file-pdf">s</i>
-                  </span>
-                  <i className="fa fa-file-pdf">h</i> */}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={selectedStudent.admissionForm.documents.marksheet}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Marksheet
-                </a>
-              </li>
-              <li>
-                <a
-                  href={
-                    selectedStudent.admissionForm.documents.leaveCertificate
-                  }
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Leave Certificate
-                  {/* <Description /> */}
-                </a>
-              </li>
-              <li>
-                <a
-                  href={selectedStudent.admissionForm.documents.adharCard}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Adhar Card
-                </a>
-              </li>
+              {selectedStudent.documents.map((doc, index) => (
+                <li key={index}>
+                  <a href={doc} target="_blank" rel="noreferrer">
+                    Document {index + 1}
+                  </a>
+                </li>
+              ))}
             </ul>
 
             <div className="mt-4">
               <button
                 className="bg-green-500 text-white px-4 py-2 rounded mr-2"
-                onClick={() => handleApprove(selectedStudent.id)}
+                onClick={() => handleApprove(selectedStudent._id)}
               >
                 Approve
               </button>
               <button
                 className="bg-red-500 text-white px-4 py-2 rounded"
-                onClick={() => handleReject(selectedStudent.id)}
+                onClick={() => handleReject(selectedStudent._id)}
               >
                 Reject
               </button>

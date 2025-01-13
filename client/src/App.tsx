@@ -40,14 +40,9 @@ const AppContent = () => {
     "/student-detail",
     "/wallet",
     "/grievance",
-    "admin-grievance",
-    "admin-leave",
-    "admin-scholarship/*",
-    "doc-admin",
     "/admission/*",
     "/reexam",
     "scholarship",
-    "accountant-admin",
     "/result"
   ]; // List of paths where the navbar should appear
 
@@ -77,7 +72,7 @@ const AppContent = () => {
           <Route path="/leave" element={<Leave />} />
           <Route path="/wallet" element={<WalletPage />} />
 
-          <Route path="/superAdmin" element={<SuperAdmin />} />
+          <Route path="/super-admin" element={<SuperAdmin />} />
           <Route path="/doc-admin" element={<DocumentVerificationAdmin />} />
           <Route path="/marks-admin" element={<MarksAdmin />} />
           <Route path="/accountant-admin" element={<AddMoney />} />

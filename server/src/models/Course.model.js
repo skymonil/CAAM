@@ -10,8 +10,9 @@ const courseSchema = new Schema({
         ref: 'Subject', 
     }],
     duration: {
-        type: String,
+        type: Number,
         required: true,
+        default:3,
     },
     eligibility: {
         type: String,
@@ -22,6 +23,10 @@ const courseSchema = new Schema({
         required: true,
         min: 0,
     },
+    collegeId: {
+        type: Schema.Types.ObjectId,
+        ref: 'College'
+    }
 }, {timestamps:true});
 
 const Course = model('Course', courseSchema);

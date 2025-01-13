@@ -13,6 +13,7 @@ import studentRoute from "./routes/student.route.js";
 import adminRoute from "./routes/admin.route.js";
 import scholarshipRoute from './routes/scholarship.route.js'
 import razopayRoute from "./routes/razopay.route.js";
+import courseRoute from "./routes/course.route.js";
 
 const app = express();
 const PORT = 5000;
@@ -20,8 +21,7 @@ const PORT = 5000;
 dotenv.config();
 connectDB();
 
-app.use(
-  cors({
+app.use( cors({
     origin: "http://localhost:5173",
     credentials: true,
   })
@@ -39,8 +39,7 @@ app.use("/api/admin/accountant", accountantRoute); //Endpoint to Add Money to St
 app.use("/api/grievance", grievanceRoute); //Endpoint to Add Grievance from Student side and Resolve Grievance from HOD side
 app.use("/api/leave", leaveRoute); //Endpoint to Add Leave from Student side and Approve or Reject Leave from HOD side
 app.use("/api/razopay", razopayRoute); //Endpoint to Add Money to Student Wallet from Student Side using Razorpay
-
-//Endpoint to Add Scholarship from HOD side 
+app.use("/api/course", courseRoute);
 app.use('/api/scholarship',scholarshipRoute);
 
 app.listen(PORT, () => {

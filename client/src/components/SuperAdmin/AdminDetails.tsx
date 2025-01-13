@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 interface Admin {
   _id: string;
   username: string;
   role: string;
-  password: string;
 }
 
 const AdminDetails = () => {
@@ -14,17 +14,17 @@ const AdminDetails = () => {
   const [newPassword, setNewPassword] = useState("");
   const [loading, setLoading] = useState<boolean>(true);
   const [selectedAdmin, setSelectedAdmin] = useState<Admin | null>(null);
+  const [message, setMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
+  // Fetch admins on component load
   useEffect(() => {
     axios
       .get("http://localhost:5000/api/admin/credential", {
         withCredentials: true,
       })
       .then((response) => {
-        setAdminData(response.data.admins); 
-        console.log(response.data.admins);
-        
+        setAdminData(response.data.admins);
         setLoading(false);
       })
       .catch((err) => {
@@ -36,19 +36,42 @@ const AdminDetails = () => {
       });
   }, [navigate]);
 
-  const handlePasswordChange = (adminId: string) => {
-    if (newPassword && selectedAdmin) {
-      const updatedAdmins = adminData.map((admin) =>
-        admin._id === adminId ? { ...admin, password: newPassword } : admin
+  // Handle password update
+  const handlePasswordChange = async (adminId: string) => {
+    if (!newPassword || !selectedAdmin) return;
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/admin/update-password",
+        { adminId, newPassword },
+        { withCredentials: true }
       );
-      setAdminData(updatedAdmins);
+
+      console.log(response.data.message);
+      setMessage("Password updated successfully");
+      setTimeout(() => setMessage(null), 3000);
+
+      // Update local state to reflect the change
+      setAdminData((prevAdmins) =>
+        prevAdmins.map((admin) =>
+          admin._id === adminId ? { ...admin, password: "******" } : admin
+        )
+      );
       setNewPassword("");
       setSelectedAdmin(null);
+    } catch (error) {
+      console.error("Error updating password:", error);
+      setMessage("Failed to update password. Please try again.");
+      setTimeout(() => setMessage(null), 3000);
     }
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 />
+      </div>
+    );
   }
 
   return (
@@ -57,25 +80,40 @@ const AdminDetails = () => {
 
       {/* Admin Table */}
       <div className="overflow-x-auto">
-        <table className="min-w-full table-auto bg-white shadow-md rounded-lg">
+        <table className="min-w-full table-auto bg-white shadow-md rounded-lg ">
           <thead>
             <tr className="border-b bg-gray-100">
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Admin Name</th>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Role</th>
-              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">Password</th>
-              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">Action</th>
+              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
+                Admin Name
+              </th>
+              <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
+                Role
+              </th>
+              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">
+                Password
+              </th>
+              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
             {adminData.map((admin) => (
               <tr key={admin._id} className="border-b hover:bg-gray-50">
-                <td className="py-2 px-4 text-sm text-gray-700">{admin.username}</td>
-                <td className="py-2 px-4 text-sm text-gray-600">{admin.role}</td>
-                <td className="py-2 px-4 text-sm text-gray-600">{admin.password}</td>
+                <td className="py-2 px-4 text-sm text-gray-700">
+                  {admin.username}
+                </td>
+                <td className="py-2 px-4 text-sm text-gray-600">
+                  {admin.role}
+                </td>
+                <td className="py-2 px-4 text-sm text-gray-600 text-center">
+                  *******
+                </td>
+
                 <td className="py-2 px-4 text-center">
                   <button
                     onClick={() => setSelectedAdmin(admin)}
-                    className="bg-blue-500 text-white px-4 py-1 rounded-md hover:bg-blue-600 transition-colors duration-200"
+                    className="bg-[#9c231b] text-white px-4 py-1 rounded-md hover:bg-[#502b28] transition-colors duration-200"
                   >
                     Change Password
                   </button>
@@ -89,7 +127,10 @@ const AdminDetails = () => {
       {/* Change Password Section */}
       {selectedAdmin && (
         <div className="mt-6 bg-white p-4 rounded-lg shadow-md">
-          <h3 className="text-lg font-semibold">Change Password for {selectedAdmin.username}</h3>
+          <h3 className="text-lg font-semibold">
+            Change Password for {selectedAdmin.username}
+            Change Password for {selectedAdmin.username}
+          </h3>
           <input
             type="password"
             placeholder="New Password"
@@ -100,11 +141,16 @@ const AdminDetails = () => {
           <div className="mt-4 flex justify-end">
             <button
               onClick={() => handlePasswordChange(selectedAdmin._id)}
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200"
+              className="px-4 py-2 bg-[#9c231b] text-white rounded-md hover:bg-[#502b28] transition-colors duration-200"
             >
               Save Password
             </button>
           </div>
+        </div>
+      )}
+      {message && (
+        <div className="mt-4 bg-green-100 text-green-800 p-2 rounded text-center">
+          {message}
         </div>
       )}
     </div>

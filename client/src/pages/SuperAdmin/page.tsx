@@ -12,13 +12,13 @@ const page = () => {
     <div className="container mx-auto p-4">
       <Nabar />
       {/* Tab Navigation */}
-      <div className="tabs flex border-b-2 border-gray-300">
+      <div className="tabs flex border-b-2 border-gray-300 justify-center">
         <button
           className={`tab-btn ${
             activeTab === 1
-              ? "text-blue-600 border-b-4 border-blue-500"
+              ? "text-[#9c231b] border-b-4 border-[#9c231b]"
               : "text-gray-600"
-          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-blue-600`}
+          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-black`}
           onClick={() => setActiveTab(1)}
         >
           College Details
@@ -26,9 +26,9 @@ const page = () => {
         <button
           className={`tab-btn ${
             activeTab === 2
-              ? "text-blue-600 border-b-4 border-blue-500"
+              ? "text-[#9c231b] border-b-4 border-[#9c231b]"
               : "text-gray-600"
-          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-blue-600`}
+          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-black`}
           onClick={() => setActiveTab(2)}
         >
           Admin Details
@@ -36,9 +36,9 @@ const page = () => {
         <button
           className={`tab-btn ${
             activeTab === 3
-              ? "text-blue-600 border-b-4 border-blue-500"
+              ? "text-[#9c231b] border-b-4 border-[#9c231b]"
               : "text-gray-600"
-          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-blue-600`}
+          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-black`}
           onClick={() => setActiveTab(3)}
         >
           College Transactions
@@ -46,9 +46,9 @@ const page = () => {
         <button
           className={`tab-btn ${
             activeTab === 4
-              ? "text-blue-600 border-b-4 border-blue-500"
+              ? "text-[#9c231b] border-b-4 border-[#9c231b]"
               : "text-gray-600"
-          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-blue-600`}
+          } py-2 px-4 font-semibold transition-colors duration-300 hover:text-black`}
           onClick={() => setActiveTab(4)}
         >
           Scholarship Approval

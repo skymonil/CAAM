@@ -13,12 +13,18 @@ interface College {
   collegeName: string;
 }
 
+interface College {
+  _id: string;
+  collegeName: string;
+}
+
 const Register: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     username: "",
     email: "",
     password: "",
   });
+
 
   const [confirmPassword, setConfirmPassword] = useState("");
   const [college, setCollege] = useState<string>("");
@@ -46,7 +52,7 @@ const Register: React.FC = () => {
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    console.log("Selected College ID:", college); 
+    console.log("Selected College ID:", college);
     const registerData = {
       ...formData,
       collegeId: college,

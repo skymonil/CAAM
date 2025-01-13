@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import HOD_Navbar from "../../components/HOD/HOD_Navbar";
 import axios from "axios";
+import Nabar from "../MarksAdmin/Navbar";
 
 interface Grievance {
   _id: string;
@@ -45,6 +46,7 @@ function GrievanceList() {
 
   return (
     <>
+      <Nabar />
       <HOD_Navbar />
       <div className="max-w-screen-lg min-h-screen p-6 shadow-lg m-auto bg-white rounded-lg">
         <div>

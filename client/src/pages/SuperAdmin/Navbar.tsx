@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 
 interface AdminData {
   name: string;
@@ -34,18 +35,23 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/admin-logout"
+        "http://localhost:5000/api/auth/admin-logout",
+        {},
+        { withCredentials: true }
       );
-      localStorage.removeItem("token");
       console.log("User logged out: ", response.data);
     } catch (error: any) {
       console.error("Error in logging out: ", error);
     }
     navigate("/admin-login");
-  }
+  };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="flex justify-center items-center">
+        <Loader2 />
+      </div>
+    );
   }
 
   return (
