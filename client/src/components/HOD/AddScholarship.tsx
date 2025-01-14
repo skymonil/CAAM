@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Form {
   name: string;
@@ -28,7 +29,7 @@ function AddScholarship() {
 
   const handleAdd = async () => {
     try {
-      const response = await axios.post('http://localhost:5000/api/scholarship/add', { ...formData });
+      const response = await axios.post(API_ROUTES.addScholarship, { ...formData });
 
       if (response.data) {
         setSuccessMessage('Scholarship added successfully!');
@@ -44,7 +45,7 @@ function AddScholarship() {
 
   const fetchScholarships = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/scholarship/fetch-all');
+      const response = await axios.get(API_ROUTES.getAllScholarships);
       if (response.data.success) {
         setActiveScholarships(response.data.scholarships);
       }

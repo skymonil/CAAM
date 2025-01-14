@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 const AdmissionForm = () => {
   const navigate = useNavigate();
@@ -58,7 +59,7 @@ const AdmissionForm = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/student/fill-details",
+        API_ROUTES.admissionForm,
         formData,
         { withCredentials: true }
       );

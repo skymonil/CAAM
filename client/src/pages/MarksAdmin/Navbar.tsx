@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface AdminData {
   name: string;
@@ -15,7 +16,7 @@ const Navbar = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/get", {
+      .get(API_ROUTES.getAdmin, {
         withCredentials: true,
       })
       .then((response) => {
@@ -35,7 +36,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/admin-logout"
+        API_ROUTES.adminLogout
       );
       localStorage.removeItem("token");
       console.log("User logged out: ", response.data);

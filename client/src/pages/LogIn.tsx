@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, ChangeEvent, FormEvent } from "react";
 import logo from "../assets/logo.jpeg";
 import { useNavigate } from "react-router-dom";
+import { API_ROUTES } from "../utils/apiConfig";
 
 interface FormData {
   email: string;
@@ -26,7 +27,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        API_ROUTES.studentRegister,
         formData,
         { withCredentials: true }
       );

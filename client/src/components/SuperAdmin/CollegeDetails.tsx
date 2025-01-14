@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface FeeStructure {
   [course: string]: {
@@ -146,7 +147,7 @@ const CollegeDetails = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/college/add",
+        API_ROUTES.addCollege,
         collegeData
       );
       console.log("College added successfully: ", response.data);

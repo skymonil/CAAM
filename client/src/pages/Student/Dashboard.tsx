@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface StudentData {
   id: number;
@@ -17,7 +18,7 @@ const StudentDashboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/student/get", {
+      .get(API_ROUTES.getStudent, {
         withCredentials: true,
       })
       .then((response) => {
