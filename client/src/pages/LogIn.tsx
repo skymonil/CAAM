@@ -27,7 +27,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        API_ROUTES.studentRegister,
+        API_ROUTES.studentLogin,
         formData,
         { withCredentials: true }
       );
