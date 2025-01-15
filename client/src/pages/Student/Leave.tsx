@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useStudent } from "../../context/StudentContext";
 import axios from "axios";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface leave {
   _id: string,
@@ -29,7 +30,7 @@ const Leave = () => {
       const fetchLeaves = async () => {
         try {
           console.log(studentId);
-          const response = await axios.get(`http://localhost:5000/api/leave/fetch-leave-student/${studentId}`);
+          const response = await axios.get(API_ROUTES.getLeaveById(studentId));
           if (response.data) {
             console.log(response.data.leaves)
             setLeaveHistory(response.data.leaves);
@@ -52,7 +53,7 @@ const Leave = () => {
     setErrorMessage(""); 
 
     try {
-      const response = await axios.post('http://localhost:5000/api/leave/add', {
+      const response = await axios.post(API_ROUTES.addLeave, {
         studentId,
         startDate: formData.startDate,
         endDate: formData.endDate,

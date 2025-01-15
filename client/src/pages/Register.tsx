@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent, useEffect } from "react";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
+import { API_ROUTES } from "../utils/apiConfig";
 
 interface FormData {
   username: string;
@@ -39,7 +40,7 @@ const Register: React.FC = () => {
     const fetchColleges = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/college/get-colleges"
+          API_ROUTES.getColleges
         );
         setColleges(response.data);
       } catch (error) {
@@ -60,7 +61,7 @@ const Register: React.FC = () => {
     try {
       console.log("registerData: ", registerData);
       const response = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        API_ROUTES.studentRegister,
         registerData
       );
       console.log("User registered: ", response.data);
@@ -99,7 +100,7 @@ const Register: React.FC = () => {
     try {
       const trimmedOtp = otp.trim();
       const response = await axios.post(
-        "http://localhost:5000/api/auth/verify-otp",
+        API_ROUTES.studentOtpVerify,
         { email: formData.email, otp: trimmedOtp }
       );
       console.log(response.data);

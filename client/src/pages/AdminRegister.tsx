@@ -1,6 +1,7 @@
 import { useState, FormEvent, ChangeEvent } from "react";
 import logo from "../assets/logo.jpeg";
 import axios from "axios";
+import { API_ROUTES } from "../utils/apiConfig";
 
 const AdminRegister = () => {
   const [formData, setFormData] = useState({
@@ -23,7 +24,7 @@ const AdminRegister = () => {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/admin-register", formData);
+      const response = await axios.post(API_ROUTES.adminRegister, formData);
       console.log("Admin registered: ", response.data);
       setIsModalOpen(true);
     } catch (error: any) {
@@ -39,7 +40,7 @@ const AdminRegister = () => {
 
   const handleOtpSubmit = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/admin-verify-otp", {
+      const response = await axios.post(API_ROUTES.adminOtpVerify, {
         email: formData.email,
         otp: otp.trim(),
       });

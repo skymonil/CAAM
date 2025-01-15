@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useStudent } from "../context/StudentContext";
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../utils/apiConfig";
 
 interface StudentData {
   name: string;
@@ -17,7 +18,7 @@ const Navbar = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/student/get", {
+      .get(API_ROUTES.getStudent, {
         withCredentials: true,
       })
       .then((response) => {
@@ -38,7 +39,7 @@ const Navbar = () => {
   const handleLogout = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/logout",
+        API_ROUTES.studentLogout,
         {},
         { withCredentials: true }
       );

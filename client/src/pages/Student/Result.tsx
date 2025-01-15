@@ -6,6 +6,7 @@ import { useStudent } from "../../context/StudentContext";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable"; // Import jsPDF AutoTable plugin
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Subject {
   name: string;
@@ -65,7 +66,7 @@ const Result = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/student/get", { withCredentials: true })
+      .get(API_ROUTES.getStudent, { withCredentials: true })
       .then((response) => {
         setStudentData(response.data);
         setStudentId(response.data.id);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Subject {
   subjectName: string;
@@ -24,7 +25,7 @@ const Courses = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/course/get-courses", {
+      .get(API_ROUTES.getCourses, {
         withCredentials: true,
       })
       .then((response) => {
