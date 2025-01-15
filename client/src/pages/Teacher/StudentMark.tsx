@@ -45,7 +45,21 @@ function StudentMark() {
     }
     const date = new Date()
   return (
-    <div>
+        <div className="min-h-screen w-full">
+            <div className="flex justify-between w-full items-center bg-[#053f64] text-white p-4">
+                <div className="flex items-center">
+                    <i className="fas fa-user"></i>
+                    <div className="ml-2 text-lg font-semibold">
+                        Rajesh Mouriya
+                    </div>{" "}
+                </div>
+                <button
+                    className="flex items-center cursor-pointer hover:bg-gray-700 p-2 rounded"
+                >
+                    <i className="fas fa-right-from-bracket"></i>
+                    <span className="ml-2">Logout</span>
+                </button>
+            </div>
         <Teacher_Navbar/>
       <div className="max-w-4xl m-auto min-h-96 shadow-xl p-5">
         <h1 className="text-3xl font-semibold pb-5">List of Students</h1>

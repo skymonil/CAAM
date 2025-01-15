@@ -28,10 +28,12 @@ import AddMoney from "./pages/AccountantAdmin/AddMoney";
 import GrievanceList from "./pages/HOD/GrievanceList";
 import LeaveApproval from "./pages/HOD/LeaveApproval";
 import HODScholarship from "./pages/HOD/HODScholarship";
+import TeacherDashboard from "./pages/Teacher/TeacherDashboard";
 
 import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
 import StudentMark from "./pages/Teacher/StudentMark";
+import Practicals from "./pages/Student/Practicals";
 
 const AppContent = () => {
   const location = useLocation();
@@ -44,7 +46,8 @@ const AppContent = () => {
     "/admission/*",
     "/reexam",
     "scholarship",
-    "/result"
+    "/result",
+    "/practicals"
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
@@ -55,7 +58,7 @@ const AppContent = () => {
   return (
     <>
       <StudentProvider>
-        {shouldHaveNavbar && <Navbar />}
+        {/* {shouldHaveNavbar && <Navbar />} */}
         <Routes>
           <Route path="/" element={<Register />} />
           <Route path="/log-in" element={<LogIn />} />
@@ -66,6 +69,7 @@ const AppContent = () => {
           <Route path="/student-detail" element={<Dashboard />} />
           <Route path="/admission/*" element={<Admission />} />
           <Route path="/fee-status" element={<FeeStatus />} />
+          <Route path="/practicals" element={<Practicals />} />
           <Route path="/reexam" element={<ReExam />} />
           <Route path="/result" element={<Result />} />
           <Route path="/scholarship" element={<Scholarship />} />
@@ -82,7 +86,9 @@ const AppContent = () => {
           <Route path="/admin-leave" element={<LeaveApproval />} />
           <Route path="/admin-scholarship/*" element={<HODScholarship />} />
 
-          <Route path='/teacher/*' element = {<StudentMark/>}/>
+          <Route path='/teacher/mark' element = {<StudentMark/>}/>
+          <Route path="/teacher/approve" element={<TeacherDashboard />}/>
+
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </StudentProvider>
