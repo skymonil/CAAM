@@ -21,7 +21,7 @@ export const authenticateStudent = async (req, res, next) => {
       return res.status(401).json({ message: "Unauthorized - No Token Provided" });
     }
 
-    const decodedToken = verifyToken(token);    
+    const decodedToken = verifyToken(token);
 
     const student = await Student.findById(decodedToken.userID).select("-password");
 
