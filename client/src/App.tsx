@@ -52,7 +52,7 @@ const AppContent = () => {
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
     matchPath({ path, end: true }, location.pathname)
-  );
+  );  
 
 
   return (
