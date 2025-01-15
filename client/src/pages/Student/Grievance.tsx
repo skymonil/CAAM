@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
 import { useStudent } from "../../context/StudentContext";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 const Grievance = () => {
   const { studentId } = useStudent();
@@ -20,7 +21,7 @@ const Grievance = () => {
   useEffect(() => {
     const fetchGrievances = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/grievance/fetch-grievance-student/${studentId}`);
+        const response = await axios.get(API_ROUTES.getGrievanceStudents(studentId));
         if (response.data.success) {
           setGrievanceHistory(response.data.data);
         }
@@ -44,7 +45,7 @@ const Grievance = () => {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:5000/api/grievance/add', {
+      await axios.post(API_ROUTES.addGrievance, {
         studentId,
         title: formData.title,
         details: formData.details

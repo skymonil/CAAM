@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface FeeStructure {
   [course: string]: {
@@ -18,7 +19,6 @@ const CollegeDetails = () => {
   const [collegeName, setCollegeName] = useState("");
   const [collegeAddress, setCollegeAddress] = useState("");
   const [feeStructure, setFeeStructure] = useState<FeeStructure>({});
-  const [globalFees, setGlobalFees] = useState<{ [key: string]: number }>({});
   const [newCourse, setNewCourse] = useState("");
   const [baseFee, setBaseFee] = useState("");
   const [eligibility, setEligibility] = useState("");
@@ -29,6 +29,7 @@ const CollegeDetails = () => {
   const [_messageType, setMessageType] = useState("");
   const [newGlobalFeeName, setNewGlobalFeeName] = useState("");
   const [newGlobalFeeAmount, setNewGlobalFeeAmount] = useState("");
+  const [globalFees, setGlobalFees] = useState<{ [key: string]: number }>({});
 
   const handleAddCourse = () => {
     if (
@@ -146,10 +147,10 @@ const CollegeDetails = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/college/add",
+        API_ROUTES.addCollege,
         collegeData
       );
-      console.log("College added successfully:", response.data);
+      console.log("College added successfully: ", response.data);
     } catch (error: any) {
       console.error("Error saving college details:", error);
       setMessageType("error");
@@ -225,6 +226,7 @@ const CollegeDetails = () => {
           </button>
         </div>
       </div>
+      
       {Object.keys(globalFees).length > 0 && (
         <div className="mt-6 border border-gray-300 p-4 rounded-lg">
           <h3 className="text-xl font-bold text-gray-700 mb-4">Global Fees</h3>
@@ -237,6 +239,7 @@ const CollegeDetails = () => {
           </ul>
         </div>
       )}
+
       {/* Add Course */}
       <div className="mt-6">
         <label className="block text-gray-700 font-medium mb-2">

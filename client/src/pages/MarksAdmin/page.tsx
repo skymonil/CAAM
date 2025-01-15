@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import axios from "axios";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Marks {
   [subject: string]: string;
@@ -100,7 +101,7 @@ const MarksAdmin: React.FC = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/student/getStudents", {
+      .get(API_ROUTES.getAllStudents, {
         withCredentials: true,
       })
       .then((response) => {
@@ -114,8 +115,9 @@ const MarksAdmin: React.FC = () => {
 
   const handleStudentClick = (student: Student) => {
     setSelectedStudent(student);
+    console.log("Id: ", student);
     axios
-      .get(`http://localhost:5000/api/college/${student.collegeId}`, {
+      .get(API_ROUTES.getCollegeById(student.collegeId), {
         withCredentials: true,
       })
       .then((response) => {

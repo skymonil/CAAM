@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import HOD_Navbar from "../../components/HOD/HOD_Navbar";
 import axios from "axios";
 import Nabar from "../MarksAdmin/Navbar";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Grievance {
   _id: string;
@@ -19,7 +20,7 @@ function GrievanceList() {
 
   const fetchGrievances = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/grievance/fetch-grievances');
+      const response = await axios.get(API_ROUTES.getGrievances);
       if (response.data.success) {
         console.log(response.data.data);
         setGrievances(response.data.data);
@@ -35,7 +36,7 @@ function GrievanceList() {
 
   const approveGrievance = async (grievanceId: string): Promise<void> => {
     try {
-      await axios.put(`http://localhost:5000/api/grievance/resolve-grievance/${grievanceId}`);
+      await axios.put(API_ROUTES.resolveGrievance(grievanceId));
       fetchGrievances();
     } catch (error) {
       console.log('Error');

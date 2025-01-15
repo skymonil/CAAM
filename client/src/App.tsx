@@ -28,6 +28,7 @@ import AddMoney from "./pages/AccountantAdmin/AddMoney";
 import GrievanceList from "./pages/HOD/GrievanceList";
 import LeaveApproval from "./pages/HOD/LeaveApproval";
 import HODScholarship from "./pages/HOD/HODScholarship";
+import TeacherDashboard from "./pages/Teacher/TeacherDashboard";
 
 import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
@@ -56,7 +57,7 @@ const AppContent = () => {
   return (
     <>
       <StudentProvider>
-        {shouldHaveNavbar && <Navbar />}
+        {/* {shouldHaveNavbar && <Navbar />} */}
         <Routes>
           <Route path="/" element={<Register />} />
           <Route path="/log-in" element={<LogIn />} />
@@ -83,6 +84,8 @@ const AppContent = () => {
           <Route path="/admin-grievance" element={<GrievanceList />} />
           <Route path="/admin-leave" element={<LeaveApproval />} />
           <Route path="/admin-scholarship/*" element={<HODScholarship />} />
+
+          <Route path="/TeacherDashboard" element={<TeacherDashboard />}/>
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

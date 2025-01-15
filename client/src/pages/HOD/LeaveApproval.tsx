@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import HOD_Navbar from "../../components/HOD/HOD_Navbar";
 import axios from "axios";
 import Navbar from "../MarksAdmin/Navbar";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Leave {
   _id: string;
@@ -17,7 +18,7 @@ function LeaveApproval() {
 
   const fetchLeaves = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/leave/fetch-leaves");
+      const response = await axios.get(API_ROUTES.getLeaves);
       if (response.data.success) {
         setLeave(response.data.leaves);
       }
@@ -80,7 +81,7 @@ function LeaveApproval() {
 const LeaveTemplate = ({ leave, fetchLeaves }: { leave: Leave; fetchLeaves: () => void }) => {
   const handleApproval = async (leaveId: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/leave/approve-leave/${leaveId}`);
+      await axios.put(API_ROUTES.approveLeave(leaveId));
       fetchLeaves();
     } catch (error) {
       console.log("Error");
@@ -89,7 +90,7 @@ const LeaveTemplate = ({ leave, fetchLeaves }: { leave: Leave; fetchLeaves: () =
 
   const handleRejection = async (leaveId: string) => {
     try {
-      await axios.put(`http://localhost:5000/api/leave/reject-leave/${leaveId}`);
+      await axios.put(API_ROUTES.rejectLeave(leaveId));
       fetchLeaves();
     } catch (error) {
       console.log("Error");

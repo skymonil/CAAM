@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Student {
   _id: string;
@@ -21,7 +22,7 @@ function ApproveScholarship() {
 
   const fetchScholarships = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/scholarship/fetch-all');
+      const response = await axios.get(API_ROUTES.getAllScholarships);
       if (response.data.success) {
         setScholarships(response.data.scholarships);
       }
@@ -53,7 +54,7 @@ function ApproveScholarship() {
 
     if (scholarshipId) {
       try {
-        const response = await axios.get(`http://localhost:5000/api/scholarship/fetch-students/${scholarshipId}`);
+        const response = await axios.get(API_ROUTES.getScholarshipById(scholarshipId));
         if (response.data) {
           setStudents(response.data.studentsParticipated);
         }
@@ -67,7 +68,7 @@ function ApproveScholarship() {
   const handleApproveClick = async () => {
     const selectedStudentIds = Array.from(selectedStudents);
     try {
-      await axios.post('http://localhost:5000/api/scholarship/approve-students', {
+      await axios.post(API_ROUTES.approveScholarship, {
         studentIds: selectedStudentIds,
         scholarshipId: selectedScholarshipId
       });

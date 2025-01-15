@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Navbar from "../MarksAdmin/Navbar";
 import axios from "axios";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 type Student = {
   address: string;
@@ -33,7 +34,7 @@ const DocumentVerificationAdmin: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       axios
-        .get("http://localhost:5000/api/student/getStudentsDetails", {
+        .get(API_ROUTES.getStudentsDetails, {
           withCredentials: true,
         })
         .then((response) => {

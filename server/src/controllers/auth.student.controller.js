@@ -65,7 +65,6 @@ export const register = async (req, res) => {
     const otp = await sendOTP(email);
 
     otpStore[email] = { otp, hashedPassword, username, collegeId  };
-    otpStore[email] = { otp, hashedPassword, username, collegeId  };
 
     res.status(201).json({
       message:
@@ -122,9 +121,6 @@ export const login = async (req, res) => {
 
   try {
     const student = await Student.findOne({ email });
-    console.log("Student:", student);
-    console.log("email:", email);
-    console.log("password:", password);
 
     if (!student) {
       return res.status(400).json({
@@ -153,8 +149,7 @@ export const login = async (req, res) => {
 
     const token = generateToken(student._id, res);
 
-    console.log("Student Login Successful:", student.token);
-    console.log("Student Login Successful:", student.token);
+    console.log("Student Login Successful!");
 
     res.status(200).json({ message: "Login Successful", token });
   } catch (error) {

@@ -42,13 +42,14 @@ export const addFunds = async(req,res)=>{
     }
     try
     {
-        const student = await StudentDetails.findById(studentId);
+        const student = await StudentDetails.findOne({studentId});
+        console.log(student)
         if(!student)
         {
             return res.status(404).json({message: 'Student Not Found!'});
         }
         console.log("Before: "+student.walletBalance);
-        student.walletBalance += amount;
+        student.walletBalance += Number.parseInt(amount);
 
         await student.save()
         console.log("After Adding "+amount+" Balance: "+student.walletBalance)

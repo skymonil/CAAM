@@ -42,7 +42,7 @@ const ReExam: React.FC = () => {
 
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="p-6 bg-gray-50 min-h-screen">
         <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
           <h2 className="text-2xl font-bold mb-6 text-[#9c231b] text-center border-b border-gray-200 pb-4">Re-Exam</h2>

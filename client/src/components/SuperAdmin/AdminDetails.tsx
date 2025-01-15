@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Loader2 } from "lucide-react";
+import { API_ROUTES } from "../../utils/apiConfig";
 
 interface Admin {
   _id: string;
@@ -20,7 +21,7 @@ const AdminDetails = () => {
   // Fetch admins on component load
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/admin/credential", {
+      .get(API_ROUTES.getOtherAdminsCredential, {
         withCredentials: true,
       })
       .then((response) => {
@@ -42,7 +43,7 @@ const AdminDetails = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/admin/update-password",
+        API_ROUTES.updateAdminsPassword,
         { adminId, newPassword },
         { withCredentials: true }
       );

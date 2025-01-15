@@ -57,7 +57,7 @@ const AdmissionGuidelines = () => {
             <li>Fee payment is available after document verification.</li>
             <li>
               Visit the{" "}
-              <Link to="admission/help" className="underline inline-flex">
+              <Link to="/admission/help" className="underline inline-flex">
                 Help & Support
                 <svg
                   aria-hidden="true"
