@@ -31,6 +31,7 @@ import HODScholarship from "./pages/HOD/HODScholarship";
 
 import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
+import StudentMark from "./pages/Teacher/StudentMark";
 
 const AppContent = () => {
   const location = useLocation();
@@ -81,6 +82,7 @@ const AppContent = () => {
           <Route path="/admin-leave" element={<LeaveApproval />} />
           <Route path="/admin-scholarship/*" element={<HODScholarship />} />
 
+          <Route path='/teacher/*' element = {<StudentMark/>}/>
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </StudentProvider>
