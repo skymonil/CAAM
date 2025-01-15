@@ -31,6 +31,7 @@ import HODScholarship from "./pages/HOD/HODScholarship";
 
 import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
+import Practicals from "./pages/Student/Practicals";
 
 const AppContent = () => {
   const location = useLocation();
@@ -43,7 +44,8 @@ const AppContent = () => {
     "/admission/*",
     "/reexam",
     "scholarship",
-    "/result"
+    "/result",
+    "/practicals"
   ]; // List of paths where the navbar should appear
 
   const shouldHaveNavbar = hideNavbarPaths.some((path) =>
@@ -65,6 +67,7 @@ const AppContent = () => {
           <Route path="/student-detail" element={<Dashboard />} />
           <Route path="/admission/*" element={<Admission />} />
           <Route path="/fee-status" element={<FeeStatus />} />
+          <Route path="/practicals" element={<Practicals />} />
           <Route path="/reexam" element={<ReExam />} />
           <Route path="/result" element={<Result />} />
           <Route path="/scholarship" element={<Scholarship />} />
