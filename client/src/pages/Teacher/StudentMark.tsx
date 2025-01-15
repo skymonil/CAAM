@@ -17,7 +17,6 @@ function StudentMark() {
 }]);
     const [selectedStudents, _setSelectedStudents] = useState<Set<string>>(new Set());
 
-    const [allCheck,setAllCheck] = useState<boolean>(false);
     const handleChange = (id: string, isChecked: boolean) =>{
         if(isChecked)
         {
@@ -34,15 +33,7 @@ function StudentMark() {
         console.log(selectedStudentIds);
     }
 
-    const handleAllCheck = (checked: boolean) =>{
-        if(checked)
-        {
-            setAllCheck(true);
-        }
-        else
-            setAllCheck(false);
-
-    }
+    
     const date = new Date()
   return (
         <div className="min-h-screen w-full">
@@ -64,8 +55,7 @@ function StudentMark() {
       <div className="max-w-4xl m-auto min-h-96 shadow-xl p-5">
         <h1 className="text-3xl font-semibold pb-5">List of Students</h1>
         <div className="text-xl font-semibold">Date: {date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</div>
-        <div className="flex justify-end text-lg py-3 font-semibold"><div>Select All Students: <span><input type="checkbox"
-        onChange={(e)=>handleAllCheck(e.target.checked)}/></span></div></div>
+        <div className="flex justify-end text-lg py-3 font-semibold"></div>
         <form action="" className="flex flex-col justify-center items-center space-y-4">
         {students.map((student)=>{
             return(
@@ -74,7 +64,6 @@ function StudentMark() {
                     <div>{student.name}</div>
                     <div><input type="checkbox" 
                     onChange={(e)=>handleChange(student.id,e.target.checked)}
-                    checked={allCheck}
                     />
                     </div>
                 </div>
