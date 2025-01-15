@@ -32,6 +32,7 @@ import TeacherDashboard from "./pages/Teacher/TeacherDashboard";
 
 import NotFound from "./pages/NotFound";
 import { StudentProvider } from "./context/StudentContext";
+import StudentMark from "./pages/Teacher/StudentMark";
 import Practicals from "./pages/Student/Practicals";
 
 const AppContent = () => {
@@ -85,7 +86,8 @@ const AppContent = () => {
           <Route path="/admin-leave" element={<LeaveApproval />} />
           <Route path="/admin-scholarship/*" element={<HODScholarship />} />
 
-          <Route path="/TeacherDashboard" element={<TeacherDashboard />}/>
+          <Route path='/teacher/mark' element = {<StudentMark/>}/>
+          <Route path="/teacher/approve" element={<TeacherDashboard />}/>
 
           <Route path="/*" element={<NotFound />} />
         </Routes>

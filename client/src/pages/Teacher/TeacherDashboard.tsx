@@ -1,5 +1,5 @@
-import { log } from "node:console";
 import { useState } from "react";
+import Teacher_Navbar from "./Teacher_Navbar";
 
 interface Student {
     id: string,
@@ -53,14 +53,19 @@ export default function TeacherDashboard() {
                     <span className="ml-2">Logout</span>
                 </button>
             </div>
+            <Teacher_Navbar/>
+            
             <div className="flex justify-center mt-16">
                 <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
             </div>
             <div className="flex justify-center items-center flex-col">
                 <p className="text-2xl font-bold">Subject: C++ practical</p>
                 <p className="text-2xl font-bold">Practical: 1</p>
+            <div className="py-2">
+                <a href="https://tinyurl.com/practical-responses" target="_new"><button className="bg-green-500 text-white px-4 py-3 rounded-lg">View Responses</button></a></div>
             </div>
             <div className="flex justify-center items-center gap-8 p-8 w-full">
+
                 <table className="w-96 gap-8 bottom-2 bg-white shadow-md rounded-lg border-separate border-spacing-0">
                     <thead className="bg-gray-200 text-gray-600" >
                         <tr className="p-8 ">
