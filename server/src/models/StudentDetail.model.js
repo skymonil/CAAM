@@ -85,7 +85,7 @@ const studentDetailsSchema = new Schema({
         default: 0, 
         min: 0, 
     },
-    status: {
+    status: { 
         type: String,
         enum: ['Registered', 'Form Submitted', 'Documents Verified', 'Admitted', 'Graduated'],
         default: 'Registered',

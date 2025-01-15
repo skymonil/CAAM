@@ -1,35 +1,72 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 interface Student {
-  id: string;
+  _id: string;
   name: string;
-  status: string;
+}
+
+interface Scholarship {
+  _id: string;
+  name: string;
+  approvedStudents: Student[];
 }
 
 const ScholarshipApproval = () => {
-  const [students, setStudents] = useState<Student[]>([
-    { id: "stu001", name: "Chirag Varu", status: "Pending" },
-    { id: "stu002", name: "Akshat Gohil", status: "Pending" },
-  ]);
+  const [scholarships, setScholarships] = useState<Scholarship[]>([]);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [selectedScholarship, setSelectedScholarship] = useState<Scholarship | null>(null);
 
-  const [showModal, setShowModal] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const handleScholarshipChange = async (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const scholarshipId = event.target.value;
+    const selected = scholarships.find(scholarship => scholarship._id === scholarshipId) || null;
+    setSelectedScholarship(selected);
 
-  const approveStudent = () => {
-    if (selectedStudent) {
-      setStudents(
-        students.filter((student) => student.id !== selectedStudent.id)
-      );
-      setShowModal(false);
-      setSelectedStudent(null);
+    // Fetch students for the selected scholarship
+    if (selected) {
+      setStudents(selected.approvedStudents);
     }
   };
+
+  useEffect(() => {
+    const fetchScholarships = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/scholarship/fetch-all/Pending');
+        if (response.data.success) {
+          setScholarships(response.data.scholarships);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchScholarships();
+  }, []);
 
   return (
     <div className="p-6 bg-gray-50 rounded-lg shadow-lg">
       <h2 className="text-2xl font-semibold mb-6 text-center">
         Scholarship Approval
       </h2>
+
+      {/* Scholarship Selection */}
+      <div className="mb-4">
+        <label htmlFor="scholarship-select" className="block text-sm font-medium text-gray-700">
+          Select Scholarship
+        </label>
+        <select
+          id="scholarship-select"
+          value={selectedScholarship ? selectedScholarship._id : ''}
+          onChange={handleScholarshipChange}
+          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+        >
+          <option value="">Select Scholarship</option>
+          {scholarships.map((scholarship) => (
+            <option key={scholarship._id} value={scholarship._id}>
+              {scholarship.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Table Section */}
       <div className="overflow-x-auto">
@@ -42,30 +79,16 @@ const ScholarshipApproval = () => {
               <th className="py-2 px-4 text-left text-sm font-semibold text-gray-600">
                 Status
               </th>
-              <th className="py-2 px-4 text-center text-sm font-semibold text-gray-600">
-                Action
-              </th>
             </tr>
           </thead>
           <tbody>
             {students.map((student) => (
-              <tr key={student.id} className="border-b hover:bg-gray-100">
+              <tr key={student._id} className="border-b hover:bg-gray-100">
                 <td className="py-2 px-4 text-sm text-gray-700">
                   {student.name}
                 </td>
                 <td className="py-2 px-4 text-sm text-gray-600">
-                  {student.status}
-                </td>
-                <td className="py-2 px-4 text-center">
-                  <button
-                    onClick={() => {
-                      setSelectedStudent(student);
-                      setShowModal(true);
-                    }}
-                    className="bg-green-500 text-white px-4 py-1 rounded-md hover:bg-green-600 transition-colors duration-200"
-                  >
-                    Approve
-                  </button>
+                  Pending To Pay
                 </td>
               </tr>
             ))}
@@ -73,33 +96,14 @@ const ScholarshipApproval = () => {
         </table>
       </div>
 
-      {/* Modal for Approving Scholarship */}
-      {showModal && selectedStudent && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg w-1/3 shadow-lg">
-            <h3 className="text-xl font-semibold text-center">
-              Approve Scholarship
-            </h3>
-            <p className="text-sm text-gray-700 mt-4 text-center">
-              Are you sure you want to approve {selectedStudent.name}?
-            </p>
-            <div className="mt-6 flex justify-between">
-              <button
-                onClick={() => setShowModal(false)}
-                className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={approveStudent}
-                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
-              >
-                Approve
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Pay Now Button */}
+      <div className="mt-6 flex justify-center">
+        <button
+          className="bg-green-500 text-white px-6 py-2 rounded-md hover:bg-green-600 transition-colors duration-200"
+        >
+          Pay Now
+        </button>
+      </div>
     </div>
   );
 };

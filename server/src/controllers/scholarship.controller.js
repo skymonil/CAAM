@@ -128,9 +128,14 @@ export const fetchAllParticipatedStudents = async(req,res)=>{
 }
 
 //Fetch the list of scholarships which are 'Pending'
-export const fetchAllScholarships = async (req, res) => {
+export const fetchByStatus = async (req, res) => {
+    const {status} = req.params;
+    if(!status)
+    {
+        return res.status(404).json({message: 'Please Provide Status'});
+    }
     try{
-        const scholarships = await Scholarship.find({status: 'Pending'});
+        const scholarships = await Scholarship.find({status});
         if (scholarships.length === 0) {
             return res.status(200).json({ success: false, message: 'No Scholarships Available' });
         }
@@ -175,31 +180,25 @@ export const approveStudents = async (req, res) => {
 
 //Payment of Student by Super Admin
 export const payStudents = async(req,res)=>{
-    const {studentIds, scholarshipId} = req.body;
-    if(!studentIds)
+    const {scholarshipId} = req.params;
+    if(!studentId)
     {
-        return res.status(404).json({message: 'Provide Proper Student Ids'});
+        return res.status(404).json({message: 'Provide Proper Student ID'});
     }
     try
     {
-        const scholarship = await Scholarship.findById(scholarshipId);
+        const scholarship = await Scholarship.findOne(scholarshipId);
         if(!scholarship)
         {
-            return res.status(404).json({message: 'No Scholarship Found'});
+            return res.status(404).json({message: 'Cannot Find Scholarship'});
         }
-        
-        for(const studentId of studentIds)
+        for(const studentId of scholarship.approvedStudents)
         {
             const student = await StudentDetails.findOne({studentId});
-            if(student)
-            {
-                student.walletBalance += scholarship.amount;
-                await student.save();
-            }
-            else{
-                console.log(`Student with ${studentId} not Found`);
-            }
+            student.walletBalance += Number.parseInt(scholarship.amount);
+            await student.save();
         }
+        res.status(200).json({message: 'Students Paid Successfully'})
     }
     catch(error)
     {
@@ -207,4 +206,6 @@ export const payStudents = async(req,res)=>{
         res.status(500).json({message: 'Internal Server Error Occurred'})
     }
 }
+
+
   

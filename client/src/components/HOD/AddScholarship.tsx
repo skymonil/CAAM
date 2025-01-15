@@ -50,7 +50,7 @@ function AddScholarship() {
         setActiveScholarships(response.data.scholarships);
       }
     } catch (error) {
-      console.log('Error fetching scholarships');
+      console.log('Error fetching scholarships'+error);
     }
   };
 
