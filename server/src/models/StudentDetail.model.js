@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { experimentSchema } from './Experiment.model';
+import { experimentSchema } from './Experiment.model.js';
 
 const studentDetailsSchema = new Schema({
     studentId: {
