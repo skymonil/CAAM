@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose';
+import { experimentSchema } from './Experiment.model';
 
 const studentDetailsSchema = new Schema({
     studentId: {
@@ -90,6 +91,18 @@ const studentDetailsSchema = new Schema({
         enum: ['Registered', 'Form Submitted', 'Documents Verified', 'Admitted', 'Graduated'],
         default: 'Registered',
     },
+    experiments:{
+        type: {
+            experimentId: {
+                type: Schema.Types.ObjectId,
+                ref: 'Experiment', 
+            },
+            status: {
+                type: String,
+                enum: ['Active','Approved'],
+            }
+        }
+}
 }, {timestamps:true});
 
 const StudentDetails = model('StudentDetails', studentDetailsSchema);
