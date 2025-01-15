@@ -68,6 +68,19 @@ const Navbar = () => {
         </li>
         <li>
           <NavLink
+            to="/practicals"
+            className={({ isActive }) =>
+              `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
+                isActive ? "bg-gray-100 text-[#9c231b]" : "hover:bg-gray-400"
+              }`
+            }
+          >
+            <i className="fas fa-pen"></i>
+            <span className="ml-2">Practicals</span>
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
             to="/reexam"
             className={({ isActive }) =>
               `flex items-center px-4 py-2 transition-all duration-300 justify-center ${
