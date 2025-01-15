@@ -14,6 +14,7 @@ import adminRoute from "./routes/admin.route.js";
 import scholarshipRoute from './routes/scholarship.route.js'
 import razopayRoute from "./routes/razopay.route.js";
 import courseRoute from "./routes/course.route.js";
+import teacherRoute from "./routes/teacher.route.js";
 
 const app = express();
 const PORT = 5000;
@@ -41,6 +42,7 @@ app.use("/api/leave", leaveRoute); //Endpoint to Add Leave from Student side and
 app.use("/api/razopay", razopayRoute); //Endpoint to Add Money to Student Wallet from Student Side using Razorpay
 app.use("/api/course", courseRoute);
 app.use('/api/scholarship',scholarshipRoute);
+app.use('/api/teacher',teacherRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on : ${PORT}`);
