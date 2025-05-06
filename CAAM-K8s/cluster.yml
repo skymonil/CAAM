@@ -1,0 +1,38 @@
+apiVersion: ceph.rook.io/v1
+kind: CephCluster
+metadata:
+  name: rook-ceph
+  namespace: rook-ceph
+spec:
+  cephVersion:
+    image: quay.io/ceph/ceph:v18.2.0 # or latest supported by Rook
+  dataDirHostPath: /var/lib/rook
+  mon:
+    count: 3
+    allowMultiplePerNode: false
+  mgr:
+    count: 1
+    modules:
+      - name: pg_autoscaler
+        enabled: true
+  dashboard:
+    enabled: true
+  network:
+    hostNetwork: false
+  
+  storage:
+    useAllNodes: true
+    useAllDevices: false
+    nodes:
+      - name: worker1
+        devices:
+          - name: "sdb"
+      - name: worker2
+        devices:
+          - name: "sdb"
+    config:
+      osdsPerDevice: "1"
+      databaseSizeMB: "1024"
+      journalSizeMB: "1024"
+      encryptedDevice: "false"
+

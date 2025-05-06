@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress
+  namespace: default
+  
+spec:
+  ingressClassName: nginx   # Specify the Ingress class
+  rules:
+  - host: b337-2405-201-4f-a9e3-a00-27ff-fe74-14e0.ngrok-free.app
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: backend   # Your backend service name
+            port:
+              number: 5000  # Port of the backend service
+
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend   # Your frontend service name
+            port:
+              number: 80
