@@ -1,9 +1,9 @@
 import { Schema, model } from 'mongoose';
 
-export const teacherSchema = new Schema({
+const teacherSchema = new Schema({
     username: {
-        type:String,
-        required:true,
+        type: String,
+        required: true,
     },
     password: {
         type: String,
@@ -11,14 +11,14 @@ export const teacherSchema = new Schema({
     },
     subjectId: [{
         type: Schema.Types.ObjectId,
-        ref: 'Subject', 
+        ref: 'Subject',
     }],
     comment: {
         type: String,
         default: ''
     }
-}, {timestamps:true});
+}, { timestamps: true });
 
-const Experiment = model('Experiment', experimentSchema);
+const Teacher = model('Teacher', teacherSchema);
 
-export default Experiment;
+export default Teacher;

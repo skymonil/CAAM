@@ -25,17 +25,11 @@ export default function TeacherDashboard() {
             name: "Akshat"
         }
     ]);
-
-    const approveStudent = (key: any) => {
-        setStudent(student.filter((s: any) =>
-            key !== student.map((students) => {
-                students.id
-                console.log(key, " !== ", students.id);
-            })
-        ));
-
-        return 1;
-    }
+    
+    const approveStudent = (key: string) => {
+        setStudent(student.filter((s) => s.id !== key));
+        console.log("Approved student ID:", key);
+    };
 
     return (
         <div className="min-h-screen w-full">

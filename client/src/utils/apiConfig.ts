@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = window._env_?.BACKEND_URL || "http://localhost:5000/api";
 
 const API_ROUTES = {
   getStudent: `${BASE_URL}/student/get`,

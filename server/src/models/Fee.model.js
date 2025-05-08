@@ -4,28 +4,25 @@ const feeSchema = new Schema({
     feeId: {
         type: String,
         required: true,
-        unique: true,
+        unique: true
     },
     studentId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Student', // Reference to Student model
-        required: true,
+        type: String, // <-- changed from ObjectId to String
+        required: true
     },
     amount: {
         type: Number,
-        required: true,
-        min: 0,
+        required: true
     },
     receiptUrl: {
-        type: String,
-        required: true,
+        type: String
     },
     status: {
         type: String,
         enum: ['Paid', 'Pending', 'Failed'],
-        default: 'Pending', // Default status is Pending
-    },
-}, {timestamps:true});
+        required: true
+    }
+}, { timestamps: true });
 
 const Fee = model('Fee', feeSchema);
 

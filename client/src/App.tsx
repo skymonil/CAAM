@@ -2,15 +2,15 @@ import {
   BrowserRouter as Router,
   Routes,
   Route,
-  useLocation,
-  matchPath,
+  //useLocation,
+//  matchPath,
 } from "react-router-dom";
 import Register from "./pages/Register";
 import LogIn from "./pages/LogIn";
 import AdminRegister from "./pages/AdminRegister";
 import AdminLogin from "./pages/AdminLogin";
 
-import Navbar from "./components/Navbar";
+ // import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Student/Dashboard";
 import Admission from "./pages/Student/Admission";
 import FeeStatus from "./pages/Student/FeeStatus";
@@ -36,8 +36,8 @@ import StudentMark from "./pages/Teacher/StudentMark";
 import Practicals from "./pages/Student/Practicals";
 
 const AppContent = () => {
-  const location = useLocation();
-  const hideNavbarPaths = [
+  // const location = useLocation();
+ /* const hideNavbarPaths = [
     "/leave",
     "/fee-status",
     "/student-detail",
@@ -49,10 +49,10 @@ const AppContent = () => {
     "/result",
     "/practicals"
   ]; // List of paths where the navbar should appear
-
-  const shouldHaveNavbar = hideNavbarPaths.some((path) =>
+*/
+ /* const shouldHaveNavbar = hideNavbarPaths.some((path) =>
     matchPath({ path, end: true }, location.pathname)
-  );  
+  );  */
 
 
   return (
