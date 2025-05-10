@@ -7,7 +7,7 @@ spec:
     spec:
       containers:
         - name: seed-db
-          image: skymonil/caam-backend:v1
+          image: skymonil/caam-backend
           imagePullPolicy: Always
           command: ["npm", "run", "seed"]
           env:
