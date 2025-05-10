@@ -19,5 +19,6 @@ resources:
 
 images:
   - name: skymonil/caam-backend
+    newTag: latest
   - name: skymonil/caam-frontend
-    
+    newTag: latest
