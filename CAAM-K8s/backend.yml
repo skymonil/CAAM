@@ -24,7 +24,7 @@ spec:
       
       containers:
       - name: backend
-        image: skymonil/caam-backend
+        image: caam-backend
         imagePullPolicy: Always
         ports:
         - containerPort: 5000
