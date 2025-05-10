@@ -17,7 +17,7 @@ spec:
             name: backend   # Your backend service name
             port:
               number: 5000  # Port of the backend service
-      - path: /github-webhook/
+      - path: /github-webhook
         pathType: Prefix
         backend:
           service: 
