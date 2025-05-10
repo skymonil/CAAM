@@ -19,7 +19,7 @@ spec:
               number: 5000  # Port of the backend service
       - path: /github-webhook/
         pathType: Prefix
-        backed:
+        backend:
           service: 
             name: jenkins-service
             port:
