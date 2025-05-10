@@ -18,10 +18,10 @@ resources:
   - secrets.yml
 
 images:
-  - name: skymonil/caam-backend
-    newName: skymonil/caam-backend
-    newTag: latest
-  - name: skymonil/caam-frontend
+  - name: caam-frontend
     newName: skymonil/caam-frontend
+    newTag: latest
+  - name: caam-backend
+    newName: skymonil/caam-backend
     newTag: latest
 
