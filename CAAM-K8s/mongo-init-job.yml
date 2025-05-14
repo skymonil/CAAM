@@ -20,7 +20,7 @@ spec:
           done
           
           # Initialize replica set
-          mongo --host mongodb-0.mongo.default.svc.cluster.local <<EOF
+          mongo --host mongo-0.mongo.default.svc.cluster.local <<EOF
           rs.initiate({
             _id: "rs0",
             members: [
