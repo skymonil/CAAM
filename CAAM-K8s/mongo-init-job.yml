@@ -14,7 +14,7 @@ spec:
         - "-c"
         - |
           # Wait for MongoDB to be ready
-          until mongo --host mongo-0.mongodb.default.svc.cluster.local --eval "db.adminCommand('ping')"; do
+          until mongo --host mongo-0.mongo.default.svc.cluster.local --eval "db.adminCommand('ping')"; do
             echo "Waiting for MongoDB..."
             sleep 5
           done
