@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx   # Specify the Ingress class
   rules:
-  - host: bb83-2405-201-4f-a9e3-a00-27ff-fe74-14e0.ngrok-free.app
+  - host: 2f2e-2405-201-4f-a9e3-a00-27ff-fe74-14e0.ngrok-free.app
     http: 
       paths:
       - path: /api
