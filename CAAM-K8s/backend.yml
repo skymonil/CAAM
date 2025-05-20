@@ -34,6 +34,16 @@ spec:
               secretKeyRef:
                 name: mongo-uri-secret
                 key: MONGODB_URI
+          - name: EMAIL_ID
+            valueFrom:
+              secretKeyRef:
+                name: email-secret
+                key: EMAIL_ID
+          - name: EMAIL_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: email-secret
+                key:  EMAIL_PASSWORD
         resources:
           requests:
             memory: "256Mi"
