@@ -16,6 +16,7 @@ resources:
   - mongo-init-job.yml
   - mongo-statefulset.yml
   - secrets.yml
+  - email-secrets.yml
 
 images:
   - name: caam-frontend
