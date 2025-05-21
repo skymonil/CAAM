@@ -44,6 +44,11 @@ spec:
               secretKeyRef:
                 name: email-secret
                 key:  EMAIL_PASSWORD
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: email-secret
+                key:  SECRET_KEY
         resources:
           requests:
             memory: "256Mi"
