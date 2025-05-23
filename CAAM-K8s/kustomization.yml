@@ -5,7 +5,7 @@ resources:
   - admin-user-dashboard.yml
   - backend.yml
   - clusterRoleBinding.yml
-  - db-secrets.yml
+  - sealed-db-secret.yaml
   - frontend.yml
   - ingress.yml
   - jenkins-deploy.yml
