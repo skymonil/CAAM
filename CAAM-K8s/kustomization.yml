@@ -15,7 +15,6 @@ resources:
   - mongo-headless-service.yml
   - mongo-init-job.yml
   - mongo-statefulset.yml
-  - secrets.yml
   - sealed-email-secrets.yaml
 
 images:
