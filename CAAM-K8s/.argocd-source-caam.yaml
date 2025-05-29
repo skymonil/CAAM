@@ -1,4 +1,4 @@
 kustomize:
   images:
-  - skymonil/caam-frontend:7bad04a
+  - skymonil/caam-frontend:008e1da
   - skymonil/caam-backend:v1
