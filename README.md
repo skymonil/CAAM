@@ -171,13 +171,13 @@ kubectl apply -f ingress.yaml
 
 ## 📖 Blog Reference
 
-Read the full blog for detailed explanations: [👉 Read Blog Here](https://hashnode.com/your-blog-url)
+Read the full blog for detailed explanations: [👉 Read Blog Here]([https://hashnode.com/your-blog-url](https://skymonil.hashnode.dev/deploy-a-production-ready-app-on-kubernetes-with-kubeadm))
 
 ---
 
 ## 📬 Connect with Me
 
-If you found this helpful, feel free to ⭐️ the repo and connect on [LinkedIn](https://linkedin.com/in/your-profile).
+If you found this helpful, feel free to ⭐️ the repo and connect on [LinkedIn](https://www.linkedin.com/in/monil-parikh-b13a40339/).
 
 ---
 
