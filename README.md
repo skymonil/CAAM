@@ -1,8 +1,3 @@
-Absolutely! Here's a professional and comprehensive `README.md` for your Kubernetes 3-tier monolith deployment project based on your Hashnode blog:
-
----
-
-```markdown
 # 🧱 MERN Stack on Kubernetes with Kubeadm
 
 A full 3-tier **MERN (MongoDB, Express, React, Node.js)** application deployed on a self-managed **Kubeadm** cluster, following production-ready best practices with StatefulSets, Headless Services, SealedSecrets, Ingress, MetalLB, and more.
